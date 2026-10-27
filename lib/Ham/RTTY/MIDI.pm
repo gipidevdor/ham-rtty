@@ -34,8 +34,8 @@ sub _vlq {
 
 sub encode {
     my ($self, $events) = @_;
-    my $field = validate_events($events);
-    $events = to_timed($events) if $field eq 'duration' && $events->{unit} ne 'us';
+    my $field = validate_events($events, 1000000);
+    $events = to_timed($events, 1000000) if $field eq 'duration' && $events->{unit} ne 'us';
     my $tempo = int(60_000_000 / $self->{bpm} + 0.5);
 
     # Keep the original event units until the final tick boundary.

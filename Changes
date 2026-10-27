@@ -1,6 +1,10 @@
 Revision history for Ham-RTTY
 
 0.001  2026-10-27
+    - Preserve incremental event timing across sampled input blocks.
+    - Propagate raised segment ceilings through conversions and snapshots.
+    - Count merged runs at decoder history limits and omit rounded zero idle.
+    - Correct the documented event representation of reception results.
     - Refresh complete CPU, WAV, generation and five-platform PDL benchmarks.
     - Publish current verification first while retaining historical evidence.
     - Bound receiver working buffers and PDL tone-search projection batches.

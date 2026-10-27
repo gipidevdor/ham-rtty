@@ -45,8 +45,9 @@ sub state { my ($self) = @_; return $self->{state} }    ## no critic (Subroutine
 
 sub _segments {
     my ($self, $events) = @_;
-    my $field   = validate_events($events);
-    my $sampled = $field eq 'duration' ? to_samples($events, $self->{sample_rate}) : $events;
+    my $field = validate_events($events, 1000000);
+    my $sampled =
+        $field eq 'duration' ? to_samples($events, $self->{sample_rate}, 1000000) : $events;
     fail('RTTY_E_ARGUMENT', 'Sample rate mismatch')
         unless $sampled->{sample_rate} == $self->{sample_rate};
     my @segments = map { +{%{$_}} } @{$sampled->{segments}};

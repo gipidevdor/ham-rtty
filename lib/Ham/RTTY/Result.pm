@@ -27,7 +27,7 @@ sub new {
         fail('RTTY_E_ARGUMENT', "$name must contain plain, acyclic data, at most 64 levels deep")
             unless ref($args{$name}) eq $kind && plain_data($args{$name});
     }
-    validate_events($args{events}) if exists $args{events};
+    validate_events($args{events}, 1000000) if exists $args{events};
     for my $warning (@{$args{warnings} // []}) {
         fail('RTTY_E_ARGUMENT', 'Each warning must contain scalar code and message fields')
             if ref($warning) ne 'HASH'
@@ -95,7 +95,8 @@ Normally called by the library; constructs a snapshot from these fields:
 
 =item * C<text>, C<notation>: defined scalar strings, default empty.
 
-=item * C<events>: canonical event hash, default C<< {unit => 'us', segments => []} >>. See L<Ham::RTTY::Events>.
+=item * C<events>: canonical event hash, default C<< {unit => 'us', segments => []} >>. See L<Ham::RTTY::Events>. Public construction accepts at most 1000000 segments;
+producers enforce their own configured history ceilings.
 
 =item * C<frequency>, C<baud>: undefined by default; otherwise finite numbers in 0..C<2**52>.
 
@@ -135,7 +136,8 @@ This field can be empty for audio/event decoding.
     my $events = $result->events;
 
 Returns a deep copy of the retained canonical event sequence. Event decoding
-preserves its input representation; audio detection produces SampledEvents.
+and audio detection both normalize their retained runs to integer-microsecond
+TimedEvents. Public construction preserves the supplied canonical representation.
 An empty/rejected result may contain an empty sequence.
 
 =head2 frequency
