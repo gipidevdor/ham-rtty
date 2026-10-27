@@ -302,5 +302,32 @@
     "Four release-quality annotated slots remain unfilled.",
     "Examples are selected excerpts; they do not establish general receiver accuracy.",
     "Dependency audit remains an independent open gate."
-  ]
+  ],
+  "verification": {
+    "ordinary_tests": {
+      "command": "HARNESS_PERL_SWITCHES='-Mwarnings=FATAL,all' prove -lr t",
+      "files": 19,
+      "assertions": 2030,
+      "exit_status": 0
+    },
+    "author_tests": {
+      "files": 12,
+      "assertions": 822,
+      "exit_status": 0
+    },
+    "distribution_inventory_exit_status": 0,
+    "archive_contract_exit_status": 0,
+    "isolated_installation_exit_status": 0,
+    "installed_cli_and_examples": "PASS",
+    "tested_archive_sha256": "02bef6c360cf8c3f16ed53abf51bf1bac84af0f3a7f55a114d4a29016988946a",
+    "archive_scope": "Archive tested before this verification-only documentation update; production modules and test fixture bytes are identical.",
+    "hosted_compatibility": {
+      "source_revision": "056053d7aaa29ee8189bbb0ee1bf8e3ada2ce0f9",
+      "run_url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40513649394",
+      "passed_jobs": 11,
+      "author_job_overall_pass_claimed": false
+    },
+    "workflow_analyzers": "actionlint and offline zizmor auditor persona: PASS",
+    "gitleaks": "30 local commits scanned: no leaks"
+  }
 }

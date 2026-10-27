@@ -152,3 +152,11 @@ CER. Other examined recordings decoded poorly or lacked established
 parameters; selection was not random. The independently annotated field
 acceptance gate and dependency audit remain unchanged. No release-qualified
 claim follows from these decoder comparisons.
+
+The complete review passes 19 ordinary test files / 2,030 assertions and 12
+author files / 822 assertions, plus the distribution inventory, archive
+contract and isolated installation with all installed examples. All eleven
+[hosted compatibility jobs](https://github.com/gipidevdor/ham-rtty/actions/runs/40513649394)
+pass on the fixture commit. Workflow analyzers and the local secret scan
+report no findings. These results do not claim a passing dependency audit or
+authoritative field acceptance.
