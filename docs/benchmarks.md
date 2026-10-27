@@ -76,6 +76,98 @@ The earlier single-process **19.80 MiB** Perl observation is retained in
 comparison uses the updated measurement helper and repeated fresh processes.
 Linux/Windows RSS and other recording lengths remain unmeasured.
 
+## Bounded reception and recommended defaults
+
+The recommended default is **Perl with streamed I/O and 4096-sample blocks**.
+Use `read_wav`, `write_wav` and `stream_samples` for file/block workflows.
+`samples`, `wav_bytes`, `decode_wav_bytes` and collected Audio reads retain
+whole arrays or byte strings by their documented contracts. Keep the frame,
+run, byte and sample ceilings in place; increasing them is an explicit choice.
+PDL remains optional, selected explicitly when its tradeoffs suit the workload.
+`auto` continues to choose availability; it is not a memory policy.
+
+The receiver now processes caller-sized arrays in bounded pieces, retains
+only the initial half second for acquisition, and batches wide PDL projections
+to at most 65,536 cells per matrix. Known-tone and smaller projections retain
+the direct native path. WAV reception checks declared sample counts against
+frame/run budgets before reading PCM. No samples are dropped or resampled;
+public return types, snapshots and existing resource ceilings are preserved.
+
+A separate paired experiment compares source `44e2799293e040020f903f54d75fc7bf1150dd67`
+with `084dbc682b3fc29714a0b9e8c0ffcab0424bc770`, using the identical measurement helper,
+input bytes and machine. Thirty sequential fresh processes provide three
+observations per phase/case/backend. The following values are median peak
+RSS in MiB; [raw optimization results](memory-optimization-results.json)
+retain every range, timer output, command and source/input hash.
+
+| Workload | Before (MiB) | Bounded implementation (MiB) |
+| --- | ---: | ---: |
+| 120 s WAV, Perl | 20.80 | 20.81 |
+| 120 s WAV, PDL | 27.67 | 27.62 |
+| 960,000-sample feed, Perl | 85.81 | 48.19 |
+| 960,000-sample feed, PDL | 92.69 | 54.98 |
+| 384 kHz / 20 baud wide search, PDL | 365.11 | 53.52 |
+
+The ordinary WAV path remains around 20.8 MiB for Perl and 27.6 MiB for PDL.
+The caller-sized feed uses about 44% less peak RSS with Perl and 41% less with
+PDL. The PDL stress case uses about **85% less**: median 365.11 to 53.52 MiB,
+with a largest observed bounded peak of 54.61 MiB. This stress input is a
+supported edge configuration, not a representative radio recording.
+
+The stress-case median process wall time increases from 2.42 to 3.45 seconds:
+smaller native batches trade some throughput for a much smaller, predictable
+working set. The standard 120-second WAV medians remain approximately
+12.4 seconds for Perl and 7.8 seconds for PDL in this paired experiment.
+These process timings include startup and use a different protocol from the
+historical CPU-R tables. All analyzed sample counts and decoded text agree
+before/after and between backends; memory reductions do not establish field
+reception accuracy.
+
+### Reproduce the stress inputs
+
+Create `memory.wav` with the earlier command, outside measured processes.
+This standalone Perl recipe writes the first 960,000 PCM frames to `feed-20s.wav`
+in bounded blocks and creates `wide-search.wav` through the streaming WAV API.
+Run it from the checkout in a directory where those two output paths are new:
+
+```perl
+use 5.020;
+use strict;
+use warnings;
+use Ham::RTTY;
+use Ham::RTTY::Audio;
+
+my $audio = Ham::RTTY::Audio->new;
+open my $input, '<:raw', 'memory.wav' or die $!;
+my $reader = $audio->reader($input);
+die 'Expected at least 20 seconds of 48000-Hz mono PCM16'
+    unless $reader->{sample_rate} == 48000 && $reader->{channels} == 1
+    && $reader->{bits} == 16 && $reader->{sample_count} >= 960000;
+my $remaining = 960000;
+$audio->write_blocks('feed-20s.wav', sub {
+    return unless $remaining;
+    my $block = $reader->{next}->() or die 'Input is shorter than 20 seconds';
+    splice @{$block}, $remaining if @{$block} > $remaining;
+    $remaining -= @{$block};
+    return $block;
+}, sample_rate => 48000, sample_count => 960000, bits => 16);
+close $input or die $!;
+Ham::RTTY->new(sample_rate => 384000, baud => 20)->write_wav('CQ', 'wide-search.wav');
+```
+
+Measure each command three times in a fresh process:
+
+```sh
+/usr/bin/time -l perl maint/memory.pl --feed feed-20s.wav --backend perl
+/usr/bin/time -l perl maint/memory.pl --feed feed-20s.wav --backend pdl
+/usr/bin/time -l perl maint/memory.pl --feed wide-search.wav --backend pdl --baud 20 --search --frequency-step 5
+```
+
+The `--feed` benchmark deliberately stages one caller-sized array and accepts
+at most 1,000,000 samples. Normal file reception should use the streaming
+`--read` workload instead. The source revisions and hashes in the raw report
+identify the before/after implementations; earlier measurements remain historical.
+
 ## Repeat
 
 ```sh

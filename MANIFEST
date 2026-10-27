@@ -30,6 +30,7 @@ docs/benchmarks.md
 docs/coverage-results.json
 docs/dependency-audit.md
 docs/installing.md
+docs/memory-optimization-results.json
 docs/memory-results.json
 docs/performance-results.json
 docs/reception-examples-results.json
@@ -108,6 +109,7 @@ t/22-cli.t
 t/28-file-contracts.t
 t/29-examples.t
 t/30-external-reception.t
+t/31-bounded-reception.t
 t/lib/CorpusMetrics.pm
 t/lib/FaultHandle.pm
 xt/corpus-licenses.t

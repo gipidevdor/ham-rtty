@@ -7,28 +7,34 @@ use Carp         qw(croak);
 use Getopt::Long qw(GetOptions Configure);
 use JSON::PP;
 use Ham::RTTY;
-use Ham::RTTY::Events qw(to_samples);
+use Ham::RTTY::Events        qw(to_samples);
+use Ham::RTTY::_Internal::IO qw(with_file);
 Configure(qw(no_auto_abbrev no_ignore_case));
 my $backend = 'perl';
 my %reception;
 my (%modes, $help);
 GetOptions(
-    'create=s'  => \$modes{create},
-    'read=s'    => \$modes{read},
-    'stream'    => \$modes{stream},
-    'collect'   => \$modes{collect},
-    'baseline'  => \$modes{baseline},
-    'backend=s' => \$backend,
-    'baud=f'    => \$reception{baud},
-    'mark=f'    => \$reception{mark},
-    'shift=f'   => \$reception{shift},
-    'help'      => \$help
+    'create=s'         => \$modes{create},
+    'read=s'           => \$modes{read},
+    'feed=s'           => \$modes{feed},
+    'stream'           => \$modes{stream},
+    'collect'          => \$modes{collect},
+    'baseline'         => \$modes{baseline},
+    'backend=s'        => \$backend,
+    'baud=f'           => \$reception{baud},
+    'mark=f'           => \$reception{mark},
+    'shift=f'          => \$reception{shift},
+    'search'           => \$reception{search},
+    'frequency-step=f' => \$reception{frequency_step},
+    'help'             => \$help
 ) or croak 'Use --help for options';
 
 if ($help) {
     print "Usage: perl maint/memory.pl --create FILE.wav [--backend perl|pdl]\n",
         "       perl maint/memory.pl --read FILE.wav [--backend perl|pdl]\n",
-        "         [--baud 45.45 --mark 2125 --shift 170]\n",
+        "         [--baud 45.45 --mark 2125 --shift 170 --search --frequency-step 10]\n",
+        "       perl maint/memory.pl --feed FILE.wav [same reception options]\n",
+        "The --feed probe collects at most 1000000 samples for one caller-sized feed.\n",
         "       perl maint/memory.pl --baseline|--stream|--collect [--backend perl|pdl]\n",
         "Generation uses exactly 120 seconds at 48000 Hz, in 4096-sample blocks.\n",
         "Measure each invocation in a fresh process; create fixtures separately.\n";
@@ -41,16 +47,18 @@ croak 'backend must be perl or pdl for an explicit comparison'
 my ($mode)   = @selected;
 my $path     = $modes{$mode};
 my %received = map { defined($reception{$_}) ? ($_ => $reception{$_}) : () } keys %reception;
-croak 'baud, mark and shift apply only to --read' if $mode ne 'read' && keys %received;
+croak 'Reception options apply only to --read or --feed'
+    if $mode ne 'read' && $mode ne 'feed' && keys %received;
 my $rate   = 48000;
 my $rtty   = Ham::RTTY->new(sample_rate => $rate, backend => $backend);
 my %report = (mode => $mode, backend => $backend, block_samples => 4096);
 
-if ($mode eq 'read') {
+if ($mode eq 'read' || $mode eq 'feed') {
     my %receiver = (baud => 45.45, mark => 2125, shift => 170, %received);
-    my $result   = $rtty->read_wav($path, %receiver);
-    $report{reception} = \%receiver;
-    %report = (
+    my $result   = reception_workload($mode, $path, $rtty, \%receiver);
+    $report{block_samples} = $result->diagnostics->{analyzed_samples} if $mode eq 'feed';
+    $report{reception}     = \%receiver;
+    %report                = (
         %report,
         text            => $result->text,
         text_characters => length($result->text),
@@ -116,4 +124,23 @@ sub generation_workload {
         unless $statistics{generation}{samples} == 120 * $sample_rate
         && $statistics{generation}{state} eq 'FINISHED';
     return \%statistics;
+}
+
+sub reception_workload {
+    my ($operation, $filename, $facade, $settings) = @_;
+    return $facade->read_wav($filename, %{$settings}) if $operation eq 'read';
+    return with_file(
+        $filename,
+        'read',
+        sub {
+            my $reader = Ham::RTTY::Audio->new->reader($_[0]);
+            croak 'The --feed probe accepts at most 1000000 samples'
+                if $reader->{sample_count} > 1000000;
+            my @values;
+            while (my $block = $reader->{next}->()) { push @values, @{$block} }
+            my $detector = $facade->detector(%{$settings}, sample_rate => $reader->{sample_rate});
+            $detector->feed(\@values);
+            return $detector->finish;
+        }
+    );
 }

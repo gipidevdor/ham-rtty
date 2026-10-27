@@ -1,0 +1,2205 @@
+{
+  "date": "2026-10-27",
+  "environment": {
+    "os": "macOS",
+    "os_version": "27.0.1",
+    "architecture": "arm64",
+    "cpu": "Apple M4",
+    "physical_memory_bytes": 17179869184,
+    "perl": "v5.44.0",
+    "pdl": "2.106"
+  },
+  "protocol": {
+    "metric": "macOS /usr/bin/time -l maximum resident set size; bytes",
+    "observations": 30,
+    "repetitions_per_phase_case_backend": 3,
+    "fresh_process_per_observation": true,
+    "execution": "sequential; no concurrent tests or coverage collection",
+    "fixture_creation": "outside measured processes",
+    "feed_case_scope": "Includes caller-owned PCM array staged by the helper before one feed call; not the recommended file path.",
+    "wide_search": "384000 Hz, 20 baud, 507 tone pairs, 5 Hz grid, 508800 input samples.",
+    "text_identity": "Exact decoded text agrees across repetitions, backends and before/after for each case.",
+    "complete_result_identity_before_after": true
+  },
+  "regression_tests": {
+    "file": "t/31-bounded-reception.t",
+    "assertions": 29,
+    "old_failed_assertions": 9,
+    "new_failed_assertions": 0
+  },
+  "validation": {
+    "ordinary_files": 20,
+    "ordinary_assertions": 2059,
+    "author_files": 12,
+    "author_assertions": 824,
+    "exit_status": 0,
+    "coverage": {
+      "modules": {
+        "lib/Ham/RTTY.pm": {
+          "branch": {
+            "covered": 28,
+            "error": 0,
+            "percentage": 100,
+            "total": 28,
+            "uncoverable": 0
+          },
+          "statement": {
+            "covered": 187,
+            "percentage": 100,
+            "total": 187
+          },
+          "total": {
+            "covered": 215,
+            "error": 0,
+            "percentage": 100,
+            "total": 215,
+            "uncoverable": 0
+          }
+        },
+        "lib/Ham/RTTY/Audio.pm": {
+          "branch": {
+            "covered": 73,
+            "error": 1,
+            "percentage": 98.6486486486486,
+            "total": 74,
+            "uncoverable": 0
+          },
+          "statement": {
+            "covered": 158,
+            "percentage": 100,
+            "total": 158
+          },
+          "total": {
+            "covered": 231,
+            "error": 1,
+            "percentage": 99.5689655172414,
+            "total": 232,
+            "uncoverable": 0
+          }
+        },
+        "lib/Ham/RTTY/Baudot.pm": {
+          "branch": {
+            "covered": 10,
+            "error": 0,
+            "percentage": 100,
+            "total": 10,
+            "uncoverable": 0
+          },
+          "statement": {
+            "covered": 36,
+            "percentage": 100,
+            "total": 36
+          },
+          "total": {
+            "covered": 46,
+            "error": 0,
+            "percentage": 100,
+            "total": 46,
+            "uncoverable": 0
+          }
+        },
+        "lib/Ham/RTTY/Decoder.pm": {
+          "branch": {
+            "covered": 44,
+            "error": 0,
+            "percentage": 100,
+            "total": 44,
+            "uncoverable": 0
+          },
+          "statement": {
+            "covered": 138,
+            "percentage": 100,
+            "total": 138
+          },
+          "total": {
+            "covered": 182,
+            "error": 0,
+            "percentage": 100,
+            "total": 182,
+            "uncoverable": 0
+          }
+        },
+        "lib/Ham/RTTY/Detector.pm": {
+          "branch": {
+            "covered": 63,
+            "error": 1,
+            "percentage": 98.4375,
+            "total": 64,
+            "uncoverable": 0
+          },
+          "statement": {
+            "covered": 206,
+            "percentage": 100,
+            "total": 206
+          },
+          "total": {
+            "covered": 269,
+            "error": 1,
+            "percentage": 99.6296296296296,
+            "total": 270,
+            "uncoverable": 0
+          }
+        },
+        "lib/Ham/RTTY/Encoder.pm": {
+          "branch": {
+            "covered": 38,
+            "error": 0,
+            "percentage": 100,
+            "total": 38,
+            "uncoverable": 0
+          },
+          "statement": {
+            "covered": 91,
+            "percentage": 100,
+            "total": 91
+          },
+          "total": {
+            "covered": 129,
+            "error": 0,
+            "percentage": 100,
+            "total": 129,
+            "uncoverable": 0
+          }
+        },
+        "lib/Ham/RTTY/Error.pm": {
+          "branch": {
+            "covered": 8,
+            "error": 0,
+            "percentage": 100,
+            "total": 8,
+            "uncoverable": 0
+          },
+          "statement": {
+            "covered": 46,
+            "percentage": 100,
+            "total": 46
+          },
+          "total": {
+            "covered": 54,
+            "error": 0,
+            "percentage": 100,
+            "total": 54,
+            "uncoverable": 0
+          }
+        },
+        "lib/Ham/RTTY/Events.pm": {
+          "branch": {
+            "covered": 39,
+            "error": 1,
+            "percentage": 97.5,
+            "total": 40,
+            "uncoverable": 0
+          },
+          "statement": {
+            "covered": 65,
+            "percentage": 100,
+            "total": 65
+          },
+          "total": {
+            "covered": 104,
+            "error": 1,
+            "percentage": 99.0476190476191,
+            "total": 105,
+            "uncoverable": 0
+          }
+        },
+        "lib/Ham/RTTY/Generator.pm": {
+          "branch": {
+            "covered": 24,
+            "error": 0,
+            "percentage": 100,
+            "total": 24,
+            "uncoverable": 0
+          },
+          "statement": {
+            "covered": 92,
+            "percentage": 100,
+            "total": 92
+          },
+          "total": {
+            "covered": 116,
+            "error": 0,
+            "percentage": 100,
+            "total": 116,
+            "uncoverable": 0
+          }
+        },
+        "lib/Ham/RTTY/MIDI.pm": {
+          "branch": {
+            "covered": 18,
+            "error": 0,
+            "percentage": 100,
+            "total": 18,
+            "uncoverable": 0
+          },
+          "statement": {
+            "covered": 64,
+            "percentage": 100,
+            "total": 64
+          },
+          "total": {
+            "covered": 82,
+            "error": 0,
+            "percentage": 100,
+            "total": 82,
+            "uncoverable": 0
+          }
+        },
+        "lib/Ham/RTTY/Result.pm": {
+          "branch": {
+            "covered": 20,
+            "error": 0,
+            "percentage": 100,
+            "total": 20,
+            "uncoverable": 0
+          },
+          "statement": {
+            "covered": 65,
+            "percentage": 100,
+            "total": 65
+          },
+          "total": {
+            "covered": 85,
+            "error": 0,
+            "percentage": 100,
+            "total": 85,
+            "uncoverable": 0
+          }
+        },
+        "lib/Ham/RTTY/_Internal/Backend.pm": {
+          "branch": {
+            "covered": 8,
+            "error": 0,
+            "percentage": 100,
+            "total": 8,
+            "uncoverable": 0
+          },
+          "statement": {
+            "covered": 21,
+            "error": 1,
+            "percentage": 95.4545454545455,
+            "total": 22
+          },
+          "total": {
+            "covered": 29,
+            "error": 1,
+            "percentage": 96.6666666666667,
+            "total": 30,
+            "uncoverable": 0
+          }
+        },
+        "lib/Ham/RTTY/_Internal/CLI.pm": {
+          "branch": {
+            "covered": 122,
+            "error": 8,
+            "percentage": 93.8461538461538,
+            "total": 130,
+            "uncoverable": 0
+          },
+          "statement": {
+            "covered": 287,
+            "percentage": 100,
+            "total": 287
+          },
+          "total": {
+            "covered": 409,
+            "error": 8,
+            "percentage": 98.0815347721823,
+            "total": 417,
+            "uncoverable": 0
+          }
+        },
+        "lib/Ham/RTTY/_Internal/Data.pm": {
+          "branch": {
+            "covered": 10,
+            "error": 0,
+            "percentage": 100,
+            "total": 10,
+            "uncoverable": 0
+          },
+          "statement": {
+            "covered": 35,
+            "percentage": 100,
+            "total": 35
+          },
+          "total": {
+            "covered": 45,
+            "error": 0,
+            "percentage": 100,
+            "total": 45,
+            "uncoverable": 0
+          }
+        },
+        "lib/Ham/RTTY/_Internal/IO.pm": {
+          "branch": {
+            "covered": 39,
+            "error": 3,
+            "percentage": 92.8571428571429,
+            "total": 42,
+            "uncoverable": 0
+          },
+          "statement": {
+            "covered": 82,
+            "percentage": 100,
+            "total": 82
+          },
+          "total": {
+            "covered": 121,
+            "error": 3,
+            "percentage": 97.5806451612903,
+            "total": 124,
+            "uncoverable": 0
+          }
+        },
+        "lib/Ham/RTTY/_Internal/PDL.pm": {
+          "branch": {
+            "covered": 18,
+            "error": 0,
+            "percentage": 100,
+            "total": 18,
+            "uncoverable": 0
+          },
+          "statement": {
+            "covered": 50,
+            "percentage": 100,
+            "total": 50
+          },
+          "total": {
+            "covered": 68,
+            "error": 0,
+            "percentage": 100,
+            "total": 68,
+            "uncoverable": 0
+          }
+        },
+        "lib/Ham/RTTY/_Internal/Result.pm": {
+          "branch": {},
+          "statement": {
+            "covered": 16,
+            "percentage": 100,
+            "total": 16
+          },
+          "total": {
+            "covered": 16,
+            "percentage": 100,
+            "total": 16
+          }
+        },
+        "lib/Ham/RTTY/_Internal/Validate.pm": {
+          "branch": {
+            "covered": 18,
+            "error": 0,
+            "percentage": 100,
+            "total": 18,
+            "uncoverable": 0
+          },
+          "statement": {
+            "covered": 50,
+            "percentage": 100,
+            "total": 50
+          },
+          "total": {
+            "covered": 68,
+            "error": 0,
+            "percentage": 100,
+            "total": 68,
+            "uncoverable": 0
+          }
+        },
+        "lib/Ham/RTTY/_Internal/WavWriter.pm": {
+          "branch": {
+            "covered": 27,
+            "error": 1,
+            "percentage": 96.4285714285714,
+            "total": 28,
+            "uncoverable": 0
+          },
+          "statement": {
+            "covered": 61,
+            "percentage": 100,
+            "total": 61
+          },
+          "total": {
+            "covered": 88,
+            "error": 1,
+            "percentage": 98.876404494382,
+            "total": 89,
+            "uncoverable": 0
+          }
+        }
+      },
+      "total": {
+        "branch": {
+          "covered": 607,
+          "error": 15,
+          "percentage": 97.588424437299,
+          "total": 622,
+          "uncoverable": 0
+        },
+        "statement": {
+          "covered": 1750,
+          "error": 1,
+          "percentage": 99.9428897772701,
+          "total": 1751
+        },
+        "total": {
+          "covered": 2357,
+          "error": 16,
+          "percentage": 99.3257479983144,
+          "total": 2373,
+          "uncoverable": 0
+        }
+      }
+    },
+    "per_module_coverage_gate_exit_status": 0
+  },
+  "before": {
+    "phase": "before",
+    "date_utc": "2026-10-27T14:31:34.322343+00:00",
+    "source_revision": "44e2799293e040020f903f54d75fc7bf1150dd67",
+    "source_sha256": {
+      "lib/Ham/RTTY/Audio.pm": "a6c427d6932134e1a9c314c553c5935aaada0d95d9c917a2ab0663e6ab575798",
+      "lib/Ham/RTTY/Baudot.pm": "203a3972cab5c592898c66376f639beff7498596b5523b49f130aee0eb589032",
+      "lib/Ham/RTTY/Decoder.pm": "303610849424177154ec4c79baefab02e2fe304f2c28895501616166d31dd802",
+      "lib/Ham/RTTY/Detector.pm": "1e7f7872c84ddd15d24ecaea37331266c95b3048fc3cfbebfac947064940bddd",
+      "lib/Ham/RTTY/Encoder.pm": "260e623b3c104c9d7bd8dbf73954053529044ffc25a4bc1bcd07d56da15d9128",
+      "lib/Ham/RTTY/Error.pm": "691583d0f4b5c64061bc103ab2a2b9f00c5926fe047c58ba6e91f917c933e37f",
+      "lib/Ham/RTTY/Events.pm": "0ae66520fddb13dd3ea7c04662c1c8a99880bdf507649795604cccf4aac11d1b",
+      "lib/Ham/RTTY/Generator.pm": "375015e485b6f38f561e02845a7c1efa22d9d67be41f70fb818578ab7f27f01f",
+      "lib/Ham/RTTY/MIDI.pm": "f5d5268bfbd80b262a4e6a15f973b913111c1fdba0936d6baa8c95cbc44fe3ec",
+      "lib/Ham/RTTY/Result.pm": "40dbaafa256001497887f0e293627799db996634c7d5ac98695276290d2b5fd5",
+      "lib/Ham/RTTY/_Internal/Backend.pm": "f2d6cde05da6fa1338d37728d654d8327eb8d35f720eb035468bae91d9c57051",
+      "lib/Ham/RTTY/_Internal/CLI.pm": "b03d72cc45ee02e4f7b784c0967ea30ff24e52610df404ad8dfe127a22b4c2b2",
+      "lib/Ham/RTTY/_Internal/Data.pm": "2eb97d379660230eb4c2b25f11460b517f79a05f2dc2ac2ee8967c57335c9a5e",
+      "lib/Ham/RTTY/_Internal/IO.pm": "40f002ee9e8387683b37bfd6495e65af055bcffacbcdef8f3b5c85e804139c4b",
+      "lib/Ham/RTTY/_Internal/PDL.pm": "64776c39c7d4543b7d83c44c5fb4eddb4fcab92f238becc520f839b63d74405f",
+      "lib/Ham/RTTY/_Internal/Result.pm": "2c766a8d55e308c8c5f18a78c419b995c9668b23050edac81157bb9e0e00663a",
+      "lib/Ham/RTTY/_Internal/Validate.pm": "ae7c1b11263306ee24977e75a7203e6cb6f56d8d55e8e97581c5b4ad4d8505ae",
+      "lib/Ham/RTTY/_Internal/WavWriter.pm": "dda8c056d84c1e328e63f902854cd9f30c28f0dcbff6ab9a1b43d3520ab8c114",
+      "lib/Ham/RTTY.pm": "4c28f29ac5951706d306127d0a925f1f06b60e8b28937599e8ca1c0466233224"
+    },
+    "harness_sha256": "5bf29e95a2091c56d6db044e98d957312bd48beee272b5a4f7c73f7fbc37f2a0",
+    "inputs": {
+      "full": "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-ram-20261027-ie53ig75/memory-120s-48000.wav",
+      "short": "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-memory-safety-e0m2u9ks/20s-48000.wav",
+      "wide": "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-memory-safety-e0m2u9ks/cq-384000-20baud.wav",
+      "wide_creation_command": [
+        "perl",
+        "-Ilib",
+        "-MHam::RTTY",
+        "-e",
+        "Ham::RTTY->new(sample_rate=>384000,baud=>20)->write_wav(\"CQ\",$ARGV[0]);",
+        "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-memory-safety-e0m2u9ks/cq-384000-20baud.wav"
+      ],
+      "short_creation": "Copy the first 960000 PCM frames of full into a standard RIFF WAV; no resampling.",
+      "hashes": {
+        "full": "c817cd183d9dcc1f545d10614e9927d097b785e3ed4cf70766406dcbeaa4c7a7",
+        "short": "ae668bc8e6d48080ee7e6d72e33f5f7dfa1766c6a68218a9f45cb16352f1a4f2",
+        "wide": "80f9871563dcf1ec77eeb95089a4d7de7c329ddc68893c341bddbfc366f70229"
+      }
+    },
+    "rss_unit": "bytes; macOS /usr/bin/time -l",
+    "runs": [
+      {
+        "case": "read_120s_48khz",
+        "backend": "perl",
+        "repetition": 1,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--read",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-ram-20261027-ie53ig75/memory-120s-48000.wav",
+          "--backend",
+          "perl"
+        ],
+        "peak_rss_bytes": 21807104,
+        "wall_seconds": 12.38,
+        "result": {
+          "backend": "perl",
+          "block_samples": 4096,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 5760000,
+            "configured_bit_period": 0.022002200220022,
+            "frame_samples": 88,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 0.930790852284736,
+            "measured_bit_period": 0.022
+          },
+          "mode": "read",
+          "pdl_loaded": false,
+          "reception": {
+            "baud": 45.45,
+            "mark": 2125,
+            "shift": 170
+          },
+          "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 12",
+          "text_characters": 640,
+          "warnings": [
+            {
+              "code": "RTTY_W_FRAMING",
+              "message": "Incomplete frame at end of input"
+            }
+          ]
+        },
+        "time_output": "       12.38 real        12.29 user         0.02 sys\n            21807104  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1575  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                3394  involuntary context switches\n        143815405424  instructions retired\n         25740194480  cycles elapsed\n            18661784  peak memory footprint\n",
+        "exit_status": 0
+      },
+      {
+        "case": "read_120s_48khz",
+        "backend": "perl",
+        "repetition": 2,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--read",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-ram-20261027-ie53ig75/memory-120s-48000.wav",
+          "--backend",
+          "perl"
+        ],
+        "peak_rss_bytes": 21807104,
+        "wall_seconds": 12.26,
+        "result": {
+          "backend": "perl",
+          "block_samples": 4096,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 5760000,
+            "configured_bit_period": 0.022002200220022,
+            "frame_samples": 88,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 0.930790852284736,
+            "measured_bit_period": 0.022
+          },
+          "mode": "read",
+          "pdl_loaded": false,
+          "reception": {
+            "baud": 45.45,
+            "mark": 2125,
+            "shift": 170
+          },
+          "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 12",
+          "text_characters": 640,
+          "warnings": [
+            {
+              "code": "RTTY_W_FRAMING",
+              "message": "Incomplete frame at end of input"
+            }
+          ]
+        },
+        "time_output": "       12.26 real        12.23 user         0.02 sys\n            21807104  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1575  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                1670  involuntary context switches\n        143799186327  instructions retired\n         25528733324  cycles elapsed\n            18645376  peak memory footprint\n",
+        "exit_status": 0
+      },
+      {
+        "case": "read_120s_48khz",
+        "backend": "perl",
+        "repetition": 3,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--read",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-ram-20261027-ie53ig75/memory-120s-48000.wav",
+          "--backend",
+          "perl"
+        ],
+        "peak_rss_bytes": 21692416,
+        "wall_seconds": 12.38,
+        "result": {
+          "backend": "perl",
+          "block_samples": 4096,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 5760000,
+            "configured_bit_period": 0.022002200220022,
+            "frame_samples": 88,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 0.930790852284736,
+            "measured_bit_period": 0.022
+          },
+          "mode": "read",
+          "pdl_loaded": false,
+          "reception": {
+            "baud": 45.45,
+            "mark": 2125,
+            "shift": 170
+          },
+          "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 12",
+          "text_characters": 640,
+          "warnings": [
+            {
+              "code": "RTTY_W_FRAMING",
+              "message": "Incomplete frame at end of input"
+            }
+          ]
+        },
+        "time_output": "       12.38 real        12.35 user         0.02 sys\n            21692416  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1568  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                2030  involuntary context switches\n        143808584703  instructions retired\n         25782483780  cycles elapsed\n            18530688  peak memory footprint\n",
+        "exit_status": 0
+      },
+      {
+        "case": "read_120s_48khz",
+        "backend": "pdl",
+        "repetition": 1,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--read",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-ram-20261027-ie53ig75/memory-120s-48000.wav",
+          "--backend",
+          "pdl"
+        ],
+        "peak_rss_bytes": 28950528,
+        "wall_seconds": 7.87,
+        "result": {
+          "backend": "pdl",
+          "block_samples": 4096,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 5760000,
+            "configured_bit_period": 0.022002200220022,
+            "frame_samples": 88,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 0.930790852284731,
+            "measured_bit_period": 0.022
+          },
+          "mode": "read",
+          "pdl_loaded": true,
+          "pdl_version": "2.106",
+          "reception": {
+            "baud": 45.45,
+            "mark": 2125,
+            "shift": 170
+          },
+          "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 12",
+          "text_characters": 640,
+          "warnings": [
+            {
+              "code": "RTTY_W_FRAMING",
+              "message": "Incomplete frame at end of input"
+            }
+          ]
+        },
+        "time_output": "        7.87 real         7.83 user         0.02 sys\n            28950528  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                2168  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                1894  involuntary context switches\n         76215184093  instructions retired\n         16397556764  cycles elapsed\n            24756632  peak memory footprint\n",
+        "exit_status": 0
+      },
+      {
+        "case": "read_120s_48khz",
+        "backend": "pdl",
+        "repetition": 2,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--read",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-ram-20261027-ie53ig75/memory-120s-48000.wav",
+          "--backend",
+          "pdl"
+        ],
+        "peak_rss_bytes": 29016064,
+        "wall_seconds": 7.89,
+        "result": {
+          "backend": "pdl",
+          "block_samples": 4096,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 5760000,
+            "configured_bit_period": 0.022002200220022,
+            "frame_samples": 88,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 0.930790852284731,
+            "measured_bit_period": 0.022
+          },
+          "mode": "read",
+          "pdl_loaded": true,
+          "pdl_version": "2.106",
+          "reception": {
+            "baud": 45.45,
+            "mark": 2125,
+            "shift": 170
+          },
+          "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 12",
+          "text_characters": 640,
+          "warnings": [
+            {
+              "code": "RTTY_W_FRAMING",
+              "message": "Incomplete frame at end of input"
+            }
+          ]
+        },
+        "time_output": "        7.89 real         7.86 user         0.02 sys\n            29016064  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                2172  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                1918  involuntary context switches\n         76209955942  instructions retired\n         16466237814  cycles elapsed\n            24838576  peak memory footprint\n",
+        "exit_status": 0
+      },
+      {
+        "case": "read_120s_48khz",
+        "backend": "pdl",
+        "repetition": 3,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--read",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-ram-20261027-ie53ig75/memory-120s-48000.wav",
+          "--backend",
+          "pdl"
+        ],
+        "peak_rss_bytes": 29065216,
+        "wall_seconds": 7.86,
+        "result": {
+          "backend": "pdl",
+          "block_samples": 4096,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 5760000,
+            "configured_bit_period": 0.022002200220022,
+            "frame_samples": 88,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 0.930790852284731,
+            "measured_bit_period": 0.022
+          },
+          "mode": "read",
+          "pdl_loaded": true,
+          "pdl_version": "2.106",
+          "reception": {
+            "baud": 45.45,
+            "mark": 2125,
+            "shift": 170
+          },
+          "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 12",
+          "text_characters": 640,
+          "warnings": [
+            {
+              "code": "RTTY_W_FRAMING",
+              "message": "Incomplete frame at end of input"
+            }
+          ]
+        },
+        "time_output": "        7.86 real         7.83 user         0.01 sys\n            29065216  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                2175  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 935  involuntary context switches\n         76207762891  instructions retired\n         16363340993  cycles elapsed\n            24871320  peak memory footprint\n",
+        "exit_status": 0
+      },
+      {
+        "case": "feed_20s_48khz",
+        "backend": "perl",
+        "repetition": 1,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--feed",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-memory-safety-e0m2u9ks/20s-48000.wav",
+          "--backend",
+          "perl"
+        ],
+        "peak_rss_bytes": 90062848,
+        "wall_seconds": 2.09,
+        "result": {
+          "backend": "perl",
+          "block_samples": 960000,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 960000,
+            "configured_bit_period": 0.022002200220022,
+            "frame_samples": 88,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 0.949966846302996,
+            "measured_bit_period": 0.022
+          },
+          "mode": "feed",
+          "pdl_loaded": false,
+          "reception": {
+            "baud": 45.45,
+            "mark": 2125,
+            "shift": 170
+          },
+          "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 ",
+          "text_characters": 105,
+          "warnings": [
+            {
+              "code": "RTTY_W_FRAMING",
+              "message": "Incomplete frame at end of input"
+            }
+          ]
+        },
+        "time_output": "        2.09 real         2.07 user         0.01 sys\n            90062848  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                5740  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 253  involuntary context switches\n         24497858638  instructions retired\n          4355293356  cycles elapsed\n            86950344  peak memory footprint\n",
+        "exit_status": 0
+      },
+      {
+        "case": "feed_20s_48khz",
+        "backend": "perl",
+        "repetition": 2,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--feed",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-memory-safety-e0m2u9ks/20s-48000.wav",
+          "--backend",
+          "perl"
+        ],
+        "peak_rss_bytes": 89980928,
+        "wall_seconds": 2.05,
+        "result": {
+          "backend": "perl",
+          "block_samples": 960000,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 960000,
+            "configured_bit_period": 0.022002200220022,
+            "frame_samples": 88,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 0.949966846302996,
+            "measured_bit_period": 0.022
+          },
+          "mode": "feed",
+          "pdl_loaded": false,
+          "reception": {
+            "baud": 45.45,
+            "mark": 2125,
+            "shift": 170
+          },
+          "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 ",
+          "text_characters": 105,
+          "warnings": [
+            {
+              "code": "RTTY_W_FRAMING",
+              "message": "Incomplete frame at end of input"
+            }
+          ]
+        },
+        "time_output": "        2.05 real         2.03 user         0.01 sys\n            89980928  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                5735  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 360  involuntary context switches\n         24494308384  instructions retired\n          4269628829  cycles elapsed\n            86868424  peak memory footprint\n",
+        "exit_status": 0
+      },
+      {
+        "case": "feed_20s_48khz",
+        "backend": "perl",
+        "repetition": 3,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--feed",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-memory-safety-e0m2u9ks/20s-48000.wav",
+          "--backend",
+          "perl"
+        ],
+        "peak_rss_bytes": 89964544,
+        "wall_seconds": 2.06,
+        "result": {
+          "backend": "perl",
+          "block_samples": 960000,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 960000,
+            "configured_bit_period": 0.022002200220022,
+            "frame_samples": 88,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 0.949966846302996,
+            "measured_bit_period": 0.022
+          },
+          "mode": "feed",
+          "pdl_loaded": false,
+          "reception": {
+            "baud": 45.45,
+            "mark": 2125,
+            "shift": 170
+          },
+          "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 ",
+          "text_characters": 105,
+          "warnings": [
+            {
+              "code": "RTTY_W_FRAMING",
+              "message": "Incomplete frame at end of input"
+            }
+          ]
+        },
+        "time_output": "        2.06 real         2.04 user         0.01 sys\n            89964544  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                5735  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  71  involuntary context switches\n         24493692477  instructions retired\n          4284701246  cycles elapsed\n            86852040  peak memory footprint\n",
+        "exit_status": 0
+      },
+      {
+        "case": "feed_20s_48khz",
+        "backend": "pdl",
+        "repetition": 1,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--feed",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-memory-safety-e0m2u9ks/20s-48000.wav",
+          "--backend",
+          "pdl"
+        ],
+        "peak_rss_bytes": 97255424,
+        "wall_seconds": 1.3,
+        "result": {
+          "backend": "pdl",
+          "block_samples": 960000,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 960000,
+            "configured_bit_period": 0.022002200220022,
+            "frame_samples": 88,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 0.949966846302993,
+            "measured_bit_period": 0.022
+          },
+          "mode": "feed",
+          "pdl_loaded": true,
+          "pdl_version": "2.106",
+          "reception": {
+            "baud": 45.45,
+            "mark": 2125,
+            "shift": 170
+          },
+          "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 ",
+          "text_characters": 105,
+          "warnings": [
+            {
+              "code": "RTTY_W_FRAMING",
+              "message": "Incomplete frame at end of input"
+            }
+          ]
+        },
+        "time_output": "        1.30 real         1.27 user         0.02 sys\n            97255424  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                6336  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  40  involuntary context switches\n         13364446963  instructions retired\n          2703443779  cycles elapsed\n            93143520  peak memory footprint\n",
+        "exit_status": 0
+      },
+      {
+        "case": "feed_20s_48khz",
+        "backend": "pdl",
+        "repetition": 2,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--feed",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-memory-safety-e0m2u9ks/20s-48000.wav",
+          "--backend",
+          "pdl"
+        ],
+        "peak_rss_bytes": 97189888,
+        "wall_seconds": 1.3,
+        "result": {
+          "backend": "pdl",
+          "block_samples": 960000,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 960000,
+            "configured_bit_period": 0.022002200220022,
+            "frame_samples": 88,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 0.949966846302993,
+            "measured_bit_period": 0.022
+          },
+          "mode": "feed",
+          "pdl_loaded": true,
+          "pdl_version": "2.106",
+          "reception": {
+            "baud": 45.45,
+            "mark": 2125,
+            "shift": 170
+          },
+          "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 ",
+          "text_characters": 105,
+          "warnings": [
+            {
+              "code": "RTTY_W_FRAMING",
+              "message": "Incomplete frame at end of input"
+            }
+          ]
+        },
+        "time_output": "        1.30 real         1.28 user         0.01 sys\n            97189888  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                6332  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 116  involuntary context switches\n         13374178325  instructions retired\n          2717590654  cycles elapsed\n            93077984  peak memory footprint\n",
+        "exit_status": 0
+      },
+      {
+        "case": "feed_20s_48khz",
+        "backend": "pdl",
+        "repetition": 3,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--feed",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-memory-safety-e0m2u9ks/20s-48000.wav",
+          "--backend",
+          "pdl"
+        ],
+        "peak_rss_bytes": 97075200,
+        "wall_seconds": 1.31,
+        "result": {
+          "backend": "pdl",
+          "block_samples": 960000,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 960000,
+            "configured_bit_period": 0.022002200220022,
+            "frame_samples": 88,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 0.949966846302993,
+            "measured_bit_period": 0.022
+          },
+          "mode": "feed",
+          "pdl_loaded": true,
+          "pdl_version": "2.106",
+          "reception": {
+            "baud": 45.45,
+            "mark": 2125,
+            "shift": 170
+          },
+          "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 ",
+          "text_characters": 105,
+          "warnings": [
+            {
+              "code": "RTTY_W_FRAMING",
+              "message": "Incomplete frame at end of input"
+            }
+          ]
+        },
+        "time_output": "        1.31 real         1.28 user         0.02 sys\n            97075200  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                6325  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  21  involuntary context switches\n         13365831454  instructions retired\n          2720608632  cycles elapsed\n            92946888  peak memory footprint\n",
+        "exit_status": 0
+      },
+      {
+        "case": "feed_wide_search_384khz",
+        "backend": "pdl",
+        "repetition": 1,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--feed",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-memory-safety-e0m2u9ks/cq-384000-20baud.wav",
+          "--baud",
+          "20",
+          "--search",
+          "--frequency-step",
+          "5",
+          "--backend",
+          "pdl"
+        ],
+        "peak_rss_bytes": 382992384,
+        "wall_seconds": 2.42,
+        "result": {
+          "backend": "pdl",
+          "block_samples": 508800,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 508800,
+            "configured_bit_period": 0.05,
+            "frame_samples": 1600,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 3.78129105103608,
+            "measured_bit_period": 0.05
+          },
+          "mode": "feed",
+          "pdl_loaded": true,
+          "pdl_version": "2.106",
+          "reception": {
+            "baud": "20",
+            "frequency_step": "5",
+            "mark": 2125,
+            "search": 1,
+            "shift": 170
+          },
+          "text": "CQ",
+          "text_characters": 2,
+          "warnings": []
+        },
+        "time_output": "        2.42 real        11.47 user         0.16 sys\n           382992384  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n               29376  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                8807  involuntary context switches\n         82567236225  instructions retired\n         28399106188  cycles elapsed\n           379028152  peak memory footprint\n",
+        "exit_status": 0
+      },
+      {
+        "case": "feed_wide_search_384khz",
+        "backend": "pdl",
+        "repetition": 2,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--feed",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-memory-safety-e0m2u9ks/cq-384000-20baud.wav",
+          "--baud",
+          "20",
+          "--search",
+          "--frequency-step",
+          "5",
+          "--backend",
+          "pdl"
+        ],
+        "peak_rss_bytes": 382844928,
+        "wall_seconds": 2.38,
+        "result": {
+          "backend": "pdl",
+          "block_samples": 508800,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 508800,
+            "configured_bit_period": 0.05,
+            "frame_samples": 1600,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 3.78129105103608,
+            "measured_bit_period": 0.05
+          },
+          "mode": "feed",
+          "pdl_loaded": true,
+          "pdl_version": "2.106",
+          "reception": {
+            "baud": "20",
+            "frequency_step": "5",
+            "mark": 2125,
+            "search": 1,
+            "shift": 170
+          },
+          "text": "CQ",
+          "text_characters": 2,
+          "warnings": []
+        },
+        "time_output": "        2.38 real        11.38 user         0.15 sys\n           382844928  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n               29367  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                7620  involuntary context switches\n         82540595356  instructions retired\n         28090901089  cycles elapsed\n           378880696  peak memory footprint\n",
+        "exit_status": 0
+      },
+      {
+        "case": "feed_wide_search_384khz",
+        "backend": "pdl",
+        "repetition": 3,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--feed",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-memory-safety-e0m2u9ks/cq-384000-20baud.wav",
+          "--baud",
+          "20",
+          "--search",
+          "--frequency-step",
+          "5",
+          "--backend",
+          "pdl"
+        ],
+        "peak_rss_bytes": 382828544,
+        "wall_seconds": 2.45,
+        "result": {
+          "backend": "pdl",
+          "block_samples": 508800,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 508800,
+            "configured_bit_period": 0.05,
+            "frame_samples": 1600,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 3.78129105103608,
+            "measured_bit_period": 0.05
+          },
+          "mode": "feed",
+          "pdl_loaded": true,
+          "pdl_version": "2.106",
+          "reception": {
+            "baud": "20",
+            "frequency_step": "5",
+            "mark": 2125,
+            "search": 1,
+            "shift": 170
+          },
+          "text": "CQ",
+          "text_characters": 2,
+          "warnings": []
+        },
+        "time_output": "        2.45 real        11.53 user         0.16 sys\n           382828544  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n               29366  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                9257  involuntary context switches\n         82572127593  instructions retired\n         28585224915  cycles elapsed\n           378847904  peak memory footprint\n",
+        "exit_status": 0
+      }
+    ],
+    "summary": [
+      {
+        "case": "read_120s_48khz",
+        "backend": "perl",
+        "observations": 3,
+        "median_peak_rss_bytes": 21807104,
+        "min_peak_rss_bytes": 21692416,
+        "max_peak_rss_bytes": 21807104,
+        "median_wall_seconds": 12.38
+      },
+      {
+        "case": "read_120s_48khz",
+        "backend": "pdl",
+        "observations": 3,
+        "median_peak_rss_bytes": 29016064,
+        "min_peak_rss_bytes": 28950528,
+        "max_peak_rss_bytes": 29065216,
+        "median_wall_seconds": 7.87
+      },
+      {
+        "case": "feed_20s_48khz",
+        "backend": "perl",
+        "observations": 3,
+        "median_peak_rss_bytes": 89980928,
+        "min_peak_rss_bytes": 89964544,
+        "max_peak_rss_bytes": 90062848,
+        "median_wall_seconds": 2.06
+      },
+      {
+        "case": "feed_20s_48khz",
+        "backend": "pdl",
+        "observations": 3,
+        "median_peak_rss_bytes": 97189888,
+        "min_peak_rss_bytes": 97075200,
+        "max_peak_rss_bytes": 97255424,
+        "median_wall_seconds": 1.3
+      },
+      {
+        "case": "feed_wide_search_384khz",
+        "backend": "pdl",
+        "observations": 3,
+        "median_peak_rss_bytes": 382844928,
+        "min_peak_rss_bytes": 382828544,
+        "max_peak_rss_bytes": 382992384,
+        "median_wall_seconds": 2.42
+      }
+    ]
+  },
+  "after": {
+    "phase": "after",
+    "date_utc": "2026-10-27T14:46:31.487755+00:00",
+    "source_revision": "084dbc682b3fc29714a0b9e8c0ffcab0424bc770",
+    "source_sha256": {
+      "lib/Ham/RTTY/Audio.pm": "a6c427d6932134e1a9c314c553c5935aaada0d95d9c917a2ab0663e6ab575798",
+      "lib/Ham/RTTY/Baudot.pm": "203a3972cab5c592898c66376f639beff7498596b5523b49f130aee0eb589032",
+      "lib/Ham/RTTY/Decoder.pm": "303610849424177154ec4c79baefab02e2fe304f2c28895501616166d31dd802",
+      "lib/Ham/RTTY/Detector.pm": "6c87cfee16c1dea0bfad59675e1ec49740f0fdaef231c5d3b7c58131477c7124",
+      "lib/Ham/RTTY/Encoder.pm": "260e623b3c104c9d7bd8dbf73954053529044ffc25a4bc1bcd07d56da15d9128",
+      "lib/Ham/RTTY/Error.pm": "691583d0f4b5c64061bc103ab2a2b9f00c5926fe047c58ba6e91f917c933e37f",
+      "lib/Ham/RTTY/Events.pm": "0ae66520fddb13dd3ea7c04662c1c8a99880bdf507649795604cccf4aac11d1b",
+      "lib/Ham/RTTY/Generator.pm": "375015e485b6f38f561e02845a7c1efa22d9d67be41f70fb818578ab7f27f01f",
+      "lib/Ham/RTTY/MIDI.pm": "f5d5268bfbd80b262a4e6a15f973b913111c1fdba0936d6baa8c95cbc44fe3ec",
+      "lib/Ham/RTTY/Result.pm": "40dbaafa256001497887f0e293627799db996634c7d5ac98695276290d2b5fd5",
+      "lib/Ham/RTTY/_Internal/Backend.pm": "f2d6cde05da6fa1338d37728d654d8327eb8d35f720eb035468bae91d9c57051",
+      "lib/Ham/RTTY/_Internal/CLI.pm": "b03d72cc45ee02e4f7b784c0967ea30ff24e52610df404ad8dfe127a22b4c2b2",
+      "lib/Ham/RTTY/_Internal/Data.pm": "2eb97d379660230eb4c2b25f11460b517f79a05f2dc2ac2ee8967c57335c9a5e",
+      "lib/Ham/RTTY/_Internal/IO.pm": "40f002ee9e8387683b37bfd6495e65af055bcffacbcdef8f3b5c85e804139c4b",
+      "lib/Ham/RTTY/_Internal/PDL.pm": "64776c39c7d4543b7d83c44c5fb4eddb4fcab92f238becc520f839b63d74405f",
+      "lib/Ham/RTTY/_Internal/Result.pm": "2c766a8d55e308c8c5f18a78c419b995c9668b23050edac81157bb9e0e00663a",
+      "lib/Ham/RTTY/_Internal/Validate.pm": "ae7c1b11263306ee24977e75a7203e6cb6f56d8d55e8e97581c5b4ad4d8505ae",
+      "lib/Ham/RTTY/_Internal/WavWriter.pm": "dda8c056d84c1e328e63f902854cd9f30c28f0dcbff6ab9a1b43d3520ab8c114",
+      "lib/Ham/RTTY.pm": "2fecfbab51d545dfca9217c331071f595016a62ef992b2af570c648d073d4166"
+    },
+    "harness_sha256": "5bf29e95a2091c56d6db044e98d957312bd48beee272b5a4f7c73f7fbc37f2a0",
+    "inputs": {
+      "full": "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-ram-20261027-ie53ig75/memory-120s-48000.wav",
+      "short": "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-memory-safety-e0m2u9ks/20s-48000.wav",
+      "wide": "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-memory-safety-e0m2u9ks/cq-384000-20baud.wav",
+      "wide_creation_command": [
+        "perl",
+        "-Ilib",
+        "-MHam::RTTY",
+        "-e",
+        "Ham::RTTY->new(sample_rate=>384000,baud=>20)->write_wav(\"CQ\",$ARGV[0]);",
+        "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-memory-safety-e0m2u9ks/cq-384000-20baud.wav"
+      ],
+      "short_creation": "Copy the first 960000 PCM frames of full into a standard RIFF WAV; no resampling.",
+      "hashes": {
+        "full": "c817cd183d9dcc1f545d10614e9927d097b785e3ed4cf70766406dcbeaa4c7a7",
+        "short": "ae668bc8e6d48080ee7e6d72e33f5f7dfa1766c6a68218a9f45cb16352f1a4f2",
+        "wide": "80f9871563dcf1ec77eeb95089a4d7de7c329ddc68893c341bddbfc366f70229"
+      }
+    },
+    "rss_unit": "bytes; macOS /usr/bin/time -l",
+    "runs": [
+      {
+        "case": "read_120s_48khz",
+        "backend": "perl",
+        "repetition": 1,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--read",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-ram-20261027-ie53ig75/memory-120s-48000.wav",
+          "--backend",
+          "perl"
+        ],
+        "peak_rss_bytes": 21823488,
+        "wall_seconds": 12.3,
+        "result": {
+          "backend": "perl",
+          "block_samples": 4096,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 5760000,
+            "configured_bit_period": 0.022002200220022,
+            "frame_samples": 88,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 0.930790852284736,
+            "measured_bit_period": 0.022
+          },
+          "mode": "read",
+          "pdl_loaded": false,
+          "reception": {
+            "baud": 45.45,
+            "mark": 2125,
+            "shift": 170
+          },
+          "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 12",
+          "text_characters": 640,
+          "warnings": [
+            {
+              "code": "RTTY_W_FRAMING",
+              "message": "Incomplete frame at end of input"
+            }
+          ]
+        },
+        "time_output": "       12.30 real        12.25 user         0.03 sys\n            21823488  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1397  page reclaims\n                 181  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                  51  voluntary context switches\n                1549  involuntary context switches\n        143836307187  instructions retired\n         25593473027  cycles elapsed\n            18678168  peak memory footprint\n",
+        "exit_status": 0
+      },
+      {
+        "case": "read_120s_48khz",
+        "backend": "perl",
+        "repetition": 2,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--read",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-ram-20261027-ie53ig75/memory-120s-48000.wav",
+          "--backend",
+          "perl"
+        ],
+        "peak_rss_bytes": 21708800,
+        "wall_seconds": 12.39,
+        "result": {
+          "backend": "perl",
+          "block_samples": 4096,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 5760000,
+            "configured_bit_period": 0.022002200220022,
+            "frame_samples": 88,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 0.930790852284736,
+            "measured_bit_period": 0.022
+          },
+          "mode": "read",
+          "pdl_loaded": false,
+          "reception": {
+            "baud": 45.45,
+            "mark": 2125,
+            "shift": 170
+          },
+          "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 12",
+          "text_characters": 640,
+          "warnings": [
+            {
+              "code": "RTTY_W_FRAMING",
+              "message": "Incomplete frame at end of input"
+            }
+          ]
+        },
+        "time_output": "       12.39 real        12.36 user         0.02 sys\n            21708800  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1569  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                1136  involuntary context switches\n        143810380447  instructions retired\n         25799907424  cycles elapsed\n            18547072  peak memory footprint\n",
+        "exit_status": 0
+      },
+      {
+        "case": "read_120s_48khz",
+        "backend": "perl",
+        "repetition": 3,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--read",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-ram-20261027-ie53ig75/memory-120s-48000.wav",
+          "--backend",
+          "perl"
+        ],
+        "peak_rss_bytes": 21823488,
+        "wall_seconds": 12.36,
+        "result": {
+          "backend": "perl",
+          "block_samples": 4096,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 5760000,
+            "configured_bit_period": 0.022002200220022,
+            "frame_samples": 88,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 0.930790852284736,
+            "measured_bit_period": 0.022
+          },
+          "mode": "read",
+          "pdl_loaded": false,
+          "reception": {
+            "baud": 45.45,
+            "mark": 2125,
+            "shift": 170
+          },
+          "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 12",
+          "text_characters": 640,
+          "warnings": [
+            {
+              "code": "RTTY_W_FRAMING",
+              "message": "Incomplete frame at end of input"
+            }
+          ]
+        },
+        "time_output": "       12.36 real        12.33 user         0.02 sys\n            21823488  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1575  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                1268  involuntary context switches\n        143815347965  instructions retired\n         25726238686  cycles elapsed\n            18678168  peak memory footprint\n",
+        "exit_status": 0
+      },
+      {
+        "case": "read_120s_48khz",
+        "backend": "pdl",
+        "repetition": 1,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--read",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-ram-20261027-ie53ig75/memory-120s-48000.wav",
+          "--backend",
+          "pdl"
+        ],
+        "peak_rss_bytes": 28983296,
+        "wall_seconds": 7.83,
+        "result": {
+          "backend": "pdl",
+          "block_samples": 4096,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 5760000,
+            "configured_bit_period": 0.022002200220022,
+            "frame_samples": 88,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 0.930790852284731,
+            "measured_bit_period": 0.022
+          },
+          "mode": "read",
+          "pdl_loaded": true,
+          "pdl_version": "2.106",
+          "reception": {
+            "baud": 45.45,
+            "mark": 2125,
+            "shift": 170
+          },
+          "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 12",
+          "text_characters": 640,
+          "warnings": [
+            {
+              "code": "RTTY_W_FRAMING",
+              "message": "Incomplete frame at end of input"
+            }
+          ]
+        },
+        "time_output": "        7.83 real         7.79 user         0.02 sys\n            28983296  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                2087  page reclaims\n                  86  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                  29  voluntary context switches\n                 664  involuntary context switches\n         76259100888  instructions retired\n         16287360108  cycles elapsed\n            24805808  peak memory footprint\n",
+        "exit_status": 0
+      },
+      {
+        "case": "read_120s_48khz",
+        "backend": "pdl",
+        "repetition": 2,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--read",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-ram-20261027-ie53ig75/memory-120s-48000.wav",
+          "--backend",
+          "pdl"
+        ],
+        "peak_rss_bytes": 28966912,
+        "wall_seconds": 7.8,
+        "result": {
+          "backend": "pdl",
+          "block_samples": 4096,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 5760000,
+            "configured_bit_period": 0.022002200220022,
+            "frame_samples": 88,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 0.930790852284731,
+            "measured_bit_period": 0.022
+          },
+          "mode": "read",
+          "pdl_loaded": true,
+          "pdl_version": "2.106",
+          "reception": {
+            "baud": 45.45,
+            "mark": 2125,
+            "shift": 170
+          },
+          "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 12",
+          "text_characters": 640,
+          "warnings": [
+            {
+              "code": "RTTY_W_FRAMING",
+              "message": "Incomplete frame at end of input"
+            }
+          ]
+        },
+        "time_output": "        7.80 real         7.77 user         0.02 sys\n            28966912  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                2168  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 650  involuntary context switches\n         76271718347  instructions retired\n         16287302856  cycles elapsed\n            24773016  peak memory footprint\n",
+        "exit_status": 0
+      },
+      {
+        "case": "read_120s_48khz",
+        "backend": "pdl",
+        "repetition": 3,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--read",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-ram-20261027-ie53ig75/memory-120s-48000.wav",
+          "--backend",
+          "pdl"
+        ],
+        "peak_rss_bytes": 28803072,
+        "wall_seconds": 7.81,
+        "result": {
+          "backend": "pdl",
+          "block_samples": 4096,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 5760000,
+            "configured_bit_period": 0.022002200220022,
+            "frame_samples": 88,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 0.930790852284731,
+            "measured_bit_period": 0.022
+          },
+          "mode": "read",
+          "pdl_loaded": true,
+          "pdl_version": "2.106",
+          "reception": {
+            "baud": 45.45,
+            "mark": 2125,
+            "shift": 170
+          },
+          "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 12",
+          "text_characters": 640,
+          "warnings": [
+            {
+              "code": "RTTY_W_FRAMING",
+              "message": "Incomplete frame at end of input"
+            }
+          ]
+        },
+        "time_output": "        7.81 real         7.78 user         0.02 sys\n            28803072  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                2159  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 590  involuntary context switches\n         76259434666  instructions retired\n         16262171037  cycles elapsed\n            24592768  peak memory footprint\n",
+        "exit_status": 0
+      },
+      {
+        "case": "feed_20s_48khz",
+        "backend": "perl",
+        "repetition": 1,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--feed",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-memory-safety-e0m2u9ks/20s-48000.wav",
+          "--backend",
+          "perl"
+        ],
+        "peak_rss_bytes": 50479104,
+        "wall_seconds": 2.14,
+        "result": {
+          "backend": "perl",
+          "block_samples": 960000,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 960000,
+            "configured_bit_period": 0.022002200220022,
+            "frame_samples": 88,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 0.949966846302996,
+            "measured_bit_period": 0.022
+          },
+          "mode": "feed",
+          "pdl_loaded": false,
+          "reception": {
+            "baud": 45.45,
+            "mark": 2125,
+            "shift": 170
+          },
+          "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 ",
+          "text_characters": 105,
+          "warnings": [
+            {
+              "code": "RTTY_W_FRAMING",
+              "message": "Incomplete frame at end of input"
+            }
+          ]
+        },
+        "time_output": "        2.14 real         2.12 user         0.01 sys\n            50479104  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                3324  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   3  voluntary context switches\n                 114  involuntary context switches\n         24765588008  instructions retired\n          4455399679  cycles elapsed\n            47333784  peak memory footprint\n",
+        "exit_status": 0
+      },
+      {
+        "case": "feed_20s_48khz",
+        "backend": "perl",
+        "repetition": 2,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--feed",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-memory-safety-e0m2u9ks/20s-48000.wav",
+          "--backend",
+          "perl"
+        ],
+        "peak_rss_bytes": 50528256,
+        "wall_seconds": 2.15,
+        "result": {
+          "backend": "perl",
+          "block_samples": 960000,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 960000,
+            "configured_bit_period": 0.022002200220022,
+            "frame_samples": 88,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 0.949966846302996,
+            "measured_bit_period": 0.022
+          },
+          "mode": "feed",
+          "pdl_loaded": false,
+          "reception": {
+            "baud": 45.45,
+            "mark": 2125,
+            "shift": 170
+          },
+          "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 ",
+          "text_characters": 105,
+          "warnings": [
+            {
+              "code": "RTTY_W_FRAMING",
+              "message": "Incomplete frame at end of input"
+            }
+          ]
+        },
+        "time_output": "        2.15 real         2.14 user         0.01 sys\n            50528256  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                3328  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 197  involuntary context switches\n         24760611355  instructions retired\n          4482656967  cycles elapsed\n            47382936  peak memory footprint\n",
+        "exit_status": 0
+      },
+      {
+        "case": "feed_20s_48khz",
+        "backend": "perl",
+        "repetition": 3,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--feed",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-memory-safety-e0m2u9ks/20s-48000.wav",
+          "--backend",
+          "perl"
+        ],
+        "peak_rss_bytes": 50692096,
+        "wall_seconds": 2.13,
+        "result": {
+          "backend": "perl",
+          "block_samples": 960000,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 960000,
+            "configured_bit_period": 0.022002200220022,
+            "frame_samples": 88,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 0.949966846302996,
+            "measured_bit_period": 0.022
+          },
+          "mode": "feed",
+          "pdl_loaded": false,
+          "reception": {
+            "baud": 45.45,
+            "mark": 2125,
+            "shift": 170
+          },
+          "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 ",
+          "text_characters": 105,
+          "warnings": [
+            {
+              "code": "RTTY_W_FRAMING",
+              "message": "Incomplete frame at end of input"
+            }
+          ]
+        },
+        "time_output": "        2.13 real         2.11 user         0.01 sys\n            50692096  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                3337  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 153  involuntary context switches\n         24760698135  instructions retired\n          4430592082  cycles elapsed\n            47546776  peak memory footprint\n",
+        "exit_status": 0
+      },
+      {
+        "case": "feed_20s_48khz",
+        "backend": "pdl",
+        "repetition": 1,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--feed",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-memory-safety-e0m2u9ks/20s-48000.wav",
+          "--backend",
+          "pdl"
+        ],
+        "peak_rss_bytes": 57655296,
+        "wall_seconds": 1.37,
+        "result": {
+          "backend": "pdl",
+          "block_samples": 960000,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 960000,
+            "configured_bit_period": 0.022002200220022,
+            "frame_samples": 88,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 0.949966846302993,
+            "measured_bit_period": 0.022
+          },
+          "mode": "feed",
+          "pdl_loaded": true,
+          "pdl_version": "2.106",
+          "reception": {
+            "baud": 45.45,
+            "mark": 2125,
+            "shift": 170
+          },
+          "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 ",
+          "text_characters": 105,
+          "warnings": [
+            {
+              "code": "RTTY_W_FRAMING",
+              "message": "Incomplete frame at end of input"
+            }
+          ]
+        },
+        "time_output": "        1.37 real         1.35 user         0.01 sys\n            57655296  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                3920  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 120  involuntary context switches\n         13639804896  instructions retired\n          2849354958  cycles elapsed\n            53510576  peak memory footprint\n",
+        "exit_status": 0
+      },
+      {
+        "case": "feed_20s_48khz",
+        "backend": "pdl",
+        "repetition": 2,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--feed",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-memory-safety-e0m2u9ks/20s-48000.wav",
+          "--backend",
+          "pdl"
+        ],
+        "peak_rss_bytes": 57606144,
+        "wall_seconds": 1.36,
+        "result": {
+          "backend": "pdl",
+          "block_samples": 960000,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 960000,
+            "configured_bit_period": 0.022002200220022,
+            "frame_samples": 88,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 0.949966846302993,
+            "measured_bit_period": 0.022
+          },
+          "mode": "feed",
+          "pdl_loaded": true,
+          "pdl_version": "2.106",
+          "reception": {
+            "baud": 45.45,
+            "mark": 2125,
+            "shift": 170
+          },
+          "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 ",
+          "text_characters": 105,
+          "warnings": [
+            {
+              "code": "RTTY_W_FRAMING",
+              "message": "Incomplete frame at end of input"
+            }
+          ]
+        },
+        "time_output": "        1.36 real         1.34 user         0.01 sys\n            57606144  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                3916  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  58  involuntary context switches\n         13636528624  instructions retired\n          2844180260  cycles elapsed\n            53461424  peak memory footprint\n",
+        "exit_status": 0
+      },
+      {
+        "case": "feed_20s_48khz",
+        "backend": "pdl",
+        "repetition": 3,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--feed",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-memory-safety-e0m2u9ks/20s-48000.wav",
+          "--backend",
+          "pdl"
+        ],
+        "peak_rss_bytes": 57688064,
+        "wall_seconds": 1.37,
+        "result": {
+          "backend": "pdl",
+          "block_samples": 960000,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 960000,
+            "configured_bit_period": 0.022002200220022,
+            "frame_samples": 88,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 0.949966846302993,
+            "measured_bit_period": 0.022
+          },
+          "mode": "feed",
+          "pdl_loaded": true,
+          "pdl_version": "2.106",
+          "reception": {
+            "baud": 45.45,
+            "mark": 2125,
+            "shift": 170
+          },
+          "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 ",
+          "text_characters": 105,
+          "warnings": [
+            {
+              "code": "RTTY_W_FRAMING",
+              "message": "Incomplete frame at end of input"
+            }
+          ]
+        },
+        "time_output": "        1.37 real         1.35 user         0.01 sys\n            57688064  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                3921  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 154  involuntary context switches\n         13639227856  instructions retired\n          2853419826  cycles elapsed\n            53543344  peak memory footprint\n",
+        "exit_status": 0
+      },
+      {
+        "case": "feed_wide_search_384khz",
+        "backend": "pdl",
+        "repetition": 1,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--feed",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-memory-safety-e0m2u9ks/cq-384000-20baud.wav",
+          "--baud",
+          "20",
+          "--search",
+          "--frequency-step",
+          "5",
+          "--backend",
+          "pdl"
+        ],
+        "peak_rss_bytes": 55558144,
+        "wall_seconds": 3.45,
+        "result": {
+          "backend": "pdl",
+          "block_samples": 508800,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 508800,
+            "configured_bit_period": 0.05,
+            "frame_samples": 1600,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 3.78129105103608,
+            "measured_bit_period": 0.05
+          },
+          "mode": "feed",
+          "pdl_loaded": true,
+          "pdl_version": "2.106",
+          "reception": {
+            "baud": "20",
+            "frequency_step": "5",
+            "mark": 2125,
+            "search": 1,
+            "shift": 170
+          },
+          "text": "CQ",
+          "text_characters": 2,
+          "warnings": []
+        },
+        "time_output": "        3.45 real         3.43 user         0.01 sys\n            55558144  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                3791  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   3  voluntary context switches\n                 201  involuntary context switches\n         42770671403  instructions retired\n          7191836364  cycles elapsed\n            51413424  peak memory footprint\n",
+        "exit_status": 0
+      },
+      {
+        "case": "feed_wide_search_384khz",
+        "backend": "pdl",
+        "repetition": 2,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--feed",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-memory-safety-e0m2u9ks/cq-384000-20baud.wav",
+          "--baud",
+          "20",
+          "--search",
+          "--frequency-step",
+          "5",
+          "--backend",
+          "pdl"
+        ],
+        "peak_rss_bytes": 56115200,
+        "wall_seconds": 3.45,
+        "result": {
+          "backend": "pdl",
+          "block_samples": 508800,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 508800,
+            "configured_bit_period": 0.05,
+            "frame_samples": 1600,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 3.78129105103608,
+            "measured_bit_period": 0.05
+          },
+          "mode": "feed",
+          "pdl_loaded": true,
+          "pdl_version": "2.106",
+          "reception": {
+            "baud": "20",
+            "frequency_step": "5",
+            "mark": 2125,
+            "search": 1,
+            "shift": 170
+          },
+          "text": "CQ",
+          "text_characters": 2,
+          "warnings": []
+        },
+        "time_output": "        3.45 real         3.43 user         0.01 sys\n            56115200  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                3825  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 224  involuntary context switches\n         42767705105  instructions retired\n          7191091070  cycles elapsed\n            51986888  peak memory footprint\n",
+        "exit_status": 0
+      },
+      {
+        "case": "feed_wide_search_384khz",
+        "backend": "pdl",
+        "repetition": 3,
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "perl",
+          "maint/memory.pl",
+          "--feed",
+          "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-memory-safety-e0m2u9ks/cq-384000-20baud.wav",
+          "--baud",
+          "20",
+          "--search",
+          "--frequency-step",
+          "5",
+          "--backend",
+          "pdl"
+        ],
+        "peak_rss_bytes": 57262080,
+        "wall_seconds": 3.47,
+        "result": {
+          "backend": "pdl",
+          "block_samples": 508800,
+          "complete": 1,
+          "diagnostics": {
+            "analyzed_samples": 508800,
+            "configured_bit_period": 0.05,
+            "frame_samples": 1600,
+            "framing_error_count": 0,
+            "mark_space_level_ratio": 3.78129105103608,
+            "measured_bit_period": 0.05
+          },
+          "mode": "feed",
+          "pdl_loaded": true,
+          "pdl_version": "2.106",
+          "reception": {
+            "baud": "20",
+            "frequency_step": "5",
+            "mark": 2125,
+            "search": 1,
+            "shift": 170
+          },
+          "text": "CQ",
+          "text_characters": 2,
+          "warnings": []
+        },
+        "time_output": "        3.47 real         3.45 user         0.01 sys\n            57262080  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                3895  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 323  involuntary context switches\n         42769080911  instructions retired\n          7220943412  cycles elapsed\n            53117360  peak memory footprint\n",
+        "exit_status": 0
+      }
+    ],
+    "summary": [
+      {
+        "case": "read_120s_48khz",
+        "backend": "perl",
+        "observations": 3,
+        "median_peak_rss_bytes": 21823488,
+        "min_peak_rss_bytes": 21708800,
+        "max_peak_rss_bytes": 21823488,
+        "median_wall_seconds": 12.36
+      },
+      {
+        "case": "read_120s_48khz",
+        "backend": "pdl",
+        "observations": 3,
+        "median_peak_rss_bytes": 28966912,
+        "min_peak_rss_bytes": 28803072,
+        "max_peak_rss_bytes": 28983296,
+        "median_wall_seconds": 7.81
+      },
+      {
+        "case": "feed_20s_48khz",
+        "backend": "perl",
+        "observations": 3,
+        "median_peak_rss_bytes": 50528256,
+        "min_peak_rss_bytes": 50479104,
+        "max_peak_rss_bytes": 50692096,
+        "median_wall_seconds": 2.14
+      },
+      {
+        "case": "feed_20s_48khz",
+        "backend": "pdl",
+        "observations": 3,
+        "median_peak_rss_bytes": 57655296,
+        "min_peak_rss_bytes": 57606144,
+        "max_peak_rss_bytes": 57688064,
+        "median_wall_seconds": 1.37
+      },
+      {
+        "case": "feed_wide_search_384khz",
+        "backend": "pdl",
+        "observations": 3,
+        "median_peak_rss_bytes": 56115200,
+        "min_peak_rss_bytes": 55558144,
+        "max_peak_rss_bytes": 57262080,
+        "median_wall_seconds": 3.45
+      }
+    ]
+  },
+  "comparison": [
+    {
+      "case": "read_120s_48khz",
+      "backend": "perl",
+      "before": {
+        "case": "read_120s_48khz",
+        "backend": "perl",
+        "observations": 3,
+        "median_peak_rss_bytes": 21807104,
+        "min_peak_rss_bytes": 21692416,
+        "max_peak_rss_bytes": 21807104,
+        "median_wall_seconds": 12.38
+      },
+      "after": {
+        "case": "read_120s_48khz",
+        "backend": "perl",
+        "observations": 3,
+        "median_peak_rss_bytes": 21823488,
+        "min_peak_rss_bytes": 21708800,
+        "max_peak_rss_bytes": 21823488,
+        "median_wall_seconds": 12.36
+      },
+      "median_peak_rss_reduction_percent": -0.07513148009015147
+    },
+    {
+      "case": "read_120s_48khz",
+      "backend": "pdl",
+      "before": {
+        "case": "read_120s_48khz",
+        "backend": "pdl",
+        "observations": 3,
+        "median_peak_rss_bytes": 29016064,
+        "min_peak_rss_bytes": 28950528,
+        "max_peak_rss_bytes": 29065216,
+        "median_wall_seconds": 7.87
+      },
+      "after": {
+        "case": "read_120s_48khz",
+        "backend": "pdl",
+        "observations": 3,
+        "median_peak_rss_bytes": 28966912,
+        "min_peak_rss_bytes": 28803072,
+        "max_peak_rss_bytes": 28983296,
+        "median_wall_seconds": 7.81
+      },
+      "median_peak_rss_reduction_percent": 0.16939582156973998
+    },
+    {
+      "case": "feed_20s_48khz",
+      "backend": "perl",
+      "before": {
+        "case": "feed_20s_48khz",
+        "backend": "perl",
+        "observations": 3,
+        "median_peak_rss_bytes": 89980928,
+        "min_peak_rss_bytes": 89964544,
+        "max_peak_rss_bytes": 90062848,
+        "median_wall_seconds": 2.06
+      },
+      "after": {
+        "case": "feed_20s_48khz",
+        "backend": "perl",
+        "observations": 3,
+        "median_peak_rss_bytes": 50528256,
+        "min_peak_rss_bytes": 50479104,
+        "max_peak_rss_bytes": 50692096,
+        "median_wall_seconds": 2.14
+      },
+      "median_peak_rss_reduction_percent": 43.845593590677346
+    },
+    {
+      "case": "feed_20s_48khz",
+      "backend": "pdl",
+      "before": {
+        "case": "feed_20s_48khz",
+        "backend": "pdl",
+        "observations": 3,
+        "median_peak_rss_bytes": 97189888,
+        "min_peak_rss_bytes": 97075200,
+        "max_peak_rss_bytes": 97255424,
+        "median_wall_seconds": 1.3
+      },
+      "after": {
+        "case": "feed_20s_48khz",
+        "backend": "pdl",
+        "observations": 3,
+        "median_peak_rss_bytes": 57655296,
+        "min_peak_rss_bytes": 57606144,
+        "max_peak_rss_bytes": 57688064,
+        "median_wall_seconds": 1.37
+      },
+      "median_peak_rss_reduction_percent": 40.677680377612944
+    },
+    {
+      "case": "feed_wide_search_384khz",
+      "backend": "pdl",
+      "before": {
+        "case": "feed_wide_search_384khz",
+        "backend": "pdl",
+        "observations": 3,
+        "median_peak_rss_bytes": 382844928,
+        "min_peak_rss_bytes": 382828544,
+        "max_peak_rss_bytes": 382992384,
+        "median_wall_seconds": 2.42
+      },
+      "after": {
+        "case": "feed_wide_search_384khz",
+        "backend": "pdl",
+        "observations": 3,
+        "median_peak_rss_bytes": 56115200,
+        "min_peak_rss_bytes": 55558144,
+        "max_peak_rss_bytes": 57262080,
+        "median_wall_seconds": 3.45
+      },
+      "median_peak_rss_reduction_percent": 85.34257713869988
+    }
+  ]
+}

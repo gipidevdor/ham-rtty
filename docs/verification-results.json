@@ -832,5 +832,48 @@
     ],
     "reception_text_identical_across_backends": true,
     "all_sample_counts_verified": true
+  },
+  "bounded_reception_memory": {
+    "date": "2026-10-27",
+    "source_revision": "084dbc682b3fc29714a0b9e8c0ffcab0424bc770",
+    "raw": "memory-optimization-results.json",
+    "ordinary_tests": {
+      "files": 20,
+      "assertions": 2059,
+      "exit_status": 0
+    },
+    "author_tests": {
+      "files": 12,
+      "assertions": 824,
+      "exit_status": 0
+    },
+    "coverage": {
+      "branch": {
+        "covered": 607,
+        "error": 15,
+        "percentage": 97.588424437299,
+        "total": 622,
+        "uncoverable": 0
+      },
+      "statement": {
+        "covered": 1750,
+        "error": 1,
+        "percentage": 99.9428897772701,
+        "total": 1751
+      },
+      "total": {
+        "covered": 2357,
+        "error": 16,
+        "percentage": 99.3257479983144,
+        "total": 2373,
+        "uncoverable": 0
+      }
+    },
+    "per_module_coverage_gate_exit_status": 0,
+    "ram_observations": 30,
+    "new_regression_assertions": 29,
+    "old_failed_assertions": 9,
+    "default_backend": "perl",
+    "streaming_block_samples": 4096
   }
 }
