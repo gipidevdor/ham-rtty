@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Exporter 'import';
 use Ham::RTTY::_Internal::Validate qw(fail integer number);
-our $VERSION   = '0.01';
+our $VERSION   = '0.001';
 our @EXPORT_OK = qw(validate_events to_samples to_timed);
 my $MAX = 2**52;
 

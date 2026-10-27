@@ -3,7 +3,7 @@ use 5.020;
 use strict;
 use warnings;
 use Ham::RTTY::_Internal::Validate qw(fail options named_arguments integer);
-our $VERSION = '0.01';
+our $VERSION = '0.001';
 my @LETTERS = (
     "\0", 'E', "\n", 'A',   ' ', 'S', 'I', 'U', "\r", 'D', 'R', 'J',
     'N',  'F', 'C',  'K',   'T', 'Z', 'L', 'W', 'H',  'Y', 'P', 'Q',

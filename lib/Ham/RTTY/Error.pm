@@ -6,7 +6,7 @@ use overload q{""} => 'as_string', fallback => 1;
 use Carp                       qw(croak);
 use Storable                   qw(dclone);
 use Ham::RTTY::_Internal::Data qw(plain_data);
-our $VERSION = '0.01';
+our $VERSION = '0.001';
 
 sub _argument_error {
     my ($message) = @_;

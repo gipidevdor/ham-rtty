@@ -6,7 +6,7 @@ use Ham::RTTY::Generator;
 use Ham::RTTY::Decoder;
 use Ham::RTTY::Result;
 use Ham::RTTY::_Internal::Validate qw(fail number integer options samples named_arguments);
-our $VERSION = '0.01';
+our $VERSION = '0.001';
 my $PI = 4 * atan2(1, 1);
 
 sub new {

@@ -106,7 +106,7 @@ channels. Interference and fading can still produce partial or incorrect text.
 Check warnings; `--strict` returns a nonzero status when warnings occur. See
 [reception settings](docs/usage.md#streaming) and [test results](docs/verification.md).
 
-Version 0.01 is under development. Real-recording validation, dependency
+Version 0.001 is under development. Real-recording validation, dependency
 review and remaining platform checks must pass before release. See the
 [verification record](docs/verification.md) for results and open items.
 

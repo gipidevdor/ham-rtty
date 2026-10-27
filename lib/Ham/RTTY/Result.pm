@@ -7,7 +7,7 @@ use Ham::RTTY::_Internal::Validate qw(fail number integer options named_argument
 use Ham::RTTY::_Internal::Data     qw(plain_data);
 use Ham::RTTY::Events              qw(validate_events);
 use Ham::RTTY::_Internal::Result;
-our $VERSION = '0.01';
+our $VERSION = '0.001';
 
 sub new {
     my ($class, @pairs) = @_;

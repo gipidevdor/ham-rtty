@@ -7,7 +7,7 @@ use Ham::RTTY::_Internal::IO       qw(read_exact write_bytes with_file);
 use Scalar::Util                   qw(openhandle);
 use Ham::RTTY::_Internal::Validate qw(fail integer options samples named_arguments);
 use Ham::RTTY::_Internal::Backend;
-our $VERSION = '0.01';
+our $VERSION = '0.001';
 
 sub new {
     my ($class, @pairs) = @_;

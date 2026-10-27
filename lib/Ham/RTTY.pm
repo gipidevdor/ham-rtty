@@ -11,7 +11,7 @@ use Ham::RTTY::MIDI;
 use Ham::RTTY::Events              ();
 use Ham::RTTY::_Internal::IO       qw(with_file);
 use Ham::RTTY::_Internal::Validate qw(fail options named_arguments);
-our $VERSION = '0.01';
+our $VERSION = '0.001';
 
 sub new {
     my ($class, @pairs) = @_;

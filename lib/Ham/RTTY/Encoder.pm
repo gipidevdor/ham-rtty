@@ -5,7 +5,7 @@ use warnings;
 use Ham::RTTY::Baudot;
 use Ham::RTTY::Result;
 use Ham::RTTY::_Internal::Validate qw(fail number integer options named_arguments);
-our $VERSION = '0.01';
+our $VERSION = '0.001';
 
 sub validate {
     my ($class, @pairs) = @_;

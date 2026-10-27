@@ -1,6 +1,6 @@
 # Verification
 
-Development candidate 0.01, measured 2026-10-27. **Not release-qualified.**
+Development candidate 0.001, measured 2026-10-27. **Not release-qualified.**
 
 Production code revision `3627c44`; final documentation commits may follow. Local environment: Apple M4, macOS ARM64, Perl 5.44.0, PDL 2.106. [Raw verification](verification-results.json), [coverage](coverage-results.json), [performance](performance-results.json) and [security triage](security-audit-results.json) retain the evidence. No results are inherited from Ham::CW.
 

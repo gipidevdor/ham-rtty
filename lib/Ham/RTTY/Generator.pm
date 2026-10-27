@@ -5,7 +5,7 @@ use warnings;
 use Ham::RTTY::Events              qw(validate_events to_samples);
 use Ham::RTTY::_Internal::Validate qw(fail number integer options named_arguments);
 use Ham::RTTY::_Internal::Backend;
-our $VERSION = '0.01';
+our $VERSION = '0.001';
 my $PI = 4 * atan2(1, 1);
 
 sub new {
