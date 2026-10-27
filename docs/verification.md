@@ -51,7 +51,7 @@ The requested 120-second, 48000-Hz `read_wav` workload used 20,758,528 bytes (**
 
 The installed audit reports 2 matches and the declared audit 38, no scanner errors; both exit 1. Each advisory has a recorded triage assessment and upstream references. The development URI minimum was raised to 5.36 to resolve one declared match. No advisory exclusion hides remaining matches. Legacy compatible interpreters must be patched; compatibility does not certify deployment safety. See [security CI](security-ci.md).
 
-The copied 12-job workflow structure covers Linux, macOS ARM64, macOS Intel, Windows, minimum/current Perl and five PDL configurations. **Hosted CI has not run for this repository.** Static minimum-version analysis and local 5.44 tests do not establish successful runtime behavior on all other versions/platforms.
+The copied 12-job workflow structure covers Linux, macOS ARM64, macOS Intel, Windows, minimum/current Perl and five PDL configurations. The hosted matrix has now run on this repository; see the dated evidence below. Local measurements above remain tied to their recorded revisions.
 
 Real-recording acceptance and a clean dependency gate remain mandatory. This candidate must not be labelled a verified 1.0 or uploaded to CPAN as release-qualified until those gates and the hosted matrix pass. See the [release checklist](releasing.md) and [standards/provenance](standards.md).
 
@@ -85,3 +85,22 @@ no synthetic example is presented as a received-radio fixture.
 Warnings-fatal ordinary tests passed 18 files and 1,952 assertions. Author
 checks passed 12 files and 716 assertions. Signal-processing implementations
 are unchanged; the restored file tools and examples use RTTY options.
+
+## Hosted CI, 2026-10-27
+
+On revision `008eca1891d2c926b49a8c807851722df451542b`, all eleven
+[compatibility jobs](https://github.com/gipidevdor/ham-rtty/actions/runs/40493543001)
+passed: six ordinary Perl jobs and five PDL jobs across Linux, macOS ARM64,
+macOS Intel and Windows, including Perl 5.20 and PDL 2.081. The author job
+failed at real-recording acceptance because all four reviewed fixtures are
+missing. The dependency audit also remains a separate failing gate.
+The raw verification records individual hosted job results and run URLs;
+these results do not replace the earlier local measurements or qualify a release.
+
+Dependabot [PR #1](https://github.com/gipidevdor/ham-rtty/pull/1) and
+[PR #2](https://github.com/gipidevdor/ham-rtty/pull/2) update the official Pages
+configuration and artifact actions to 6.0.0 and 5.0.0. Both pins match their
+upstream release commits. Documentation build/upload and workflow security
+checks passed on both updated PR heads before merging. The configuration
+action uses Node 24 on GitHub-hosted Ubuntu; artifact upload retains the
+existing site path and permissions. No release gate was removed or weakened.

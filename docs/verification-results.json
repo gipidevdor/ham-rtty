@@ -54,8 +54,7 @@
   },
   "open_gates": [
     "four reviewed real RTTY fixtures and CER budgets missing",
-    "dependency audit remains nonzero despite triage",
-    "hosted cross-platform and minimum-Perl runtime matrix not executed"
+    "dependency audit remains nonzero despite triage"
   ],
   "release_qualified": false,
   "distribution": {
@@ -131,5 +130,130 @@
       "additional minimum-version/spelling/per-module coverage gates and audited workflow changes",
       "requested visible project copyright"
     ]
+  },
+  "hosted_ci_2026_10_27": {
+    "tests": {
+      "databaseId": 40493543001,
+      "headSha": "008eca1891d2c926b49a8c807851722df451542b",
+      "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40493543001",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "name": "Author checks and distribution",
+          "conclusion": "failure",
+          "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40493543001/job/122153157786"
+        },
+        {
+          "name": "ubuntu-latest / Perl 5.44",
+          "conclusion": "success",
+          "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40493543001/job/122153157952"
+        },
+        {
+          "name": "PDL / windows-latest",
+          "conclusion": "success",
+          "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40493543001/job/122153157982"
+        },
+        {
+          "name": "ubuntu-latest / Perl 5.20",
+          "conclusion": "success",
+          "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40493543001/job/122153158015"
+        },
+        {
+          "name": "macos-latest / Perl 5.40",
+          "conclusion": "success",
+          "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40493543001/job/122153158017"
+        },
+        {
+          "name": "PDL / macos-latest",
+          "conclusion": "success",
+          "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40493543001/job/122153158022"
+        },
+        {
+          "name": "windows-latest / Perl 5.40",
+          "conclusion": "success",
+          "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40493543001/job/122153158023"
+        },
+        {
+          "name": "PDL / ubuntu-latest",
+          "conclusion": "success",
+          "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40493543001/job/122153158025"
+        },
+        {
+          "name": "PDL minimum / Perl 5.20",
+          "conclusion": "success",
+          "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40493543001/job/122153158077"
+        },
+        {
+          "name": "PDL / macos-15-intel",
+          "conclusion": "success",
+          "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40493543001/job/122153158112"
+        },
+        {
+          "name": "ubuntu-latest / Perl 5.40",
+          "conclusion": "success",
+          "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40493543001/job/122153158114"
+        },
+        {
+          "name": "ubuntu-latest / Perl 5.34",
+          "conclusion": "success",
+          "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40493543001/job/122153158372"
+        }
+      ]
+    },
+    "security": {
+      "databaseId": 40493543170,
+      "headSha": "008eca1891d2c926b49a8c807851722df451542b",
+      "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40493543170",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "jobs": [
+        {
+          "name": "Perl unsafe constructs",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40493543170/job/122153158275"
+        },
+        {
+          "name": "CVEs / Perl and installed CPAN dependencies",
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40493543170/job/122153158579"
+        },
+        {
+          "name": "Secrets / complete Git history",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40493543170/job/122153158803"
+        },
+        {
+          "name": "Workflow security and syntax",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40493543170/job/122153159105"
+        },
+        {
+          "name": "Security checks",
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40493543170/job/122156082641"
+        }
+      ]
+    }
+  },
+  "dependabot_pages_update": {
+    "date": "2026-10-27",
+    "merged_prs": [
+      "https://github.com/gipidevdor/ham-rtty/pull/1",
+      "https://github.com/gipidevdor/ham-rtty/pull/2"
+    ],
+    "configure_pages": {
+      "version": "6.0.0",
+      "sha": "45bfe0192ca1faeb007ade9deae92b16b8254a0d"
+    },
+    "upload_pages_artifact": {
+      "version": "5.0.0",
+      "sha": "fc324d3547104276b827a68afc52ff2a11cc49c9"
+    },
+    "checks": "Both updated PR heads passed documentation build/upload and workflow security checks; no release gate was removed or weakened."
   }
 }
