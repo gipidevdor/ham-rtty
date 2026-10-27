@@ -1,6 +1,6 @@
 {
   "date": "2026-10-27",
-  "source_revision": "fc8fbd5",
+  "source_revision": "3627c44",
   "command": "HARNESS_PERL_SWITCHES='-MDevel::Cover=-db,/tmp/ham-rtty-cover-release,-blib,0,-coverage,statement,branch,condition,-select,lib/Ham,-ignore,^t/' prove -j2 -lr t",
   "gate_command": "perl maint/coverage.pl /tmp/ham-rtty-cover-release",
   "gate_exit_status": 0,

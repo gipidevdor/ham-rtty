@@ -1,6 +1,6 @@
 {
   "date": "2026-10-27",
-  "source_revision": "fc8fbd500859a97ae9cdf7e0dfc6d0446fd5d0ce",
+  "source_revision": "3627c44989eff9ab9c9bbfa5fe409e348008dc85",
   "source_hashes": {
     "lib/Ham/RTTY.pm": "9a770647611cd4075974b99f1823ab208f98afa4cbbaea95b99439f1dcfa5c06",
     "lib/Ham/RTTY/Decoder.pm": "65608e791aaf04719241e26fe25275ef595b59edf587fe6726c2d22e4718a18a",

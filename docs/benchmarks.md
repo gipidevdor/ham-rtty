@@ -4,7 +4,7 @@
 
 ## Protocol
 
-Measured 2026-10-27 on Apple M4 / macOS ARM64, Perl 5.44.0, PDL 2.106; production revision `fc8fbd5`.
+Measured 2026-10-27 on Apple M4 / macOS ARM64, Perl 5.44.0, PDL 2.106; production revision `3627c44`.
 
 Message `CQ CQ DE TESTCALL`, 45.45 baud, 2125 Hz MARK, +170 Hz SPACE, 1.5 stop bits. Three iterations, 4096-sample blocks, 8/16 kHz mono. R is processing seconds divided by audio seconds; smaller is faster. CPU uses Perl `times`; wall uses Time::HiRes. Each input is approximately 3.17 seconds. Generation, reception, WAV conversion and snapshot costs are separate. Reception excludes fixture generation. Timing workloads ran sequentially without tests or coverage collection. Raw results retain exact commands, counts, source hashes and timing totals.
 

@@ -2,7 +2,7 @@
 
 Development candidate 0.01, measured 2026-10-27. **Not release-qualified.**
 
-Production code revision `fc8fbd5`; final documentation commits may follow. Local environment: Apple M4, macOS ARM64, Perl 5.44.0, PDL 2.106. [Raw verification](verification-results.json), [coverage](coverage-results.json), [performance](performance-results.json) and [security triage](security-audit-results.json) retain the evidence. No results are inherited from Ham::CW.
+Production code revision `3627c44`; final documentation commits may follow. Local environment: Apple M4, macOS ARM64, Perl 5.44.0, PDL 2.106. [Raw verification](verification-results.json), [coverage](coverage-results.json), [performance](performance-results.json) and [security triage](security-audit-results.json) retain the evidence. No results are inherited from Ham::CW.
 
 ## Local checks
 
@@ -54,3 +54,5 @@ The installed audit reports 2 matches and the declared audit 38, no scanner erro
 The copied 12-job workflow structure covers Linux, macOS ARM64, macOS Intel, Windows, minimum/current Perl and five PDL configurations. **Hosted CI has not run for this repository.** Static minimum-version analysis and local 5.44 tests do not establish successful runtime behavior on all other versions/platforms.
 
 Real-recording acceptance and a clean dependency gate remain mandatory. This candidate must not be labelled a verified 1.0 or uploaded to CPAN as release-qualified until those gates and the hosted matrix pass. See the [release checklist](releasing.md) and [standards/provenance](standards.md).
+
+Commit identifiers were updated before first publication to use the author's GitHub noreply address. This changes commit metadata only; measured production-file hashes and code are unchanged.

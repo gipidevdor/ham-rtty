@@ -1,6 +1,6 @@
 {
   "date": "2026-10-27",
-  "production_revision": "fc8fbd500859a97ae9cdf7e0dfc6d0446fd5d0ce",
+  "production_revision": "3627c44989eff9ab9c9bbfa5fe409e348008dc85",
   "environment": {
     "perl": "5.44.0",
     "pdl": "2.106",
