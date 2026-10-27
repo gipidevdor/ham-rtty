@@ -63,7 +63,7 @@ my %DESCRIPTIONS = (
     ppqn              => 'MIDI ticks per quarter, 1..32767 (default: 480).',
     stereo            => 'Stereo input: mix (default), left or right.',
     'min-frequency'   => 'Search minimum MARK in Hz (default: 300).',
-    'max-frequency'   => 'Search maximum MARK (default: 3000 minus shift).',
+    'max-frequency'   => 'Search maximum MARK (default: 3000 minus shift, capped below Nyquist).',
     'frequency-step'  => 'Search grid spacing, 1..500 Hz (default: 10).',
     json              => 'Write the complete reception Result as JSON.',
     strict            => 'Exit 1 if reception reports any warning.',
@@ -99,14 +99,27 @@ sub _help_options {
         ],
     );
     my %units = (
-        backend => 'perl|pdl|auto',
-        variant => 'ita2|us',
-        usos    => '0|1',
-        atc     => '0|1',
-        bits    => '8|16|24'
+        backend          => 'perl|pdl|auto',
+        variant          => 'ita2|us',
+        usos             => '0|1',
+        atc              => '0|1',
+        bits             => '8|16|24',
+        stereo           => 'mix|left|right',
+        mark             => 'HZ',
+        shift            => 'HZ',
+        'sample-rate'    => 'HZ',
+        'min-frequency'  => 'HZ',
+        'max-frequency'  => 'HZ',
+        'frequency-step' => 'HZ'
     );
     my %descriptions = %DESCRIPTIONS;
-    my $headings     = {};
+    $descriptions{'max-bytes'} =
+        $command eq 'midi'
+        ? 'MIDI byte ceiling (default: 8000000).'
+        : 'WAV byte ceiling (default: 64000000).';
+    $descriptions{'max-segments'} = 'Encoding frame/run ceiling (default: 100000).'
+        unless $command eq 'receive' || $command eq 'decode';
+    my $headings = {};
 
     for my $group (@groups) {
         my ($title, @names) = @{$group};
@@ -162,7 +175,7 @@ Commands:
 
 Start here:
   ham-rtty encode "CQ TEST"
-  ham-rtty wav --output practice.wav "CQ TEST"
+  ham-rtty wav --baud 50 --output practice.wav "CQ TEST"
   ham-rtty receive --mark 2125 --baud 50 practice.wav
 
 Run ham-rtty help COMMAND for options and an example.
@@ -334,6 +347,18 @@ sub _receive_output {
     return ($bytes, $status);
 }
 
+sub _warn_substitutions {
+    my ($command, $rtty, $text, $options, $stderr) = @_;
+    return unless $options->{lenient};
+    return if $command eq 'encode' || $command eq 'bits';
+    my $encoder = $rtty->encoder(map { exists($options->{$_}) ? ($_ => $options->{$_}) : () }
+            qw(baud stop_bits variant usos lenient leading_idle trailing_idle max_segments));
+    $encoder->encode($text);
+    _write($stderr, _bytes("$_->{code}: $_->{message}\n"))
+        for @{$encoder->result->warnings};
+    return;
+}
+
 sub _execute {
     my ($command, $arguments, $options, $streams) = @_;
     my ($stdin, $stdout, $stderr) = @{$streams}{qw(stdin stdout stderr)};
@@ -355,6 +380,7 @@ sub _execute {
     else {
         my $text = _text($arguments, $options, $stdin);
         my $rtty = Ham::RTTY->new;
+        _warn_substitutions($command, $rtty, $text, $options, $stderr);
         if ($command eq 'wav' || $command eq 'midi') {
             my $method = "generate_$command";
             _output($path, $overwrite, $stdout, sub { $rtty->$method($text, $_[0], %{$options}) });

@@ -62,8 +62,9 @@ is($rtty->decode_events($events)->text,       'CQ',   'facade events');
 is($rtty->sampled_events('A')->{sample_rate}, 16000,  'default sampled rate');
 ok(!eval { $rtty->decode_wav_bytes("\x{100}"); 1 }, 'nonbyte WAV rejected');
 my $det = $rtty->detector(max_segments => 1);
-ok(!eval { $det->feed([(0) x 8000]);                      1 }, 'detector run preflight limit');
-ok(!eval { Ham::RTTY::Detector->new(sample_rate => 5000); 1 }, 'search band Nyquist validation');
+ok(!eval { $det->feed([(0) x 8000]); 1 }, 'detector run preflight limit');
+ok(!eval { Ham::RTTY::Detector->new(sample_rate => 5000, max_frequency => 2400); 1 },
+    'search band Nyquist validation');
 
 # Exercise optional-backend absence without requiring a separate installation.
 {

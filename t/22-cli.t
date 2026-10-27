@@ -2,7 +2,10 @@ use 5.020;
 use strict;
 use warnings FATAL => 'all';
 use Test::More;
-use File::Temp qw(tempdir);
+use File::Temp       qw(tempdir);
+use Text::ParseWords qw(shellwords);
+use Cwd              qw(getcwd);
+use JSON::PP;
 use Ham::RTTY::_Internal::CLI;
 
 sub run_cli {
@@ -117,5 +120,38 @@ is($status, 0, 'decoded Unicode positional string');
     local *Ham::RTTY::decode = sub { die 'injected unexpected error' };
     ($status) = run_cli('', 'decode', '[LTRS] 00011');
     is($status, 4, 'unexpected internal failure');
+}
+
+# Execute the published quick start verbatim in an empty working directory.
+($status, my $help) = run_cli('', '--help');
+my ($start) = $help =~ /Start here:\n(.*?)\nRun ham-rtty/s;
+my $original = getcwd();
+chdir $dir or die $!;
+my @quick_start = $start =~ /^  ham-rtty (.+)$/mg;
+is(scalar @quick_start, 3, 'quick start provides a complete three-command workflow');
+for my $command (@quick_start) {
+    ($status, $out, $err) = run_cli('', shellwords($command));
+    is($status, 0,  "quick start succeeds: $command");
+    is($err,    '', 'quick start produces no warnings');
+}
+is($out, "CQ TEST\n", 'quick start recovers the original message');
+chdir $original or die $!;
+
+for my $verb (qw(events wav midi)) {
+    my @output = $verb eq 'events' ? () : ('--output', '-');
+    ($status, $out, $err) = run_cli('', $verb, '--lenient', @output, '@');
+    is($status, 0, "$verb accepts explicit character substitution");
+    like($err, qr/RTTY_W_SYMBOL/, "$verb reports substitution on stderr");
+    if ($verb eq 'events') {
+        my $events = JSON::PP->new->decode($out);
+        is(Ham::RTTY->new->decode_events($events)->text, '?', 'JSON stays usable');
+    }
+    elsif ($verb eq 'wav') {
+        is(Ham::RTTY->new->decode_wav_bytes($out)->text, '?', 'binary WAV stays usable');
+    }
+    else {
+        like($out, qr/\AMThd/, 'MIDI stdout keeps its binary header');
+        unlike($out, qr/RTTY_W_SYMBOL/, 'MIDI stdout contains no diagnostic text');
+    }
 }
 done_testing;

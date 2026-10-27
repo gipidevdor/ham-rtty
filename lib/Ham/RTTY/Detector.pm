@@ -20,10 +20,13 @@ sub new {
                 qw(sample_rate mark shift reverse backend)
         )
     };
-    my $baud = number('baud',          $args{baud}          // 45.45, 20,  300);
-    my $min  = number('min_frequency', $args{min_frequency} // 300,   300, 3000 - $gen{shift});
-    my $max  = number('max_frequency', $args{max_frequency} // 3000 - $gen{shift},
-        $min, 3000 - $gen{shift});
+    my $baud        = number('baud', $args{baud} // 45.45, 20, 300);
+    my $default_max = 3000 - $gen{shift};
+    my $nyquist_max = $gen{sample_rate} / 2 - $gen{shift} - 0.000001;
+    $default_max = $nyquist_max if $nyquist_max < $default_max;
+    my $min = number('min_frequency', $args{min_frequency} // 300, 300, 3000 - $gen{shift});
+    my $max =
+        number('max_frequency', $args{max_frequency} // $default_max, $min, 3000 - $gen{shift});
     fail('RTTY_E_ARGUMENT', 'Search tones must be below Nyquist')
         if $max + $gen{shift} >= $gen{sample_rate} / 2;
     my $step = number('frequency_step', $args{frequency_step} // 10, 1, 500);
@@ -269,7 +272,8 @@ configured shift from the first half second of input.
 
 Search bounds for the lower tone, in Hz. Defaults are 300 and C<3000 - shift>.
 The minimum is at least 300; the maximum is at least the minimum and at most
-C<3000 - shift>. Both tones must be below Nyquist. The bounds are validated
+C<3000 - shift>, reduced when necessary so SPACE stays at least one
+microhertz below Nyquist. Both tones must be below Nyquist. The bounds are validated
 even when search is off.
 
 =item * C<frequency_step>

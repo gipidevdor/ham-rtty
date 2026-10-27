@@ -33,6 +33,31 @@ for my $backend (@backends) {
         }
     }
 }
+for my $backend (@backends) {
+    my $low_rate = Ham::RTTY->new(
+        sample_rate => 2000,
+        mark        => 650,
+        shift       => 170,
+        baud        => 50,
+        backend     => $backend
+    );
+    my $audio = $low_rate->samples('CQ TEST');
+    for my $search (0, 1) {
+        is($low_rate->decode_samples($audio, mark => 650, baud => 50, search => $search)->text,
+            'CQ TEST', "$backend low-rate reception, search $search");
+    }
+    is(
+        $low_rate->decode_wav_bytes($low_rate->wav_bytes('CQ TEST'), mark => 650, baud => 50)->text,
+        'CQ TEST',
+        "$backend low-rate WAV reception uses header rate"
+    );
+    my $ok = eval {
+        $low_rate->detector(mark => 650, max_frequency => 900);
+        1;
+    };
+    ok(!$ok, "$backend explicit search band above Nyquist remains invalid");
+    is($@->code, 'RTTY_E_ARGUMENT', 'invalid band keeps stable argument error');
+}
 my $rtty    = Ham::RTTY->new(sample_rate => 8000);
 my $samples = $rtty->samples($message);
 for my $size (1, 137, 4096) {

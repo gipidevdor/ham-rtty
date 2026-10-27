@@ -32,8 +32,10 @@ sub run_example {
     chdir $directory or die $!;
     local $ENV{HAM_RTTY_DOC_LOG} = $log;
     my $status = system $^X, '-Mwarnings=FATAL,all', '-I' . $library, $script;
-    chdir $original        or die $!;
+    chdir $original or die $!;
     is($status, 0, $label) or diag(read_text($log));
+    is(read_text($log), "SOS\nSOS\n", 'streamed and collected guide recipes recover the message')
+        if $source =~ /my \$collected = \$rtty->decode_samples/;
 }
 for my $file (@modules) {
     my $source = read_text($file);

@@ -39,15 +39,16 @@ WriteMakefile(
         'Text::Wrap'     => 0
     },
     TEST_REQUIRES => {
-        'Test::More'  => '0.98',
-        'JSON::PP'    => 0,
-        'Symbol'      => 0,
-        'Config'      => 0,
-        'Cwd'         => 0,
-        'IPC::Open3'  => 0,
-        'File::Temp'  => 0,
-        'File::Spec'  => 0,
-        'Digest::SHA' => '5.96'
+        'Test::More'       => '0.98',
+        'Text::ParseWords' => 0,
+        'JSON::PP'         => 0,
+        'Symbol'           => 0,
+        'Config'           => 0,
+        'Cwd'              => 0,
+        'IPC::Open3'       => 0,
+        'File::Temp'       => 0,
+        'File::Spec'       => 0,
+        'Digest::SHA'      => '5.96'
     },
     dist =>
         {TAR => '$(PERLRUN) maint/archive.pl', TARFLAGS => q{ }, COMPRESS => 'gzip -n -f --best'},
