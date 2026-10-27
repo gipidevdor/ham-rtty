@@ -39,6 +39,11 @@ for my $file (@modules) {
     my $source = read_text($file);
     my ($code, $pod) = split /^=encoding UTF-8\s*$/m, $source, 2;
     ok(defined($pod), "$file contains POD");
+    like(
+        $pod,
+        qr/Copyright \(c\) 2026 Giacomo Picchiarelli\./,
+        "$file identifies the project copyright holder"
+    );
     my %methods = map { $_ => 1 } $code =~ /^sub ([a-z][a-z_]+)\s*\{/mg;
     for my $method (sort keys %methods) {
         like($pod, qr/^=head2 \Q$method\E\s*$/m, "$file documents $method separately");

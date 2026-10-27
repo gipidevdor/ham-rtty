@@ -68,6 +68,13 @@ find({no_chdir => 1, wanted => sub { push @sources, $File::Find::name if /\.md\z
 for my $source (sort grep { /\.md\z/ } @sources) {
     ok(exists $published{$source}, "Markdown published: $source");
 }
+for my $target (sort values %published) {
+    like(
+        read_file("$site/$target"),
+        qr{<footer>.*?Copyright &copy; 2026 Giacomo Picchiarelli\.}s,
+        "project copyright is visible in $target"
+    );
+}
 my $home = read_file("$site/index.html");
 like($home, qr{<table\b}, 'Markdown tables are real HTML tables');
 like($home, qr{<pre\b[^>]*><code class="language-(?:sh|perl)"}, 'fenced code retains its language');

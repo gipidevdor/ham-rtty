@@ -56,3 +56,13 @@ The copied 12-job workflow structure covers Linux, macOS ARM64, macOS Intel, Win
 Real-recording acceptance and a clean dependency gate remain mandatory. This candidate must not be labelled a verified 1.0 or uploaded to CPAN as release-qualified until those gates and the hosted matrix pass. See the [release checklist](releasing.md) and [standards/provenance](standards.md).
 
 Commit identifiers were updated before first publication to use the author's GitHub noreply address. This changes commit metadata only; measured production-file hashes and code are unchanged.
+
+## Copyright and documentation update, 2026-10-27
+
+The README and guide index now follow the reference project's section and
+navigation structure. Copyright (c) 2026 Giacomo Picchiarelli is explicit in
+NOTICE, the README, the guide index, every public module's POD and every
+rendered site's footer. The Artistic 2.0 license text and the reference CSS
+remain byte-identical to Ham::CW f9a1dac. No signal-processing code changed.
+The updated author run passed all 12 files and 679 assertions, including
+copyright checks for every rendered page and every public module.

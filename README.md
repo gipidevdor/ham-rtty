@@ -1,53 +1,125 @@
 # Ham::RTTY
 
-RTTY, from text to signal and back.
+Ham::RTTY converts text to ITA2 codes, generates AFSK WAV and MIDI files, and
+decodes recorded RTTY. Use it through the Perl API or the `ham-rtty` command.
 
-[Usage](docs/usage.md) · [API](lib/Ham/RTTY.pm) · [Verification](docs/verification.md) · [Contributing](CONTRIBUTING.md)
+Requires Perl 5.20 or later. The default backend uses core modules; PDL is
+optional. Audio reception is experimental.
 
-Encode ITA2 text, inspect start-stop events, generate continuous-phase AFSK,
-and receive PCM WAV. Perl 5.20 or later; core runtime dependencies only.
-PDL 2.081 or later is optional. Author: Giacomo Picchiarelli.
+[Online documentation](https://gipidevdor.github.io/ham-rtty/) ·
+[Guides](docs/README.md) · [Examples](examples/README.md) ·
+[API reference](lib/Ham/RTTY.pm) · [Contributing](CONTRIBUTING.md)
 
-This is a 0.01 development candidate. It is **not release-qualified** while
-any required gate in [verification](docs/verification.md) remains open.
+## Start here
+
+Run from a checkout without installing:
+
+```sh
+perl -Ilib bin/ham-rtty encode "CQ TEST"
+perl -Ilib bin/ham-rtty decode "[LTRS] 01110 10111 00100 10000 00001 00101 10000"
+```
+
+These commands convert `CQ TEST` to ITA2 codes and back. Spaces separate
+five-bit numeric codes; `[FIGS]` and `[LTRS]` select figures and letters.
+
+To install from a checkout or extracted distribution:
 
 ```sh
 perl Makefile.PL
 make
 make test
-perl -Ilib bin/ham-rtty encode "CQ 123"
-perl -Ilib bin/ham-rtty wav --output cq.wav "CQ TEST"
-perl -Ilib bin/ham-rtty receive --baud 45.45 cq.wav
+make install
 ```
 
+Builds require ExtUtils::MakeMaker 7.22 or later and your Perl's make program.
+See [installation](docs/installing.md) for user-owned paths and upgrades.
+Once installed, run `ham-rtty` directly.
+
+## Make a practice recording
+
+```sh
+ham-rtty wav --baud 50 --shift 450 --output practice.wav "CQ TEST"
+ham-rtty receive --mark 2125 --baud 50 --shift 450 practice.wav
+```
+
+This creates a 50-baud recording with 450 Hz shift, then reads it with matching
+tones and speed. Add `--overwrite` to replace an existing file.
+
+| You want to… | Command |
+| --- | --- |
+| Convert text | `ham-rtty encode "CQ TEST"` |
+| Read ITA2 codes | `ham-rtty decode "[LTRS] 00011"` |
+| Inspect transmitted bits | `ham-rtty bits "CQ TEST"` |
+| Inspect timing | `ham-rtty events "CQ TEST"` |
+| Export debug MIDI | `ham-rtty midi --output practice.mid "CQ TEST"` |
+| Inspect a recording and its warnings | `ham-rtty receive --json recording.wav` |
+| Find options for one task | `ham-rtty help receive` |
+
+Text commands accept `--input FILE` or stdin. Use `--output FILE` to save
+text or JSON. WAV and MIDI require an explicit output; `--output -` selects
+binary stdout. Prefer named binary files in Windows shells.
+
+Use `ham-rtty help COMMAND` for options and examples, or the
+[task guide](docs/usage.md) for reception settings and warnings.
+
+## Use it in Perl
+
+Save as `demo.pl` and run `perl -Ilib demo.pl` from this checkout,
+or `perl demo.pl` after installation:
+
 ```perl
+use 5.020;
 use strict;
 use warnings;
 use Ham::RTTY;
-my $rtty = Ham::RTTY->new(baud => 50);
-my $bytes = $rtty->wav_bytes('CQ 123');
-my $result = $rtty->decode_wav_bytes($bytes, baud => 50);
+
+my $rtty = Ham::RTTY->new(baud => 50, mark => 2125, shift => 450);
+print $rtty->encode('CQ TEST'), "\n";
+print $rtty->decode('[LTRS] 00011'), "\n";
+
+my $result = $rtty->decode_wav_bytes(
+    $rtty->wav_bytes('CQ TEST'), mark => 2125, baud => 50, shift => 450);
 print $result->text, "\n";
-warn "$_->{code}: $_->{message}\n" for @{$result->warnings};
+for my $warning (@{$result->warnings}) {
+    warn "$warning->{code}: $warning->{message}\n";
+}
 ```
 
-| Operation | Entry point |
-| --- | --- |
-| Text and shift codes | `encode`, `decode` |
-| Framed bits and exact timing | `bits`, `events`, `decode_events` |
-| AFSK samples | `samples`, `stream_samples`, `decode_samples` |
-| PCM WAV | `wav_bytes`, `write_wav`, `read_wav` |
-| Debug MIDI | `midi_bytes`, `write_midi` |
+More recipes: [task guide](docs/usage.md) and [examples](examples/README.md).
+Read the API with `perldoc Ham::RTTY`, or `perldoc lib/Ham/RTTY.pm` from a checkout.
 
-Defaults: 45.45 baud, 2125 Hz MARK, +170 Hz SPACE, 1.5 stop bits, ITU ITA2,
-USOS enabled, 16 kHz mono, amplitude 0.8. Reception uses configured baud;
-measured timing is diagnostic only. Stop bits, tones and polarity are explicit.
-No simultaneous stations, automatic baud/shift identification, equalisation,
-diversity or frequency-transition shaping. No playback or radio control.
+## Know what to expect
 
-Output paths are protected unless `overwrite => 1` or `--overwrite` explicitly
-requests replacement. Replacement uses a temporary sibling and rename.
+The international character table follows ITU-T S.1. A separate `us` profile
+provides US TTY figures; USOS is configurable at both ends. See
+[character policy](docs/usage.md#text-and-timing) and
+[standards and provenance](docs/standards.md).
 
-See [architecture](docs/architecture.md), [benchmarks](docs/benchmarks.md),
-[standards and provenance](docs/standards.md), [security CI](docs/security-ci.md) and [recording provenance](corpus/real/LICENSES.md).
-Code and documentation use [Artistic 2.0](LICENSE); see [NOTICE](NOTICE).
+Defaults are 45.45 baud, 2125 Hz MARK, +170 Hz SPACE, 1.5 stop bits and USOS
+on. AFSK phase remains continuous across tone transitions. Logical bit strings
+round a 1.5-bit stop up to two digits; frames and events preserve its timing.
+
+The receiver needs configured baud. It does not identify baud or shift
+automatically, separate simultaneous stations, equalise or combine diversity
+channels. Interference and fading can still produce partial or incorrect text.
+Check warnings; `--strict` returns a nonzero status when warnings occur. See
+[reception settings](docs/usage.md#streaming) and [test results](docs/verification.md).
+
+Version 0.01 is a development candidate, **not release-qualified** while the
+required real-recording, dependency-audit and hosted verification gates remain
+open. See the [verification record](docs/verification.md) for dated evidence.
+
+Playback, microphone capture and radio or MIDI device control are left to the
+calling application. MIDI is a two-note visual/debug rendering.
+
+## Explore the project
+
+[Documentation](docs/README.md) · [Contributing](CONTRIBUTING.md) ·
+[Release procedure](docs/releasing.md) · [Security reports](SECURITY.md)
+
+[Security audit](docs/security-ci.md): Perl/File::Temp advisories and older
+dependency versions remain under review.
+
+Copyright © 2026 Giacomo Picchiarelli. Project code and original material use
+[Artistic License 2.0](LICENSE). No third-party recordings are currently
+distributed; see [NOTICE](NOTICE) and [recording licenses](corpus/real/LICENSES.md).

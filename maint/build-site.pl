@@ -309,7 +309,7 @@ sub page_html {
 <nav aria-label="Documentation">$nav</nav></details>
 <main id="content"><div class="eyebrow">$label</div><article>$body</article>
 <footer><div>Ham::RTTY $version · Built with Perl · <a href="$source_url">Page source</a></div>
-<div><a href="$license">Code and documentation: Artistic 2.0</a> · <a href="$recordings">Recording credits and licenses</a></div></footer>
+<div>Copyright &copy; 2026 Giacomo Picchiarelli. <a href="$license">Code and documentation: Artistic 2.0</a> · <a href="$recordings">Recording credits and licenses</a></div></footer>
 </main></div></body></html>
 HTML
 }

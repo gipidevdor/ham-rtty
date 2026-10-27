@@ -69,5 +69,18 @@
     "isolated_installation_exit_status": 0,
     "installed_cli_and_examples": "PASS",
     "scope": "Candidate with identical production code; final documentation-only archive is rebuilt and checked again."
+  },
+  "copyright_documentation_update": {
+    "date": "2026-10-27",
+    "holder": "Giacomo Picchiarelli",
+    "year": 2026,
+    "author_tests": {
+      "files": 12,
+      "assertions": 679,
+      "exit_status": 0
+    },
+    "license_text_sha256": "bae466ac8d7100c304fe76632ccc627203a3897d3f7166f3cce00fb9df8c2074",
+    "reference_css_sha256": "4d48d00e36e29e9f4d79d428f37f9cf26c13e9f8148605343519ba1690b438a9",
+    "scope": "README, guide index, NOTICE, all public module POD and every rendered page footer; no signal-processing changes."
   }
 }

@@ -1,10 +1,28 @@
-Ham::RTTY
+Licensing of distributed files
+
 Copyright (c) 2026 Giacomo Picchiarelli.
-Code and documentation: Artistic License 2.0; see LICENSE.
+
+The project source, original documentation and original synthetic fixtures
+are distributed under the Artistic License 2.0 in LICENSE.
+
+The documentation website's layout, CSS and text-based Perl notation use
+the same license. The site uses system fonts; no third-party branding artwork
+or web fonts are bundled.
 
 Distribution layout, WAV/PCM handling, protected I/O, snapshot validation,
 CLI conventions and documentation-site renderer/style are adapted from
-Ham::CW, https://github.com/gipidevdor/ham-cw, revision
-f9a1dac, by Giacomo Picchiarelli, under Artistic License 2.0.
-RTTY signalling, character tables, UART decoding and dual-tone DSP are
-implemented in this distribution. No real recordings are currently included.
+Ham::CW, https://github.com/gipidevdor/ham-cw, revision f9a1dac, by
+Giacomo Picchiarelli, under Artistic License 2.0. RTTY signalling, character
+tables, UART decoding and dual-tone DSP are implemented in this distribution.
+
+The copyright of The Perl Foundation in LICENSE applies to the license
+text itself; it does not replace the project copyright stated above.
+The license text is included unchanged.
+
+No third-party received-radio recordings are currently distributed.
+corpus/real.json contains explicit missing-fixture entries, not audio or
+license grants. See corpus/real/LICENSES.md for source review and admission
+requirements. Any future third-party recording retains its own terms and
+must include source, author, license evidence, transformations and hashes.
+Attribution does not imply endorsement. Files without documented provenance
+are not part of the distribution.

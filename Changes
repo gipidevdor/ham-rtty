@@ -1,6 +1,8 @@
 Revision history for Ham-RTTY
 
 0.01  2026-10-27
+    - Make project copyright visible in README, guides and every site footer.
+    - Align README and documentation navigation with the Ham-CW structure.
     - Add ITU ITA2 and US tables, FIGS/LTRS state and unshift-on-space.
     - Add start-stop events, continuous-phase AFSK and incremental reception.
     - Add protected WAV/MIDI files, RTTY CLI and optional PDL projections.
