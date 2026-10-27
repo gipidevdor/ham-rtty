@@ -69,11 +69,9 @@ for my $source (sort grep { /\.md\z/ } @sources) {
     ok(exists $published{$source}, "Markdown published: $source");
 }
 for my $target (sort values %published) {
-    like(
-        read_file("$site/$target"),
-        qr{<footer>.*?Copyright &copy; 2026 Giacomo Picchiarelli\.}s,
-        "project copyright is visible in $target"
-    );
+    my ($footer) = read_file("$site/$target") =~ m{(<footer>.*?</footer>)}s;
+    unlike($footer, qr/Giacomo|Picchiarelli/,
+        "reference-style footer omits personal credits in $target");
 }
 my $home = read_file("$site/index.html");
 like($home, qr{<table\b}, 'Markdown tables are real HTML tables');

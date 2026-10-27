@@ -30,6 +30,6 @@ Measurements are tied to a source revision and date.
 [Benchmark results](performance-results.json), [coverage](coverage-results.json)
 and the [verification record](verification.md) retain the measured observations.
 
-Copyright © 2026 Giacomo Picchiarelli. Project code uses [Artistic License 2.0](../LICENSE). Recording-specific terms,
+Project code uses [Artistic License 2.0](../LICENSE). Recording-specific terms,
 attribution and transformations are listed in [NOTICE](../NOTICE) and
 [recording licenses](../corpus/real/LICENSES.md).

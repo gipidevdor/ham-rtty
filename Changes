@@ -7,7 +7,8 @@ Revision history for Ham-RTTY
     - Correct and verify the streaming guide's received-text example.
     - Restore the shared Ham-CW guides, example catalog and runner.
     - Align POD signatures, option lists and architecture notes with Ham-CW.
-    - Make project copyright visible in README, guides and every site footer.
+    - Retain project copyright in README, module POD and NOTICE.
+    - Match Ham-CW site footers and guide credits without repeated author names.
     - Align README and documentation navigation with the Ham-CW structure.
     - Add ITU ITA2 and US tables, FIGS/LTRS state and unshift-on-space.
     - Add start-stop events, continuous-phase AFSK and incremental reception.

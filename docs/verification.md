@@ -61,11 +61,12 @@ Commit identifiers were updated before first publication to use the author's Git
 
 The README and guide index now follow the reference project's section and
 navigation structure. Copyright (c) 2026 Giacomo Picchiarelli is explicit in
-NOTICE, the README, the guide index, every public module's POD and every
-rendered site's footer. The Artistic 2.0 license text and the reference CSS
+NOTICE, the README and every public module's POD. Site footers and the guide
+index follow Ham::CW, without repeated personal credits. The Artistic 2.0 license text and the reference CSS
 remain byte-identical to Ham::CW f9a1dac. No signal-processing code changed.
 The updated author run passed all 12 files and 679 assertions, including
-copyright checks for every rendered page and every public module.
+copyright checks for every public module. Footer checks now enforce the
+reference layout without repeated personal credits.
 
 ## Shared reference alignment, 2026-10-27
 
