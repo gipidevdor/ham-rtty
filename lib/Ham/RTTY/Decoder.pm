@@ -2,284 +2,161 @@ package Ham::RTTY::Decoder;
 use 5.020;
 use strict;
 use warnings;
-use Ham::RTTY::Events              qw(validate_events to_timed);
-use Ham::RTTY::_Internal::Symbols  qw(reverse_alphabet);
-use Ham::RTTY::_Internal::Validate qw(fail number integer options named_arguments);
+use Ham::RTTY::Baudot;
+use Ham::RTTY::Events qw(validate_events to_timed);
 use Ham::RTTY::Result;
-use Ham::RTTY::_Internal::Result;
-our $VERSION = '0.001';
+use Ham::RTTY::_Internal::Validate qw(fail number integer options named_arguments);
+our $VERSION = '0.01';
 
 sub new {
     my ($class, @pairs) = @_;
     my %args = named_arguments(@pairs);
-    options(\%args, qw(wpm effective_wpm prefer_prosigns max_segments));
-    number('wpm',           $args{wpm},           1, 200) if defined $args{wpm};
-    number('effective_wpm', $args{effective_wpm}, 1, $args{wpm} // 200)
-        if defined $args{effective_wpm};
-    integer('max_segments', $args{max_segments} // 100000, 1, 1000000);
-    my $reverse = reverse_alphabet($args{prefer_prosigns});
-    my $self    = bless {reverse => $reverse, %args, max_segments => $args{max_segments} // 100000},
-        $class;
+    options(\%args, qw(variant usos baud max_segments));
+    my $self = bless {
+        baud         => number('baud', $args{baud}                  // 45.45, 20, 300),
+        max_segments => integer('max_segments', $args{max_segments} // 100000, 1, 1000000),
+        codec        => Ham::RTTY::Baudot->new(
+            map { exists($args{$_}) ? ($_ => $args{$_}) : () } qw(variant usos)
+        )
+    }, $class;
     return $self->reset;
 }
 
 sub reset {    ## no critic (Subroutines::ProhibitBuiltinHomonyms)
     my ($self) = @_;
-    $self->{state}          = 'READY';
-    $self->{segments}       = [];
-    $self->{kind}           = undef;
-    $self->{rate}           = undef;
-    $self->{total_duration} = 0;
-    $self->{snapshot}       = undef;
-    $self->{final}          = undef;
+    @{$self}{qw(state text time previous framing)} = ('READY', '', 0, 'mark', 0);
+    $self->{warnings} = [];
+    $self->{segments} = [];
+    $self->{codec}->reset;
+    delete @{$self}{qw(candidate final)};
     return $self;
 }
 sub state { my ($self) = @_; return $self->{state} }    ## no critic (Subroutines::ProhibitBuiltinHomonyms)
 
 sub decode {
-    my ($self, $morse) = @_;
-    fail('RTTY_E_ARGUMENT', 'Morse must be a defined scalar') if !defined($morse) || ref($morse);
-    $morse =~ s/\A\s+|\s+\z//gx;
-    return '' unless length $morse;
-    fail('RTTY_E_SYMBOL',
-        'Invalid Morse syntax; use spaces between letters and / between words, e.g. ... --- ...')
-        unless $morse =~ /\A[.\-]+(?:\s+[.\-]+)*(?:\s*\/\s*[.\-]+(?:\s+[.\-]+)*)*\z/x;
-    my $reverse = $self->{reverse};
-    my @words;
-    for my $word (split /\s*\/\s*/x, $morse) {
-        my $text = '';
-        for my $code (split /\s+/x, $word) {
-            fail('RTTY_E_SYMBOL', "Unknown Morse group '$code'; separate letters with spaces")
-                unless exists $reverse->{$code};
-            $text .= $reverse->{$code};
-        }
-        push @words, $text;
+    my ($self, $notation) = @_;
+    fail('RTTY_E_ARGUMENT', 'Notation must be a defined scalar')
+        if !defined($notation) || ref($notation);
+    my @codes;
+    for my $token (grep { length } split /\s+/x, $notation) {
+        if    ($token eq '[LTRS]')       { push @codes, 31 }
+        elsif ($token eq '[FIGS]')       { push @codes, 27 }
+        elsif ($token =~ /\A[01]{5}\z/x) { push @codes, oct('0b' . $token) }
+        else { fail('RTTY_E_SYMBOL', 'Expected five binary digits or shift marker') }
     }
-    return join ' ', @words;
+
+    # Symbolic decoding is independent of incremental event history.
+    my $codec = Ham::RTTY::Baudot->new(usos => $self->{codec}{usos});
+    $codec->{letters} = [@{$self->{codec}{letters}}];
+    $codec->{figures} = [@{$self->{codec}{figures}}];
+    return join '', map { $codec->character($_) } @codes;
+}
+
+sub decode_bits {
+    my ($self, $bits) = @_;
+    fail('RTTY_E_ARGUMENT', 'Bits must contain only 0 and 1')
+        if !defined($bits) || ref($bits) || $bits =~ /[^01]/x;
+    my @segments;
+    for my $bit (split //, $bits) {
+        my $state = $bit eq '1' ? 'mark' : 'space';
+        if (@segments && $segments[-1]{state} eq $state) { $segments[-1]{samples}++ }
+        else { push @segments, {state => $state, samples => 1} }
+    }
+
+    # A synthetic rate makes every bit exactly one configured period.
+    my $events = {unit => 'us', segments => []};
+    my ($time, $boundary) = (0, 0);
+    for my $s (@segments) {
+        $time += $s->{samples} * 1000000 / $self->{baud};
+        my $end = int($time + 0.5);
+        push @{$events->{segments}}, {state => $s->{state}, duration => $end - $boundary};
+        $boundary = $end;
+    }
+    $self->feed($events);
+    return $self->finish;
+}
+
+sub _run {
+    my ($self, $state, $duration) = @_;
+    my $end = $self->{time} + $duration;
+    my $bit = 1000000 / $self->{baud};
+    if (!$self->{candidate} && $state eq 'space' && $self->{previous} eq 'mark') {
+        $self->{candidate} = {start => $self->{time}, index => 0, code => 0};
+    }
+    while (my $c = $self->{candidate}) {
+        my $centre = $c->{start} + ($c->{index} + 0.5) * $bit;
+        last if $centre >= $end;
+        my $mark = $state eq 'mark' ? 1 : 0;
+        if ($c->{index} == 0 && $mark)            { delete $self->{candidate}; last }
+        if ($c->{index} >= 1 && $c->{index} <= 5) { $c->{code} |= $mark << ($c->{index} - 1) }
+        if ($c->{index} == 6) {
+            if (!$mark) {
+                ++$self->{framing};
+                push @{$self->{warnings}},
+                    {code => 'RTTY_W_FRAMING', message => 'Stop bit is SPACE; resynchronising'};
+            }
+            else {
+                my $char = eval { $self->{codec}->character($c->{code}) };
+                if ($@) {
+                    push @{$self->{warnings}},
+                        {code => 'RTTY_W_SYMBOL', message => 'Unassigned figures combination'};
+                    $char = "\x{fffd}";
+                }
+                $self->{text} .= $char;
+            }
+            delete $self->{candidate};
+            last;
+        }
+        ++$c->{index};
+    }
+    $self->{time}     = $end;
+    $self->{previous} = $state;
+    return;
 }
 
 sub feed {
     my ($self, $events) = @_;
-    fail('RTTY_E_STATE', 'Decoder is finalized; reset before feeding')
-        if $self->{state} eq 'FINISHED';
-    my $kind = validate_events($events);
-    my $rate = $events->{sample_rate};
-    fail('RTTY_E_ARGUMENT', 'Event units or sample rate changed')
-        if defined($self->{kind})
-        && ($self->{kind} ne $kind || ($kind eq 'samples' && $self->{rate} != $rate));
-    my $joins =
-           @{$self->{segments}}
-        && @{$events->{segments}}
-        && $self->{segments}[-1]{state} eq $events->{segments}[0]{state} ? 1 : 0;
-    fail('RTTY_E_RESOURCE',
-        'Decoder segment limit exceeded; increase max_segments or decode shorter sequences')
-        if @{$self->{segments}} + @{$events->{segments}} - $joins > $self->{max_segments};
-    my $added = 0;
-    $added += $_->{$kind} for @{$events->{segments}};
-    fail('RTTY_E_RESOURCE', 'Cumulative event duration exceeds exact integer range')
-        if $self->{total_duration} + $added > 2**52;
-    my $copy = [map { +{state => $_->{state} eq 'on' ? 'on' : 'off', $kind => 0 + $_->{$kind}} }
-            @{$events->{segments}}];
-
-    if (@{$copy} && @{$self->{segments}} && $copy->[0]{state} eq $self->{segments}[-1]{state}) {
-        my $sum = $copy->[0]{$kind} + $self->{segments}[-1]{$kind};
-        $copy->[0]{$kind} = $sum;
-        pop @{$self->{segments}};
+    fail('RTTY_E_STATE', 'Decoder is finalized') if $self->{state} eq 'FINISHED';
+    my $field = validate_events($events);
+    my $timed = to_timed($events);
+    fail('RTTY_E_RESOURCE', 'Event history exceeds max_segments')
+        if @{$self->{segments}} + @{$timed->{segments}} > $self->{max_segments};
+    for my $s (@{$timed->{segments}}) {
+        $self->_run($s->{state}, $s->{duration});
+        if (@{$self->{segments}} && $self->{segments}[-1]{state} eq $s->{state}) {
+            $self->{segments}[-1]{duration} += $s->{duration};
+        }
+        else { push @{$self->{segments}}, {%{$s}} }
     }
-    push @{$self->{segments}}, @{$copy};
-    $self->{total_duration} += $added;
-    $self->{kind}     = $kind;
-    $self->{rate}     = $rate;
-    $self->{state}    = 'ACTIVE';
-    $self->{snapshot} = undef;
+    $self->{state} = 'ACTIVE';
     return $self;
-}
-
-sub _fit_dot {
-    my ($counts, $widths, $candidate) = @_;
-    my (%total, %count);
-    for my $duration (@{$widths}) {
-        my $units = $duration < 2 * $candidate ? 1 : 3;
-        $total{$units} += $duration * $counts->{$duration};
-        $count{$units} += $counts->{$duration};
-    }
-    my ($dot, $offset) = ($candidate, 0);
-    if ($count{1} && $count{3}) {
-        my $short  = $total{1} / $count{1};
-        my $long   = $total{3} / $count{3};
-        my $fitted = ($long - $short) / 2;
-
-        # Envelope shaping and frame rounding can shorten both mark classes.
-        # Their separation estimates a dot without that common width offset.
-        if ($fitted >= 20000 && $fitted <= 240000 && abs($short - $fitted) <= 0.25 * $fitted) {
-            ($dot, $offset) = ($fitted, $short - $fitted);
-        }
-    }
-    my $loss = 0;
-    for my $duration (@{$widths}) {
-        my $ratio    = ($duration - $offset) / $dot;
-        my $distance = abs($ratio - 1) < abs($ratio - 3) ? abs($ratio - 1) : abs($ratio - 3);
-        $loss += $counts->{$duration} * $distance * $distance;
-    }
-    return ($dot, $loss);
-}
-
-sub _estimate_dot {
-    my ($segments) = @_;
-    my %counts;
-    ++$counts{$_->{duration}} for grep { $_->{state} eq 'on' } @{$segments};
-    my @on = sort { $a <=> $b } keys %counts;
-    return (undef, []) unless @on;
-
-    # Sample the entire range of distinct widths, with a bounded candidate bank.
-    # Repeated short marks must not crowd all dash evidence out of the fit.
-    my @values = @on <= 64 ? @on : @on[map { int($_ * $#on / 63) } 0 .. 63];
-    my ($best, $cost);
-    for my $value (@values) {
-        for my $candidate ($value, $value / 3) {
-            next if $candidate < 20000 || $candidate > 240000;
-            my ($dot, $loss) = _fit_dot(\%counts, \@on, $candidate);
-            if (!defined($cost) || $loss < $cost) { ($best, $cost) = ($dot, $loss) }
-        }
-    }
-    my @warnings;
-    push @warnings,
-        {
-        code    => 'RTTY_W_TIMING_AMBIGUOUS',
-        message => 'Single mark length cannot distinguish dots from dashes'
-        }
-        if defined($best) && $on[-1] / $on[0] < 1.5;
-    return ($best, \@warnings);
-}
-
-sub _mark {
-    my ($ratio, $warnings) = @_;
-    if ($ratio < 0.45 || $ratio > 4.5 || ($ratio > 1.6 && $ratio < 2.3)) {
-        push @{$warnings}, {code => 'RTTY_W_TIMING', message => 'Mark outside timing tolerance'};
-        return '?';
-    }
-    return $ratio < 2 ? '.' : '-';
-}
-
-sub _groups {
-    my ($segments, $dot, $spacing, $complete, $warnings) = @_;
-    my @groups;
-    my $pending = '';
-    for my $i (0 .. $#{$segments}) {
-        my $segment = $segments->[$i];
-        if ($segment->{state} eq 'on') {
-            $pending .= _mark($segment->{duration} / $dot, $warnings);
-            next;
-        }
-        next if !length($pending) || $segment->{duration} < 2 * $dot;
-        next if !$complete && $i == $#{$segments};
-        push @groups, $pending;
-        $pending = '';
-        push @groups, '/' if $segment->{duration} >= 5 * $spacing;
-    }
-    push @groups, $pending if $complete && length $pending;
-    pop @groups if @groups && $groups[-1] eq '/';
-    return \@groups;
-}
-
-sub _translate {
-    my ($self, $groups, $warnings) = @_;
-    my $text = '';
-    for my $group (@{$groups}) {
-        if ($group eq '/') { $text .= ' '; next }
-        my $decoded = eval { $self->decode($group) };
-        if ($@) {
-            $text .= "\x{FFFD}";
-            push @{$warnings},
-                {code => 'RTTY_W_SYMBOL', message => 'Unrecognized or ambiguous mark group'};
-        }
-        else { $text .= $decoded }
-    }
-    return $text;
-}
-
-sub _snapshot {
-    my ($self, $complete) = @_;
-    my $events = {
-        segments => [@{$self->{segments}}],
-        ($self->{kind} // 'duration') eq 'samples' ? (sample_rate => $self->{rate}) : (unit => 'us')
-    };
-    my $timed = ($self->{kind} // '') eq 'samples' ? to_timed($events) : $events;
-    my ($dot, $warnings) =
-        defined($self->{wpm}) ? (1_200_000 / $self->{wpm}, []) : _estimate_dot($timed->{segments});
-    return Ham::RTTY::_Internal::Result->from_owned(
-        'Ham::RTTY::Result',
-        complete => $complete,
-        events   => $events,
-        warnings => [{code => 'RTTY_W_NO_TIMING', message => 'No usable timing evidence'}]
-    ) unless $dot;
-    my $spacing = $dot;
-    if (defined($self->{effective_wpm})) {
-        my $character_wpm = 1_200_000 / $dot;
-        if (!defined($self->{wpm}) && $self->{effective_wpm} > $character_wpm * (1 + 1e-9)) {
-            push @{$warnings},
-                {
-                code    => 'RTTY_W_SPACING_AMBIGUOUS',
-                message => 'effective_wpm exceeds estimated character speed; using ordinary spacing'
-                };
-        }
-        else {
-            $spacing = (60_000_000 / $self->{effective_wpm} - 31 * $dot) / 19;
-            $spacing = $dot if $spacing < $dot;
-        }
-    }
-    else {
-        # Recording margins and isolated operator pauses do not establish
-        # Farnsworth spacing. Require repeated stretched gaps between marks.
-        my @gaps;
-        my $segments = $timed->{segments};
-        for my $i (1 .. $#{$segments} - 1) {
-            next
-                unless $segments->[$i]{state} eq 'off'
-                && $segments->[$i - 1]{state} eq 'on'
-                && $segments->[$i + 1]{state} eq 'on';
-            push @gaps, $segments->[$i]{duration} / $dot;
-        }
-        my $long = grep { $_ > 8 } @gaps;
-        if ($long >= 2) {
-            push @{$warnings},
-                {
-                code    => 'RTTY_W_SPACING_AMBIGUOUS',
-                message =>
-                    'Repeated long internal gaps may be Farnsworth spacing; specify effective_wpm'
-                };
-        }
-    }
-    my $groups = _groups($timed->{segments}, $dot, $spacing, $complete, $warnings);
-    my $text   = $self->_translate($groups, $warnings);
-    return Ham::RTTY::_Internal::Result->from_owned(
-        'Ham::RTTY::Result',
-        text        => $text,
-        morse       => join(' ', @{$groups}),
-        events      => $events,
-        wpm         => 1_200_000 / $dot,
-        complete    => $complete,
-        warnings    => $warnings,
-        diagnostics => {
-            dot_us        => $dot,
-            timing_source => defined($self->{wpm}) ? 'configured' : 'estimated'
-        }
-    );
 }
 
 sub result {
     my ($self) = @_;
-    return $self->{final} // ($self->{snapshot} //= $self->_snapshot(0));
+    return $self->{final} // Ham::RTTY::Result->new(
+        text        => $self->{text},
+        baud        => $self->{baud},
+        warnings    => $self->{warnings},
+        events      => {unit => 'us', segments => $self->{segments}},
+        diagnostics =>
+            {configured_bit_period => 1 / $self->{baud}, framing_error_count => $self->{framing}},
+        complete => 0
+    );
 }
 
 sub finish {
     my ($self) = @_;
     return $self->{final} if $self->{state} eq 'FINISHED';
-    my $result = $self->_snapshot(1);
-    $self->{final}    = $result;
-    $self->{snapshot} = undef;
-    $self->{state}    = 'FINISHED';
-    return $result;
+    if ($self->{candidate}) {
+        push @{$self->{warnings}},
+            {code => 'RTTY_W_FRAMING', message => 'Incomplete frame at end of input'};
+    }
+    my $h = $self->result->as_hash;
+    $h->{complete} = 1;
+    $self->{final} = Ham::RTTY::Result->new(%{$h});
+    $self->{state} = 'FINISHED';
+    return $self->{final};
 }
 1;
 
@@ -287,7 +164,7 @@ sub finish {
 
 =head1 NAME
 
-Ham::RTTY::Decoder - decode Morse notation and incremental keying events
+Ham::RTTY::Decoder - incremental start-stop ITA2 event receiver
 
 =head1 SYNOPSIS
 
@@ -295,147 +172,43 @@ Ham::RTTY::Decoder - decode Morse notation and incremental keying events
     use warnings;
     use Ham::RTTY::Encoder;
     use Ham::RTTY::Decoder;
-
-    my $decoder = Ham::RTTY::Decoder->new(wpm => 20);
-    print $decoder->decode('... --- ...'), "\n";  # SOS
-    my $events = Ham::RTTY::Encoder->new(wpm => 20)->events('SOS');
-    $decoder->feed($events);
-    my $result = $decoder->finish;
-    print $result->text, "\n";
-
-=head1 DESCRIPTION
-
-The C<decode> method translates textual dots/dashes strictly. Event decoding
-uses C<feed>, C<result> and C<finish> and returns diagnostic snapshots.
-These are separate operations: C<decode> neither consumes nor resets event
-history. This class does not analyze audio; use L<Ham::RTTY::Detector> for that.
+    my $decoder = Ham::RTTY::Decoder->new(baud => 50);
+    $decoder->feed(Ham::RTTY::Encoder->new(baud => 50)->events('CQ'));
+    print $decoder->finish->text, "\n";
 
 =head1 METHODS
 
 =head2 new
 
-    my $decoder = Ham::RTTY::Decoder->new(%options);
-
-Returns a decoder in C<READY>. Options:
-
-=over 4
-
-=item * C<wpm>: optional character speed, finite number 1..200. Omitted/undefined means estimate from events, within 5..60 WPM.
-
-=item * C<effective_wpm>: optional spacing speed, finite number 1..WPM when WPM is explicit, otherwise 1..200. Omitted/undefined uses ordinary spacing.
-
-=item * C<prefer_prosigns>: false by default; set to 1 to prefer operational tokens for shared waveforms.
-
-=item * C<max_segments>: 100000; integer 1..1000000, limiting retained canonical event runs after cross-feed joins.
-
-=back
-
-Unknown/duplicate options and invalid ranges raise C<RTTY_E_ARGUMENT>.
-If explicit effective speed exceeds explicit character speed, construction
-fails. A mismatch against an estimated speed instead warns and uses ordinary
-spacing, so observations do not cause an argument exception during finish.
+Ham::RTTY::Decoder->new(%options) constructs a READY receiver. C<baud> defaults to 45.45, finite 20..300; C<variant> defaults to ita2 (or us); C<usos> defaults to 1 (integer 0 or 1). C<max_segments> defaults to 100000, integer 1..1000000. Unknown, duplicate or invalid options raise C<RTTY_E_ARGUMENT>.
 
 =head2 decode
 
-    my $text = $decoder->decode($morse);
+$decoder->decode($notation) returns text from five-bit numeric codes and shift markers. This operation uses fresh LTRS state and does not modify incremental history. Invalid tokens or unassigned codes raise C<RTTY_E_SYMBOL>; undefined or reference input raises C<RTTY_E_ARGUMENT>.
 
-Returns decoded text. Whitespace separates Morse characters; C</> separates
-words, with optional surrounding whitespace. Leading/trailing whitespace is
-ignored. Empty/whitespace-only input returns an empty string. Undefined input
-or references raise C<RTTY_E_ARGUMENT>. Invalid syntax or unknown groups raise
-C<RTTY_E_SYMBOL>; no partial string is returned for a strict decoding failure.
-This method remains usable independently of the event lifecycle.
+=head2 decode_bits
+
+$decoder->decode_bits($bits) feeds a defined 0/1 scalar into the incremental receiver at one configured bit period per digit and finalizes it. Returns a Result. Use a fresh/reset receiver for a new message; fractional stop duration belongs in events.
 
 =head2 feed
 
-    $decoder->feed($events);
-
-Validates and copies the canonical fields of a TimedEvents or SampledEvents
-block; returns the object. Additional segment metadata is ignored and is not
-retained, traversed or copied.
-Each block must satisfy L<Ham::RTTY::Events>. Units and, for sampled events,
-sample rate must remain constant across feeds. Adjacent equal states at a
-block boundary are joined. Total retained runs must fit C<max_segments> and
-cumulative duration must not exceed C<2**52> input units.
-
-An accepted feed sets C<ACTIVE> and invalidates cached previews. A validation
-failure preserves history and state. Feeding after finish raises
-C<RTTY_E_STATE>. Calls are cumulative; the method returns no incremental text.
+$decoder->feed($events) validates timed or sampled runs, then appends them to bounded history and returns the receiver. Runs can be split across calls; each input must validate independently. A MARK-to-SPACE transition starts a UART frame. The receiver validates start at half a bit, samples five data centres and checks MARK at the stop centre. Invalid stops produce C<RTTY_W_FRAMING> and resynchronisation. Unassigned received figures produce U+FFFD and C<RTTY_W_SYMBOL>. A retained-history overflow raises C<RTTY_E_RESOURCE> before mutation. Feed after finish raises C<RTTY_E_STATE>.
 
 =head2 result
 
-    my $preview = $decoder->result;
-
-Returns a cumulative L<Ham::RTTY::Result>. Before finish it is provisional and
-C<complete> is 0. A final still-open gap does not confirm its preceding letter;
-more evidence or finish is needed. Automatic timing and earlier text may
-change as more data arrives. Unchanged snapshots are cached, and their
-reference-valued accessors still return copies. After finish, this returns
-the finalized Result.
+$decoder->result returns a cumulative deep-copied Result, with complete 0 before finalization. Replace previous snapshots; do not append them. Diagnostics include configured bit period in seconds and framing error count.
 
 =head2 finish
 
-    my $final = $decoder->finish;
-
-Confirms the pending final group, returns a complete Result and sets
-C<FINISHED>. Repeated calls return the cached final Result. No additional
-silence is inserted. Completion does not imply reliable decoding.
+$decoder->finish returns a complete Result, warning on an incomplete frame. Repeated calls return the same final snapshot. It consumes no imaginary stop padding.
 
 =head2 reset
 
-    $decoder->reset;
-
-Discards events and cached snapshots, preserves configuration, restores
-C<READY> and returns the object. Earlier Result objects remain independent.
+$decoder->reset discards history, text, warnings and partial frames, restores LTRS and READY, and returns the object. Previously returned Results remain independent.
 
 =head2 state
 
-    my $state = $decoder->state;
-
-Returns C<READY>, C<ACTIVE> or C<FINISHED>.
-
-=head1 TIMING AND UNCERTAINTY
-
-Without WPM, timing is fitted within 5..60 WPM using candidates across the
-complete range of distinct mark widths. When both mark classes are present,
-their separation removes a bounded common envelope/quantization offset.
-Only one observed mark length cannot distinguish dots from dashes; the Result
-contains C<RTTY_W_TIMING_AMBIGUOUS>. Supply WPM for short or repetitive input.
-
-Farnsworth word boundaries need C<effective_wpm>. At least two internal gaps
-longer than eight dots produce C<RTTY_W_SPACING_AMBIGUOUS> when spacing speed
-is absent. Leading/trailing recording silence and isolated long pauses do
-not trigger that heuristic. Absence of a warning does not prove ordinary
-spacing. When effective speed exceeds an estimated character speed, the same
-warning code reports fallback to ordinary spacing.
-
-An implausible mark is represented as C<?> in the Result's Morse notation.
-An unrecognized group becomes U+FFFD in text, with warnings. Other decoded
-groups are retained. Use an appropriate text output encoding when displaying
-replacement or accented characters. L<Ham::RTTY::Result/WARNINGS> lists codes.
-
-=head1 SHARED WAVEFORMS
-
-The original spelling of a shared signal cannot be recovered from events or
-Morse notation. Decoding chooses these representations:
-
-    Waveform  Default  prefer_prosigns => 1
-    .-.-.     +        <AR>
-    -...-     =        <BT>
-    -..-      X        X
-
-The multiplication sign and X share a signal; X is always the canonical
-text output. CT, SN and the other admitted operational signals use their
-single documented token in both modes. The invitation to transmit is K,
-not KN. No non-ITU procedure or alias is enabled by C<prefer_prosigns>.
-See L<Ham::RTTY::Encoder/SYMBOLS> for the exact ITU repertoire and token table.
-
-=head1 ERRORS
-
-Invalid input/rate/options raise C<RTTY_E_ARGUMENT>; strict textual failures
-raise C<RTTY_E_SYMBOL>; invalid event alternation/resolution raises
-C<RTTY_E_TIMING>; history/duration limits raise C<RTTY_E_RESOURCE>.
-Event timing uncertainty produces Result warnings, not argument exceptions.
+$decoder->state returns READY, ACTIVE or FINISHED.
 
 =head1 AUTHOR
 
@@ -443,7 +216,6 @@ Giacomo Picchiarelli
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2026 Giacomo Picchiarelli.
-Artistic License 2.0. See F<LICENSE> in the source distribution.
+Copyright (c) 2026 Giacomo Picchiarelli. Artistic License 2.0. See F<LICENSE>.
 
 =cut

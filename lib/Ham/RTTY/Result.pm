@@ -2,22 +2,22 @@ package Ham::RTTY::Result;
 use 5.020;
 use strict;
 use warnings;
-use Storable                     qw(dclone);
+use Storable                       qw(dclone);
 use Ham::RTTY::_Internal::Validate qw(fail number integer options named_arguments);
 use Ham::RTTY::_Internal::Data     qw(plain_data);
 use Ham::RTTY::Events              qw(validate_events);
 use Ham::RTTY::_Internal::Result;
-our $VERSION = '0.001';
+our $VERSION = '0.01';
 
 sub new {
     my ($class, @pairs) = @_;
     my %args = named_arguments(@pairs);
-    options(\%args, qw(text morse events frequency wpm warnings complete diagnostics));
-    for my $name (qw(text morse)) {
+    options(\%args, qw(text notation events frequency baud warnings complete diagnostics));
+    for my $name (qw(text notation)) {
         fail('RTTY_E_ARGUMENT', "$name must be a defined scalar")
             if exists($args{$name}) && (!defined($args{$name}) || ref($args{$name}));
     }
-    for my $name (qw(frequency wpm)) {
+    for my $name (qw(frequency baud)) {
         number($name, $args{$name}, 0, 2**52) if defined $args{$name};
     }
     integer('complete', $args{complete}, 0, 1) if exists $args{complete};
@@ -42,9 +42,9 @@ sub new {
 sub has_text     { my ($self) = @_; return length($self->{text}) ? 1 : 0 }
 sub has_warnings { my ($self) = @_; return @{$self->{warnings}}  ? 1 : 0 }
 sub text         { my ($self) = @_; return $self->{text} }
-sub morse        { my ($self) = @_; return $self->{morse} }
+sub notation     { my ($self) = @_; return $self->{notation} }
 sub frequency    { my ($self) = @_; return $self->{frequency} }
-sub wpm          { my ($self) = @_; return $self->{wpm} }
+sub baud         { my ($self) = @_; return $self->{baud} }
 sub complete     { my ($self) = @_; return $self->{complete} }
 sub events       { my ($self) = @_; return dclone($self->{events}) }
 sub warnings     { my ($self) = @_; return dclone($self->{warnings}) }
@@ -65,7 +65,7 @@ Ham::RTTY::Result - a cumulative decoding snapshot with text and diagnostics
     use Ham::RTTY;
 
     my $cw = Ham::RTTY->new;
-    my $result = $cw->decode_events($cw->events('SOS'), wpm => 20);
+    my $result = $cw->decode_events($cw->events('SOS'), baud => 20);
     print $result->text, "\n";
     for my $warning (@{$result->warnings}) {
         warn "$warning->{code}: $warning->{message}\n";
@@ -93,11 +93,11 @@ Normally called by the library; constructs a snapshot from these fields:
 
 =over 4
 
-=item * C<text>, C<morse>: defined scalar strings, default empty.
+=item * C<text>, C<notation>: defined scalar strings, default empty.
 
 =item * C<events>: canonical event hash, default C<< {unit => 'us', segments => []} >>. See L<Ham::RTTY::Events>.
 
-=item * C<frequency>, C<wpm>: undefined by default; otherwise finite numbers in 0..C<2**52>.
+=item * C<frequency>, C<baud>: undefined by default; otherwise finite numbers in 0..C<2**52>.
 
 =item * C<warnings>: array of hashes with defined scalar C<code> and C<message>; default empty array.
 
@@ -123,9 +123,9 @@ is retained. A replacement character still makes the string nonempty. Use
 UTF-8 output encoding when displaying non-ASCII text, for example
 C<binmode STDOUT, ':encoding(UTF-8)'>.
 
-=head2 morse
+=head2 notation
 
-    my $morse = $result->morse;
+    my $notation = $result->notation;
 
 Returns dot/dash groups with spaces between letters and C</> between words.
 An implausible event mark may appear as C<?> for diagnostic purposes;
@@ -147,9 +147,9 @@ Returns the detector's selected tone in Hz, or C<undef> if absent. For a
 supplied tone this is that configured candidate, not an independent
 measurement. Event-only decoding has no tone estimate.
 
-=head2 wpm
+=head2 baud
 
-    my $wpm = $result->wpm;
+    my $baud = $result->baud;
 
 Returns character speed, configured or estimated, or C<undef> if unavailable.
 This is not effective Farnsworth speed. See diagnostics for timing source.
@@ -219,8 +219,8 @@ is not evidence of error-free radio reception.
 
     my $fields = $result->as_hash;
 
-Returns a deep copy of all eight stored fields: C<text>, C<morse>, C<events>,
-C<frequency>, C<wpm>, C<warnings>, C<complete> and C<diagnostics>.
+Returns a deep copy of all eight stored fields: C<text>, C<notation>, C<events>,
+C<frequency>, C<baud>, C<warnings>, C<complete> and C<diagnostics>.
 Predicate methods are not extra stored fields. The hash can be serialized
 with a suitable encoder such as JSON::PP.
 
@@ -267,7 +267,7 @@ An event-derived group has no unambiguous symbol. That group becomes U+FFFD.
 =item C<RTTY_W_SPACING_AMBIGUOUS>
 
 Repeated internal long gaps may indicate unknown Farnsworth spacing, or
-C<effective_wpm> exceeds estimated character speed and ordinary spacing was
+C<effective_baud> exceeds estimated character speed and ordinary spacing was
 used. Read the message for the applicable case; supply correct timing hints.
 Leading/trailing silence alone does not produce this warning.
 

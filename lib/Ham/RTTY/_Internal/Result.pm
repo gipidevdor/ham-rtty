@@ -10,10 +10,10 @@ sub from_owned {
     my ($factory, $class, %args) = @_;
     my $self = bless {
         text        => '',
-        morse       => '',
+        notation    => '',
         events      => {unit => 'us', segments => []},
         frequency   => undef,
-        wpm         => undef,
+        baud        => undef,
         warnings    => [],
         complete    => 0,
         diagnostics => {},
