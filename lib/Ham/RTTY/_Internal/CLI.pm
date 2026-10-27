@@ -13,59 +13,60 @@ use Ham::RTTY;
 use Ham::RTTY::_Internal::IO       qw(with_file write_bytes);
 use Ham::RTTY::_Internal::Validate qw(fail integer);
 
+my @ENCODING =
+    qw(baud stop-bits variant usos lenient leading-idle trailing-idle max-segments max-input-bytes);
 my %COMMANDS = (
-    encode => [qw(unknown max-input-bytes)],
-    decode => [qw(prefer-prosigns max-input-bytes)],
-    events => [qw(wpm effective-wpm unknown sample-rate max-input-bytes)],
+    encode => [@ENCODING],
+    bits   => [@ENCODING],
+    decode => [qw(baud variant usos max-segments max-input-bytes)],
+    events => [@ENCODING, 'sample-rate'],
     wav    => [
-        qw(wpm effective-wpm unknown frequency sample-rate amplitude attack-ms release-ms
-            backend bits block-size max-bytes max-samples max-input-bytes)
+        @ENCODING,
+        qw(mark shift reverse sample-rate amplitude backend bits block-size max-bytes max-samples)
     ],
-    midi => [
-        qw(wpm effective-wpm unknown note velocity channel program bpm ppqn max-bytes max-input-bytes)
-    ],
+    midi    => [@ENCODING, qw(mark-note space-note velocity channel program bpm ppqn max-bytes)],
     receive => [
-        qw(frequency wpm effective-wpm backend stereo max-frames min-frequency max-frequency
-            frequency-step min-contrast min-purity filter-bandwidth min-snr-db mark-snr-db all-stations max-bytes block-samples json strict)
+        qw(mark shift reverse baud variant usos atc search backend stereo max-frames max-segments min-frequency max-frequency frequency-step max-bytes block-samples json strict)
     ],
 );
-my %FLAGS = map { $_ => 1 } qw(help version overwrite prefer-prosigns json strict all-stations);
+my %FLAGS        = map { $_ => 1 } qw(help version overwrite reverse lenient search json strict);
 my %DESCRIPTIONS = (
-    unknown            => 'Unsupported symbols (default: error).',
-    'prefer-prosigns'  => 'Prefer named prosigns for ambiguous Morse groups.',
-    wpm                => 'Character words/minute, 1..200 (default: 20).',
-    'effective-wpm'    => 'Farnsworth spacing speed (default: character speed).',
-    frequency          => 'Tone in Hz (default: 700).',
-    'sample-rate'      => 'Samples/second, 1000..384000 (default: 16000).',
-    amplitude          => 'Normalized peak amplitude, 0..1 (default: 0.8).',
-    'attack-ms'        => 'Raised-cosine attack in milliseconds (default: 5).',
-    'release-ms'       => 'Raised-cosine release in milliseconds (default: 5).',
-    backend            => 'Numerical backend (default: perl; auto selects by availability).',
-    bits               => 'PCM bits per sample (default: 16).',
-    'block-size'       => 'Generated samples per block (default: 4096).',
-    'block-samples'    => 'WAV input samples per block (default: 4096).',
-    'max-samples'      => 'Maximum generated sample count (default: 10000000).',
-    'max-input-bytes'  => 'Text byte limit, 1..1048576 (default: 8192).',
-    'max-bytes'        => 'File byte limit (default: 64000000).',
-    note               => 'MIDI note, 0..127 (default: 77).',
-    velocity           => 'MIDI velocity, 1..127 (default: 100).',
-    channel            => 'MIDI channel, 1..16 (default: 1).',
-    program            => 'Zero-based MIDI program, 0..127 (default: 80).',
-    bpm                => 'MIDI tempo, 4..1000 beats/minute (default: 120).',
-    ppqn               => 'MIDI ticks/quarter note, 1..32767 (default: 480).',
-    stereo             => 'Stereo input channel (default: mix).',
-    'max-frames'       => 'Retained 5 ms frames (default: 24000, about 120 seconds).',
-    'min-frequency'    => 'Lower tone-search bound in Hz (default: 300).',
-    'max-frequency'    => 'Upper tone-search bound in Hz (default: 1500, below Nyquist).',
-    'frequency-step'   => 'Tone-search grid step in Hz (default: 50).',
-    'min-contrast'     => 'Minimum keyed-envelope contrast, 0.01..1 (default: 0.60).',
-    'min-purity'       => 'Minimum spectral purity, 0.01..1 (default: 0.20).',
-    'filter-bandwidth' => 'Per-section band-pass width in Hz (default: max(40, 4*WPM), or 180).',
-    'min-snr-db'       => 'Acquisition tone/guard power threshold, 0..40 dB (default: 12).',
-    'mark-snr-db'      => 'Minimum mean mark/local-noise power ratio, 0..40 dB (default: 10).',
-    'all-stations'     => 'Return up to eight distinct keyed stations; JSON becomes an array.',
-    json               => 'Write the complete reception result, including warnings, as JSON.',
-    strict             => 'Return status 1 for any reception warning, including partial text.'
+    baud              => 'Configured baud, 20..300 (default: 45.45; no auto baud).',
+    'stop-bits'       => 'Stop duration in bits: 1, 1.5 (default), or 2.',
+    variant           => 'Alphabet: ita2 (default) or us.',
+    usos              => 'Unshift on space: 1 (default) or 0.',
+    lenient           => 'Substitute unsupported characters with ? and report a warning.',
+    'leading-idle'    => 'Leading MARK seconds, 0..60 (default: 0.1).',
+    'trailing-idle'   => 'Trailing MARK seconds, 0..60 (default: 0.1).',
+    mark              => 'MARK frequency, 300..3000 Hz (default: 2125).',
+    shift             => 'Positive frequency separation (default: 170 Hz).',
+    reverse           => 'Swap MARK and SPACE tones.',
+    atc               => 'Automatic threshold correction: 1 (default) or 0.',
+    search            => 'Acquire a tone pair at the configured shift.',
+    'sample-rate'     => 'Samples/second, 1000..384000 (default: 16000).',
+    amplitude         => 'Normalized peak amplitude, 0..1 (default: 0.8).',
+    backend           => 'perl (default), pdl or auto by availability.',
+    bits              => 'PCM depth: 8, 16 (default) or 24.',
+    'block-size'      => 'Generated block size (default: 4096).',
+    'block-samples'   => 'WAV input block size (default: 4096).',
+    'max-samples'     => 'Generation sample ceiling (default: 10000000).',
+    'max-input-bytes' => 'Text byte ceiling, 1..1048576 (default: 8192).',
+    'max-bytes'       => 'WAV byte ceiling (default: 64000000); MIDI: 8000000.',
+    'max-frames'      => 'Retained feature ceiling (default: 200000).',
+    'max-segments'    => 'Retained run ceiling (default: 100000).',
+    'mark-note'       => 'MARK MIDI note, 0..127 (default: 77).',
+    'space-note'      => 'SPACE MIDI note, 0..127 (default: 79).',
+    velocity          => 'MIDI velocity, 1..127 (default: 100).',
+    channel           => 'MIDI channel, 1..16 (default: 1).',
+    program           => 'Zero-based MIDI program, 0..127 (default: 80).',
+    bpm               => 'MIDI tempo, 4..1000 (default: 120).',
+    ppqn              => 'MIDI ticks per quarter, 1..32767 (default: 480).',
+    stereo            => 'Stereo input: mix (default), left or right.',
+    'min-frequency'   => 'Search minimum MARK in Hz (default: 300).',
+    'max-frequency'   => 'Search maximum MARK (default: 3000 minus shift).',
+    'frequency-step'  => 'Search grid spacing, 1..500 Hz (default: 10).',
+    json              => 'Write the complete reception Result as JSON.',
+    strict            => 'Exit 1 if reception reports any warning.',
 );
 
 sub _bytes {
@@ -85,51 +86,27 @@ sub _help_options {
     my $text      = '';
     my %available = map { $_ => 1 } @{$COMMANDS{$command}};
     my @groups    = (
-        ['Results',                    qw(json all-stations strict)],
-        ['Timing and tone',            qw(wpm effective-wpm frequency)],
-        ['Text',                       qw(unknown prefer-prosigns)],
-        ['WAV format and envelope',    qw(sample-rate bits amplitude attack-ms release-ms)],
-        ['MIDI instrument and timing', qw(note velocity channel program bpm ppqn)],
-        ['Processing',                 qw(backend stereo)],
-        ['Tone search',                qw(min-frequency max-frequency frequency-step)],
-        [
-            'Detection thresholds',
-            qw(filter-bandwidth min-snr-db mark-snr-db min-contrast min-purity)
-        ],
+        ['Results',         qw(json strict)],
+        ['Timing and tone', qw(baud stop-bits mark shift reverse leading-idle trailing-idle)],
+        ['Text',            qw(variant usos lenient)],
+        ['WAV format',      qw(sample-rate bits amplitude)],
+        ['MIDI instrument and timing', qw(mark-note space-note velocity channel program bpm ppqn)],
+        ['Processing',                 qw(backend stereo atc)],
+        ['Tone search',                qw(search min-frequency max-frequency frequency-step)],
         [
             'Limits and buffering',
-            qw(max-input-bytes max-bytes max-samples max-frames block-size block-samples)
+            qw(max-input-bytes max-bytes max-samples max-frames max-segments block-size block-samples)
         ],
     );
     my %units = (
-        (map { $_ => 'WPM' } qw(wpm effective-wpm)),
-        (
-            map { $_ => 'HZ' }
-                qw(frequency sample-rate min-frequency max-frequency frequency-step filter-bandwidth)
-        ),
-        (map { $_ => 'MS' } qw(attack-ms release-ms)),
-        (map { $_ => 'DB' } qw(min-snr-db mark-snr-db)),
-        (map { $_ => 'BYTES' } qw(max-bytes max-input-bytes)),
-        unknown => 'error|skip',
         backend => 'perl|pdl|auto',
-        stereo  => 'mix|left|right',
-        bits    => '8|16|24',
+        variant => 'ita2|us',
+        usos    => '0|1',
+        atc     => '0|1',
+        bits    => '8|16|24'
     );
-    my %context = (
-        events  => {'sample-rate' => 'Samples/second, 1000..384000; selects sampled event units.'},
-        midi    => {'max-bytes'   => 'File byte limit (default: 8000000).'},
-        receive => {
-            frequency       => 'Tone in Hz (default: estimated).',
-            wpm             => 'Character words/minute, 1..60 (default: estimated).',
-            'effective-wpm' => 'Farnsworth spacing speed (optional hint).',
-        },
-    );
-    my %descriptions = (%DESCRIPTIONS, %{$context{$command} // {}});
-    my %headings     = (
-        events => {'Timing and tone' => 'Morse timing', 'WAV format and envelope' => 'Event units'},
-        midi   => {'Timing and tone' => 'Morse timing'},
-    );
-    my $headings = $headings{$command} // {};
+    my %descriptions = %DESCRIPTIONS;
+    my $headings     = {};
 
     for my $group (@groups) {
         my ($title, @names) = @{$group};
@@ -153,11 +130,12 @@ sub _help {
     my ($command) = @_;
     my %examples = (
         encode  => 'ham-rtty encode "CQ TEST"',
-        decode  => 'ham-rtty decode -- "-.-. --.- / - . ... -"',
-        events  => 'ham-rtty events --wpm 20 "SOS"',
-        wav     => 'ham-rtty wav --wpm 20 --output practice.wav "CQ TEST"',
+        decode  => 'ham-rtty decode "[LTRS] 00011"',
+        bits    => 'ham-rtty bits "CQ TEST"',
+        events  => 'ham-rtty events --baud 50 "SOS"',
+        wav     => 'ham-rtty wav --baud 50 --output practice.wav "CQ TEST"',
         midi    => 'ham-rtty midi --output practice.mid "CQ TEST"',
-        receive => 'ham-rtty receive --frequency 700 --wpm 20 recording.wav',
+        receive => 'ham-rtty receive --mark 2125 --baud 50 recording.wav',
     );
     my $text;
     if (defined $command) {
@@ -172,12 +150,13 @@ sub _help {
 Usage: ham-rtty COMMAND [OPTIONS] [TEXT ...]
        ham-rtty receive [OPTIONS] [FILE]
 
-Morse, from text to signal and back.
+RTTY, from text to signal and back.
 
 Commands:
-  encode   Text to Morse.
-  decode   Morse to text; spaces separate letters, / separates words.
-  events   Timed keying events as JSON.
+  encode   Text to ITA2 codes.
+  decode   ITA2 codes and shift markers to text.
+  bits     Framed transmission bits.
+  events   Timed MARK/SPACE events as JSON.
   wav      Text to a PCM WAV file.
   midi     Text to a standard MIDI file.
   receive  Recorded PCM WAV to text.
@@ -185,7 +164,7 @@ Commands:
 Start here:
   ham-rtty encode "CQ TEST"
   ham-rtty wav --output practice.wav "CQ TEST"
-  ham-rtty receive --frequency 700 --wpm 20 practice.wav
+  ham-rtty receive --mark 2125 --baud 50 practice.wav
 
 Run ham-rtty help COMMAND for options and an example.
 HELP
@@ -206,7 +185,7 @@ HELP
     }
     else {
         $text .= "\nText is UTF-8. Omit TEXT to read stdin, or use --input FILE.\n";
-        $text .= "Use -- before text beginning with a dash. Quote text containing prosigns.\n";
+        $text .= "Use -- before text beginning with a dash. Quote punctuation and shift markers.\n";
     }
     $text .= "Existing output files are protected; use --overwrite to replace them.\n";
     $text .= "WAV and MIDI require --output FILE; binary stdout requires --output -.\n"
@@ -270,7 +249,7 @@ sub _copy {
         $size = 65536 if $size > 65536;
         my $count = read($input, my $block, $size);
         fail('RTTY_E_IO', 'Cannot read input') unless defined $count;
-        last                                 unless $count;
+        last                                   unless $count;
         $total += $count;
         fail('RTTY_E_RESOURCE', 'Input exceeds its configured byte limit') if $total > $limit;
         $consume->($block);
@@ -321,11 +300,8 @@ sub _receive {
     fail('RTTY_E_ARGUMENT', 'Use one WAV path or --input, not both')
         if @{$arguments} > 1 || (defined($path) && @{$arguments});
     $path //= $arguments->[0] // '-';
-    my $cw            = Ham::RTTY->new;
-    my $all           = delete $options->{all_stations};
-    my $path_method   = $all ? 'read_wav_channels'   : 'read_wav';
-    my $handle_method = $all ? 'decode_wav_channels' : 'decode_wav';
-    return $cw->$path_method($path, %{$options}) if $path ne '-';
+    my $rtty = Ham::RTTY->new;
+    return $rtty->read_wav($path, %{$options}) if $path ne '-';
     my $audio = Ham::RTTY::Audio->new(
         exists($options->{max_bytes}) ? (max_bytes => $options->{max_bytes}) : ());
     my ($temporary) = eval { tempfile('ham-rtty-stdin-XXXXXX', TMPDIR => 1, UNLINK => 1) };
@@ -333,7 +309,7 @@ sub _receive {
     binmode $temporary, ':raw' or fail('RTTY_E_IO', 'Cannot set temporary input mode');
     _copy($stdin, $audio->{max_bytes}, sub { write_bytes($temporary, $_[0]) });
     seek($temporary, 0, 0) or fail('RTTY_E_IO', 'Cannot rewind temporary input');
-    return $cw->$handle_method($temporary, %{$options});
+    return $rtty->decode_wav($temporary, %{$options});
 }
 
 sub _output {
@@ -373,7 +349,8 @@ sub _execute {
     my $explicit_output = exists $options->{output};
     my $path            = delete($options->{output})    // '-';
     my $overwrite       = delete($options->{overwrite}) // 0;
-    fail('RTTY_E_ARGUMENT', '--overwrite requires a named output file') if $overwrite && $path eq '-';
+    fail('RTTY_E_ARGUMENT', '--overwrite requires a named output file')
+        if $overwrite && $path eq '-';
     fail('RTTY_E_ARGUMENT', "$command requires --output FILE or --output -")
         if ($command eq 'wav' || $command eq 'midi') && !$explicit_output;
     my $json   = delete $options->{json};
@@ -386,21 +363,29 @@ sub _execute {
     }
     else {
         my $text = _text($arguments, $options, $stdin);
-        my $cw   = Ham::RTTY->new;
+        my $rtty = Ham::RTTY->new;
         if ($command eq 'wav' || $command eq 'midi') {
             my $method = "generate_$command";
-            _output($path, $overwrite, $stdout, sub { $cw->$method($text, $_[0], %{$options}) });
+            _output($path, $overwrite, $stdout, sub { $rtty->$method($text, $_[0], %{$options}) });
             return 0;
         }
         if ($command eq 'events') {
             my $rate = delete $options->{sample_rate};
             my $events =
                 defined($rate)
-                ? $cw->sampled_events($text, %{$options}, sample_rate => $rate)
-                : $cw->events($text, %{$options});
+                ? $rtty->sampled_events($text, %{$options}, sample_rate => $rate)
+                : $rtty->events($text, %{$options});
             $bytes = JSON::PP->new->utf8->canonical->pretty->encode($events);
         }
-        else { $bytes = _bytes($cw->$command($text, %{$options}) . "\n") }
+        else {
+            if ($command eq 'encode' || $command eq 'bits') {
+                my $encoder = $rtty->encoder(%{$options});
+                $bytes = _bytes($encoder->$command($text) . "\n");
+                _write($stderr, _bytes("$_->{code}: $_->{message}\n"))
+                    for @{$encoder->result->warnings};
+            }
+            else { $bytes = _bytes($rtty->$command($text, %{$options}) . "\n") }
+        }
     }
     _output($path, $overwrite, $stdout, sub { _write($_[0], $bytes) });
     return $status;
@@ -424,7 +409,7 @@ sub _dispatch {
     fail('RTTY_E_ARGUMENT', "Unknown command '$command'; use ham-rtty --help")
         unless exists $COMMANDS{$command};
     my $options = _options($command, $arguments);
-    if (delete $options->{help})    { _write($stdout, _help($command));              return 0 }
+    if (delete $options->{help})    { _write($stdout, _help($command));                  return 0 }
     if (delete $options->{version}) { _write($stdout, "ham-rtty $Ham::RTTY::VERSION\n"); return 0 }
     return _execute($command, $arguments, $options,
         {stdin => $stdin, stdout => $stdout, stderr => $stderr});
@@ -453,7 +438,9 @@ sub run {
     if ($code eq 'RTTY_E_ARGUMENT') {
         my $command = $arguments->[0] // '';
         $hint =
-            exists($COMMANDS{$command}) ? "Try: ham-rtty help $command\n" : "Try: ham-rtty --help\n";
+            exists($COMMANDS{$command})
+            ? "Try: ham-rtty help $command\n"
+            : "Try: ham-rtty --help\n";
     }
     eval { _write($stderr, _bytes("ham-rtty: $code: $message\n$hint")); 1 } or return 3;
     return $status;

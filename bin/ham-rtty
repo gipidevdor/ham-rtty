@@ -11,80 +11,29 @@ exit Ham::RTTY::_Internal::CLI::run(\@ARGV, \*STDIN, \*STDOUT, \*STDERR);
 
 =head1 NAME
 
-ham-rtty - Morse text, event, WAV and MIDI command-line tools
+ham-rtty - ITA2 text, start-stop events, AFSK WAV and debug MIDI tools
 
 =head1 SYNOPSIS
 
-    ham-rtty encode "CQ DE TESTCALL"
-    ham-rtty decode "... --- ..."
-    ham-rtty events --wpm 20 "SOS"
-    ham-rtty wav --output cq.wav --wpm 20 "CQ TEST"
+    ham-rtty encode "CQ 123"
+    ham-rtty decode "[LTRS] 00011"
+    ham-rtty bits "CQ"
+    ham-rtty events --baud 50 "CQ"
+    ham-rtty wav --output cq.wav --baud 50 "CQ TEST"
     ham-rtty midi --output cq.mid "CQ TEST"
-    ham-rtty receive --json cq.wav
+    ham-rtty receive --baud 50 --json cq.wav
     ham-rtty help receive
 
 =head1 DESCRIPTION
 
-Command-line interface to L<Ham::RTTY> for Morse conversion, WAV/MIDI output
-and recorded CW reception. Requires Perl 5.20 or later and core modules;
-PDL is optional. Audio reception is experimental: check its warnings.
-Sound devices and live MIDI ports are outside its scope.
-
-=head1 COMMANDS
-
-=head2 encode
-
-Convert text to Morse, with spaces between letters and C</> between words.
-Accepts C<--unknown error|skip>; rejection is the default.
-
-=head2 decode
-
-Convert Morse groups to text. Use C<--prefer-prosigns> to choose named
-operational prosigns for ambiguous groups. Separate letters with spaces
-and words with C</>. Use C<-- > before Morse beginning with a dash.
-
-=head2 events
-
-Export canonical timed events as JSON. C<--sample-rate HZ> instead exports
-sampled events. Accepts C<--wpm>, C<--effective-wpm> and C<--unknown>.
-
-=head2 wav
-
-Generate mono PCM WAV. C<--output FILE> or C<--output -> is required.
-Accepts C<--wpm>, C<--effective-wpm>, C<--unknown>, C<--frequency>,
-C<--sample-rate>, C<--amplitude>, C<--attack-ms>, C<--release-ms>,
-C<--backend perl|pdl|auto>, C<--bits 8|16|24>, C<--block-size>,
-C<--max-bytes> and C<--max-samples>. Values and defaults match L<Ham::RTTY>.
-
-=head2 midi
-
-Generate an SMF type 0 MIDI file. Explicit C<--output> is required.
-Accepts C<--wpm>, C<--effective-wpm>, C<--unknown>, C<--note>,
-C<--velocity>, C<--channel>, C<--program>, C<--bpm>, C<--ppqn> and
-C<--max-bytes>. WPM controls Morse speed; BPM controls MIDI tick mapping.
-Program numbers are zero-based, and channels are 1..16.
-
-=head2 receive
-
-Decode a PCM WAV recording. Supply one filename, C<--input FILE>, or
-standard input when neither is given. C<-> also selects standard input.
-Stdin is copied to a temporary seekable file and bounded by C<--max-bytes>
-(64000000 by default); audio is then processed in bounded blocks.
-
-Accepts C<--frequency>, C<--wpm>, C<--effective-wpm>, C<--backend>,
-C<--stereo mix|left|right>, C<--max-frames>, C<--min-frequency>,
-C<--max-frequency>, C<--frequency-step>, C<--min-contrast>,
-C<--min-purity>, C<--filter-bandwidth>, C<--min-snr-db>, C<--mark-snr-db>, C<--all-stations>, C<--max-bytes> and C<--block-samples>.
-C<--json> outputs the complete result, including events and warnings.
-C<--all-stations> returns up to eight distinct filtered channel Results,
-ordered by accumulated energy. With C<--json>, output is an array (possibly
-empty); otherwise each line starts with the candidate frequency in Hz.
-Without it, one primary Result is returned. WPM hints apply to all stations;
-omit them for independent timing estimates. Station separation and filter
-options follow L<Ham::RTTY::Detector>. Co-channel stations cannot be separated.
-Otherwise text goes to stdout and warnings to stderr. C<--strict> returns
-status 1 for any warning, even when text was recovered. Completion and
-nonempty text do not certify reception accuracy.
+Command-line interface to L<Ham::RTTY>. Commands are encode, decode, bits,
+events, wav, midi, receive and help. Use help COMMAND for accepted options,
+units, ranges and defaults. encode prints numeric five-bit codes with shift
+markers; decode accepts them. bits emits framed transmission bits (1.5 stop
+rounds up in logical strings); events preserves fractional timing. WAV uses
+continuous-phase AFSK; MIDI renders MARK/SPACE as two debug notes.
+Reception requires configured baud (default 45.45), without automatic baud
+or shift identification. No simultaneous stations, equalisation or diversity.
 
 =head1 INPUT AND OUTPUT
 
@@ -103,7 +52,7 @@ Stdout cannot be rolled back after an I/O failure. Diagnostics use stderr
 and never contaminate binary/JSON stdout. Broken pipes return status 3.
 
 Options are case-sensitive and must be spelled in full. Repeated options
-are rejected. C<-- > ends option parsing. Quote prosigns and shell special
+are rejected. C<-- > ends option parsing. Quote shift markers and shell special
 characters; double quotes work in common Unix shells and Windows cmd.exe.
 Non-ASCII positional arguments depend on the shell's UTF-8 support. UTF-8
 files supplied with C<--input> provide portable non-ASCII input, including

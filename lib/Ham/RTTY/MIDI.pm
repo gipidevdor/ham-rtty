@@ -2,24 +2,25 @@ package Ham::RTTY::MIDI;
 use 5.020;
 use strict;
 use warnings;
-use Scalar::Util                 qw(openhandle);
+use Scalar::Util                   qw(openhandle);
 use Ham::RTTY::Events              qw(validate_events);
 use Ham::RTTY::_Internal::IO       qw(write_bytes with_file);
 use Ham::RTTY::_Internal::Validate qw(fail integer number options named_arguments);
-our $VERSION = '0.001';
+our $VERSION = '0.01';
 
 sub new {
     my ($class, @pairs) = @_;
     my %args = named_arguments(@pairs);
-    options(\%args, qw(note velocity channel program bpm ppqn max_bytes));
+    options(\%args, qw(mark_note space_note velocity channel program bpm ppqn max_bytes));
     return bless {
-        note      => integer('note',     $args{note}     // 77,  0, 127),
-        velocity  => integer('velocity', $args{velocity} // 100, 1, 127),
-        channel   => integer('channel',  $args{channel}  // 1,   1, 16),
-        program   => integer('program',  $args{program}  // 80,  0, 127),
-        bpm       => number('bpm', $args{bpm} // 120, 4, 1000),
-        ppqn      => integer('ppqn',      $args{ppqn}      // 480,     1,  32767),
-        max_bytes => integer('max_bytes', $args{max_bytes} // 8000000, 64, 64000000),
+        mark_note  => integer('mark_note',  $args{mark_note}  // 77,  0, 127),
+        space_note => integer('space_note', $args{space_note} // 79,  0, 127),
+        velocity   => integer('velocity',   $args{velocity}   // 100, 1, 127),
+        channel    => integer('channel',    $args{channel}    // 1,   1, 16),
+        program    => integer('program',    $args{program}    // 80,  0, 127),
+        bpm        => number('bpm', $args{bpm} // 120, 4, 1000),
+        ppqn       => integer('ppqn',      $args{ppqn}      // 480,     1,  32767),
+        max_bytes  => integer('max_bytes', $args{max_bytes} // 8000000, 64, 64000000),
     }, $class;
 }
 
@@ -49,14 +50,15 @@ sub encode {
     for my $segment (@{$events->{segments}}) {
         my $start = int($time * $numerator / $denominator + 0.5);
         $time += $segment->{$field};
-        next if $segment->{state} eq 'off';
-        my $end = int($time * $numerator / $denominator + 0.5);
+        my $note = $self->{$segment->{state} eq 'mark' ? 'mark_note' : 'space_note'};
+        my $end  = int($time * $numerator / $denominator + 0.5);
         fail('RTTY_E_TIMING', 'MIDI resolution would produce a zero-length note') if $end <= $start;
-        $track .= _vlq($start - $last_tick)
-            . pack('CCC', 0x90 | $channel, $self->{note}, $self->{velocity});
-        $track .= _vlq($end - $start) . pack('CCC', 0x80 | $channel, $self->{note}, 0);
+        $track .=
+            _vlq($start - $last_tick) . pack('CCC', 0x90 | $channel, $note, $self->{velocity});
+        $track .= _vlq($end - $start) . pack('CCC', 0x80 | $channel, $note, 0);
         $last_tick = $end;
-        fail('RTTY_E_RESOURCE', 'MIDI exceeds max_bytes') if length($track) + 30 > $self->{max_bytes};
+        fail('RTTY_E_RESOURCE', 'MIDI exceeds max_bytes')
+            if length($track) + 30 > $self->{max_bytes};
     }
     $track .= _vlq(int($time * $numerator / $denominator + 0.5) - $last_tick) . "\xff\x2f\0";
     return pack('a4Nnnna4N', 'MThd', 6, 0, 1, $self->{ppqn}, 'MTrk', length $track) . $track;
@@ -93,8 +95,8 @@ Ham::RTTY::MIDI - export keyed events to standard MIDI files
     use Ham::RTTY::Encoder;
     use Ham::RTTY::MIDI;
 
-    my $events = Ham::RTTY::Encoder->new(wpm => 20)->events('SOS');
-    my $midi = Ham::RTTY::MIDI->new(note => 77, program => 80);
+    my $events = Ham::RTTY::Encoder->new(baud => 50)->events('SOS');
+    my $midi = Ham::RTTY::MIDI->new(mark_note => 77, space_note => 79, program => 80);
     my $bytes = $midi->encode($events);
     print length($bytes), " MIDI bytes\n";
 
@@ -103,7 +105,7 @@ The path must be new unless C<overwrite =E<gt> 1> is explicitly selected.
 
 =head1 DESCRIPTION
 
-Exports one keyed note at a time in Standard MIDI File (SMF) type 0 format,
+Exports one MARK or SPACE note at a time in Standard MIDI File (SMF) type 0 format,
 with one track, tempo, program change, note-on/off and end-of-track events.
 It does not render sound or send events to a MIDI device. No external MIDI
 module is required. To start with ordinary text, use L<Ham::RTTY/write_midi>.
@@ -118,7 +120,7 @@ Options and inclusive ranges:
 
 =over 4
 
-=item * C<note>: 77; integer 0..127.
+=item * C<mark_note>: 77; C<space_note>: 79; integer 0..127.
 
 =item * C<velocity>: 100; integer 1..127, used for note-on events.
 
@@ -146,8 +148,7 @@ channel when a sustained pitch is desired.
     my $bytes = $midi->encode($events);
 
 Validates TimedEvents or SampledEvents and returns a complete binary SMF
-scalar. Leading/trailing silence is preserved. ON runs become notes; OFF
-runs become elapsed ticks. Source event durations determine real-time Morse
+scalar. Leading/trailing silence is preserved. MARK and SPACE runs become two configurable notes. This is a visual/debug rendering. Source event durations determine real-time RTTY
 speed. Changing BPM changes tick mapping, not the requested source timing.
 Playback sound and envelopes depend on the player/synthesizer.
 
