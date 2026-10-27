@@ -1,6 +1,8 @@
 Revision history for Ham-RTTY
 
 0.001  2026-10-27
+    - Measure isolated Perl/PDL peak RSS for reception and sample generation.
+    - Publish 30 RAM observations with source/input hashes and repeated ranges.
     - Add five licensed external reception examples and offline comparisons.
     - Retain source hashes, conversion commands and independent-decoder limits.
     - Make CLI quick-start settings consistent and show tone/channel values.

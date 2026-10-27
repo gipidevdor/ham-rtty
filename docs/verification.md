@@ -160,3 +160,19 @@ contract and isolated installation with all installed examples. All eleven
 pass on the fixture commit. Workflow analyzers and the local secret scan
 report no findings. These results do not claim a passing dependency audit or
 authoritative field acceptance.
+
+## Perl and PDL RAM comparison, 2026-10-27
+
+Thirty successful isolated observations cover the initialized toolkit,
+120-second/48000-Hz WAV reception, a 30-second/8000-Hz DWD recording, streamed
+generation and collected generation. Each workload/backend has three runs.
+The [benchmark table](benchmarks.md#peak-resident-memory) reports median and
+minimum/maximum peak RSS; [raw RAM results](memory-results.json) retain every
+observation and source/input hashes.
+
+For 120-second WAV reception, median peaks are 20.70 MiB (Perl, PDL unloaded)
+and 27.55 MiB (PDL); largest observed peaks are 20.75 and 27.58 MiB. Each run
+analyzes all 5,760,000 samples and both backends return identical text.
+Production modules are unchanged; the benchmark helper adds explicit backend
+selection and isolated workload modes. Earlier CPU and RAM observations
+remain historical and are not relabelled as new measurements.

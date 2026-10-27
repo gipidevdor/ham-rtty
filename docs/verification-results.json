@@ -729,5 +729,108 @@
       "All public versions remain 0.001.",
       "No real-recording or dependency-audit release gate was weakened."
     ]
+  },
+  "ram_backend_comparison": {
+    "date": "2026-10-27",
+    "source_revision": "e55326fb2a3d835ce27387e64527f0e330ecc4d4",
+    "raw": "memory-results.json",
+    "observations": 30,
+    "repetitions_per_case_backend": 3,
+    "fresh_processes": true,
+    "baseline_subtracted": false,
+    "summary": [
+      {
+        "case": "baseline",
+        "backend": "perl",
+        "observations": 3,
+        "median_peak_rss_bytes": 14712832,
+        "min_peak_rss_bytes": 14712832,
+        "max_peak_rss_bytes": 14729216,
+        "median_wall_seconds": 0.04
+      },
+      {
+        "case": "baseline",
+        "backend": "pdl",
+        "observations": 3,
+        "median_peak_rss_bytes": 21692416,
+        "min_peak_rss_bytes": 21626880,
+        "max_peak_rss_bytes": 21725184,
+        "median_wall_seconds": 0.07
+      },
+      {
+        "case": "read_wav_120s_48khz",
+        "backend": "perl",
+        "observations": 3,
+        "median_peak_rss_bytes": 21708800,
+        "min_peak_rss_bytes": 21708800,
+        "max_peak_rss_bytes": 21757952,
+        "median_wall_seconds": 12.27
+      },
+      {
+        "case": "read_wav_120s_48khz",
+        "backend": "pdl",
+        "observations": 3,
+        "median_peak_rss_bytes": 28884992,
+        "min_peak_rss_bytes": 28803072,
+        "max_peak_rss_bytes": 28917760,
+        "median_wall_seconds": 7.8
+      },
+      {
+        "case": "read_wav_dwd_30s_8khz",
+        "backend": "perl",
+        "observations": 3,
+        "median_peak_rss_bytes": 17661952,
+        "min_peak_rss_bytes": 17498112,
+        "max_peak_rss_bytes": 17678336,
+        "median_wall_seconds": 0.63
+      },
+      {
+        "case": "read_wav_dwd_30s_8khz",
+        "backend": "pdl",
+        "observations": 3,
+        "median_peak_rss_bytes": 24657920,
+        "min_peak_rss_bytes": 24625152,
+        "max_peak_rss_bytes": 24756224,
+        "median_wall_seconds": 0.98
+      },
+      {
+        "case": "stream_samples_120s_48khz",
+        "backend": "perl",
+        "observations": 3,
+        "median_peak_rss_bytes": 19480576,
+        "min_peak_rss_bytes": 19398656,
+        "max_peak_rss_bytes": 19496960,
+        "median_wall_seconds": 0.91
+      },
+      {
+        "case": "stream_samples_120s_48khz",
+        "backend": "pdl",
+        "observations": 3,
+        "median_peak_rss_bytes": 28196864,
+        "min_peak_rss_bytes": 28082176,
+        "max_peak_rss_bytes": 28246016,
+        "median_wall_seconds": 0.7
+      },
+      {
+        "case": "collect_samples_120s_48khz",
+        "backend": "perl",
+        "observations": 3,
+        "median_peak_rss_bytes": 215171072,
+        "min_peak_rss_bytes": 215138304,
+        "max_peak_rss_bytes": 215171072,
+        "median_wall_seconds": 1.05
+      },
+      {
+        "case": "collect_samples_120s_48khz",
+        "backend": "pdl",
+        "observations": 3,
+        "median_peak_rss_bytes": 223887360,
+        "min_peak_rss_bytes": 223887360,
+        "max_peak_rss_bytes": 224018432,
+        "median_wall_seconds": 0.74
+      }
+    ],
+    "reception_text_identical_across_backends": true,
+    "all_sample_counts_verified": true
   }
 }
