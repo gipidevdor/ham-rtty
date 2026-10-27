@@ -104,3 +104,28 @@ upstream release commits. Documentation build/upload and workflow security
 checks passed on both updated PR heads before merging. The configuration
 action uses Node 24 on GitHub-hosted Ubuntu; artifact upload retains the
 existing site path and permissions. No release gate was removed or weakened.
+
+## Ergonomics review, 2026-10-27
+
+Source revision `1286e5990f189c68a7c44f73dd26af2a8cdce461` corrects the CLI
+quick start's mismatched baud settings, the streaming guide's omitted tone,
+and default search bounds that rejected valid low-rate recordings. Help shows
+tone units, channel choices and command-specific limits. Events, WAV and MIDI
+now report explicit lenient substitutions on stderr while preserving usable
+JSON and binary stdout. User-owned installation instructions configure both
+module and command lookup. Version remains **0.001**.
+
+Warnings-fatal ordinary tests pass 18 files and 1,980 assertions; the author
+suite passes 12 files and 717 assertions. Regression checks execute the help
+workflow in an empty directory, assert the streaming guide's actual text,
+exercise known-tone/searching low-rate reception on both backends and reject
+explicit invalid search bands. Distribution checks and an isolated install
+with the complete installed example catalog pass.
+
+Fresh coverage is 1,711/1,712 statements (**99.94%**) and 594/608 branches
+(**97.70%**). Every production module passes the 95%/90% gate. The
+[raw verification](verification-results.json) retains module counts, source
+hashes, commands and the tested archive hash separately from older results.
+Earlier timing/memory measurements have not been repeated for this revision.
+Missing reviewed recordings and the dependency audit still prevent release
+qualification.

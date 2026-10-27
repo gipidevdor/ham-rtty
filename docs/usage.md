@@ -44,6 +44,9 @@ and 4 for an unexpected internal failure. Text warnings and errors use stderr;
 receive JSON includes its warnings. `--strict` preserves partial text and
 returns status 1 when warnings occur. Use `--help` or `ham-rtty help COMMAND`
 for command help, and `--version` for the installed version.
+With `--lenient`, every text-encoding command reports substitutions on stderr,
+including WAV, MIDI and events. Binary and JSON output contain only their
+requested data.
 Text input is limited to 8192 bytes by default; `--max-input-bytes` raises it
 to at most 1048576.
 
@@ -191,7 +194,7 @@ print $final->text, "\n";
 $detector->reset;
 
 my $samples = $rtty->samples('SOS');
-my $collected = $rtty->decode_samples($samples, sample_rate => 8000, baud => 50);
+my $collected = $rtty->decode_samples($samples, mark => 650, sample_rate => 8000, baud => 50);
 print $collected->text, "\n";
 ```
 
