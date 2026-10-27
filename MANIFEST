@@ -29,9 +29,18 @@ docs/usage.md
 docs/verification-results.json
 docs/verification.md
 examples/README.md
+examples/cli-paths.pl
+examples/failure-recovery.pl
+examples/memory-files.pl
+examples/midi-paths.pl
 examples/midi.pl
+examples/pcm-streams.pl
 examples/receive.pl
+examples/reception-samples.pl
+examples/results.pl
+examples/routes.json
 examples/run-all.pl
+examples/sample-streams.pl
 examples/send.pl
 examples/text-events.pl
 examples/workflows.pl
@@ -84,6 +93,7 @@ t/19-audio-midi.t
 t/20-failure-atomicity.t
 t/22-cli.t
 t/28-file-contracts.t
+t/29-examples.t
 t/lib/CorpusMetrics.pm
 t/lib/FaultHandle.pm
 xt/corpus-licenses.t

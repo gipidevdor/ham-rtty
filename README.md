@@ -60,7 +60,7 @@ text or JSON. WAV and MIDI require an explicit output; `--output -` selects
 binary stdout. Prefer named binary files in Windows shells.
 
 Use `ham-rtty help COMMAND` for options and examples, or the
-[task guide](docs/usage.md) for reception settings and warnings.
+[recovery guide](docs/usage.md#when-you-need-help) for errors and reception warnings.
 
 ## Use it in Perl
 
@@ -85,7 +85,8 @@ for my $warning (@{$result->warnings}) {
 }
 ```
 
-More recipes: [task guide](docs/usage.md) and [examples](examples/README.md).
+More recipes: [task guide](docs/usage.md#library-recipes) and
+[examples](examples/README.md).
 Read the API with `perldoc Ham::RTTY`, or `perldoc lib/Ham/RTTY.pm` from a checkout.
 
 ## Know what to expect

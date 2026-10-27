@@ -7,12 +7,13 @@
 | Task | Guide |
 | --- | --- |
 | Install or check your environment | [Installation](installing.md) |
-| Convert text or inspect ITA2 codes | [Text and timing](usage.md#text-and-timing) |
-| Make WAV or MIDI files | [Audio](usage.md#audio) and [file workflows](usage.md#files-and-command-line) |
-| Receive audio incrementally | [Streaming](usage.md#streaming) |
-| Run an API example | [Examples](../examples/README.md) |
-| Understand timing, state and detection | [Architecture](architecture.md) |
-| Review character mappings and attribution | [Standards and provenance](standards.md) |
+| Convert text, make files or receive RTTY | [Task guide](usage.md#command-line-use) |
+| Resolve an error or warning | [Recovery guide](usage.md#when-you-need-help) |
+| Use the library in an application | [Library recipes](usage.md#library-recipes) |
+| Run an API example | [Example catalog](../examples/README.md#choose-a-path) |
+| Choose an API or representation | [Interfaces](usage.md#choose-an-interface) and [data representations](usage.md#choose-the-data-representation) |
+| Understand timing, state and filtering | [Architecture](architecture.md) |
+| Understand detector thresholds | [Power heuristics](architecture.md#detector-power-heuristics) |
 | Compare backend speed | [Measured performance](benchmarks.md) |
 | Review tests and recordings | [Verification](verification.md) and [reference corpus](../corpus/README.md) |
 | Change or release the project | [Contributing](../CONTRIBUTING.md) and [release procedure](releasing.md) |
@@ -25,11 +26,10 @@ From a checkout, use `perldoc lib/Ham/RTTY.pm` or `perldoc bin/ham-rtty`.
 
 ## Reading measurements
 
-Measurements are tied to a source revision and date. The
-[verification record](verification.md), [coverage results](coverage-results.json)
-and [benchmark results](performance-results.json) retain the measured evidence.
-Unverified recordings and incomplete release gates are identified explicitly.
+Measurements are tied to a source revision and date.
+[Benchmark results](performance-results.json), [coverage](coverage-results.json)
+and the [verification record](verification.md) retain the measured observations.
 
-Copyright © 2026 Giacomo Picchiarelli. Project code and original material use
-[Artistic License 2.0](../LICENSE). Attribution and recording admission rules
-are listed in [NOTICE](../NOTICE) and [recording licenses](../corpus/real/LICENSES.md).
+Copyright © 2026 Giacomo Picchiarelli. Project code uses [Artistic License 2.0](../LICENSE). Recording-specific terms,
+attribution and transformations are listed in [NOTICE](../NOTICE) and
+[recording licenses](../corpus/real/LICENSES.md).

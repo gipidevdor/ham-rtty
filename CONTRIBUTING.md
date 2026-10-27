@@ -26,8 +26,9 @@ make test
 Use your Perl's make program (`gmake` on some Windows installations). `prove -lr t`
 is an alternative that reads `lib` directly and needs no installation.
 
-Author checks additionally need codespell 2.4.1 (on PATH), Perl::MinimumVersion, PDL, Perl::Critic, the pinned Perl::Tidy release,
+Author checks additionally need PDL, Perl::Critic, the pinned Perl::Tidy release,
 Devel::Cover and the POD/metadata tools declared under development prerequisites.
+RTTY author checks also need codespell 2.4.1 on PATH and Perl::MinimumVersion.
 These commands use `cpanm` from App::cpanminus. Install it through your Perl
 package manager or with `cpan App::cpanminus` if needed.
 
@@ -86,7 +87,8 @@ and guide recipes independently in temporary directories with warnings fatal.
 
 `maint/build-site.pl` builds the [documentation site](https://gipidevdor.github.io/ham-rtty/)
 from the files in MANIFEST: POD, Markdown, examples, release notes and licenses.
-It includes corpus audio and raw results, with local links between pages.
+It includes distributed corpus material and raw results, with local links
+between pages.
 
 The site builder requires Perl 5.26 or later; the library still supports 5.20.
 
@@ -142,7 +144,7 @@ Keep local results in `docs/performance-results.json` and CI platform artifacts 
 measurement date, environment, exact commands and hashes of the measured inputs.
 Run timing workloads sequentially without concurrent tests or coverage collection.
 Report the timer (CPU or wall), repetitions, message, sample rate, block size,
-tone-search mode and configured baud and excluded work. Keep generation, reception and WAV conversion
+tone-search mode, configured baud and excluded work. Keep generation, reception and WAV conversion
 separate. `auto` selects availability, so never describe it as a speed selector.
 
 Update `docs/benchmarks.md`, `docs/verification.md` and corpus claims together.

@@ -76,6 +76,8 @@ about 1/12 bit per hop. Perl uses a Goertzel recurrence at each of the two
 frequencies. PDL evaluates both sinusoidal projections in one broadcast.
 Neither path retains the complete raw recording.
 
+## Detector power heuristics
+
 Automatic threshold correction tracks independently decaying tone peaks.
 Each peak decays by a factor of 0.999 per hop and is bounded below by one tenth
 of the current window's stronger tone. The normalized energies determine

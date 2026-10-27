@@ -66,3 +66,22 @@ rendered site's footer. The Artistic 2.0 license text and the reference CSS
 remain byte-identical to Ham::CW f9a1dac. No signal-processing code changed.
 The updated author run passed all 12 files and 679 assertions, including
 copyright checks for every rendered page and every public module.
+
+## Shared reference alignment, 2026-10-27
+
+Compared common implementations directly with Ham::CW f9a1dac. After
+package/distribution/command/error-prefix and version substitution, and the
+same Perl::Tidy formatting, 21 common implementations match. Audio and Error
+comparisons cover executable code; their RTTY examples use different signal
+parameters. The other entries compare complete file content. The
+[raw verification](verification-results.json) lists the compared files.
+
+Restored the reference guide structure, shared recipes, example runner,
+catalog and isolated example test. The catalog contains ten scenarios and
+covers every public method and CLI command. Single-station reception replaces
+the CW multichannel example. Missing real recordings are checked separately;
+no synthetic example is presented as a received-radio fixture.
+
+Warnings-fatal ordinary tests passed 18 files and 1,952 assertions. Author
+checks passed 12 files and 716 assertions. Signal-processing implementations
+are unchanged; the restored file tools and examples use RTTY options.

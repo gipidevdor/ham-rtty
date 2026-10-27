@@ -279,15 +279,16 @@ From an extracted distribution or repository root, run:
     make test
     make install
 
-Use the make program supplied with your Perl installation; on Windows this
-may be C<gmake>. For a user-owned destination, configure with
-C<perl Makefile.PL INSTALL_BASE=/your/install/directory> and include its
-C<lib/perl5> directory in C<PERL5LIB>.
+Use the make program for your Perl installation; on Windows this may be
+C<gmake>. Installation needs permission to write to Perl's library directory.
+For a user-owned destination, configure with
+C<perl Makefile.PL INSTALL_BASE=/your/install/directory> and add its
+C<lib/perl5> directory to C<PERL5LIB> when running applications.
 
-A checkout can be used without installing: run C<perl -Ilib script.pl> from
-the repository root. Read this reference with C<perldoc lib/Ham/RTTY.pm>, or
-C<perldoc Ham::RTTY> after installation. The distribution is C<Ham-RTTY>;
-the Perl package is C<Ham::RTTY>.
+A source checkout can be used without installing: run scripts as
+C<perl -Ilib script.pl> from the repository root. Read this reference with
+C<perldoc lib/Ham/RTTY.pm>, or C<perldoc Ham::RTTY> after installation.
+The distribution name is C<Ham-RTTY>; the Perl package is C<Ham::RTTY>.
 
 =head1 TERMS AND DATA
 
@@ -343,10 +344,10 @@ overrides. Unknown options raise C<RTTY_E_ARGUMENT>.
 
 =head2 decoder
 
-    my $decoder = $rtty->decoder(%options);
+    my $decoder = $rtty->decoder(%decoder_options);
 
-Returns a fresh L<Ham::RTTY::Decoder>. Generation defaults are not receiver
-hints.
+Returns a fresh L<Ham::RTTY::Decoder> with explicit decoding options only.
+Use C<feed>, C<result>, C<finish> and C<reset> for successive event blocks.
 
 =head2 generator
 
@@ -431,12 +432,14 @@ rate is used.
 
 =head2 generate_wav
 
-    my $stats = $rtty->generate_wav($text, $handle, %options);
+    my $stats = $rtty->generate_wav($text, $handle, %wav_options);
 
-Writes PCM WAV to a caller-owned open handle and returns a state/samples hash.
-Generation options plus bits (8, 16 default, 24), C<block_size> (4096 default)
-and C<max_bytes> (64000000 default) apply. Output is mono. The handle need not
-seek and remains open. An I/O failure can leave partial bytes.
+Writes a mono PCM WAV to an open binary output handle and returns writer
+statistics as described under L</write_wav>. Accepts all generation options,
+C<block_size> (4096; 1..1000000), C<bits> (8, 16 or 24; default 16), and
+C<max_bytes> (64000000; integer 44..4294967295). The byte ceiling includes
+header and padding; the sample ceiling applies separately.
+The handle need not seek and remains owned by the caller.
 
 =head2 generate_midi
 
@@ -448,31 +451,34 @@ two-note visual/debug rendering, not radio audio.
 
 =head2 write_wav
 
-    my $stats = $rtty->write_wav($text, $path, %options);
+    my $stats = $rtty->write_wav($text, $path, %wav_options);
 
-Owns and closes a WAV file; returns state/samples. Options are those of
-generate_wav plus overwrite (integer 0 or 1, default 0). See file ownership
-below.
+Creates and closes a mono WAV file. Returns
+C<< {state => 'FINISHED', samples => $written_count} >>. Accepts
+L</generate_wav> options plus C<overwrite> (0 or 1; default 0).
+See L</FILE OWNERSHIP AND REPLACEMENT> for file handling and failure behavior.
 
 =head2 write_midi
 
-    my $count = $rtty->write_midi($text, $path, %options);
+    my $count = $rtty->write_midi($text, $path, %midi_options);
 
-Owns and closes a MIDI file; returns bytes written. Options are those of
-generate_midi plus overwrite (integer 0 or 1, default 0).
+Creates and closes a type-0 MIDI file; returns the file size in bytes.
+Accepts L</generate_midi> options plus C<overwrite> (default 0).
+MIDI contains notes and timing, not rendered audio.
 
 =head2 wav_bytes
 
-    my $bytes = $rtty->wav_bytes($text, %options);
+    my $bytes = $rtty->wav_bytes($text, %wav_options);
 
-Returns binary PCM WAV bytes in memory, with generate_wav options. Never
-text-encode these bytes.
+Returns a binary WAV scalar. Accepts L</generate_wav> options, without
+C<overwrite>. Collects the entire encoded file in memory.
 
 =head2 midi_bytes
 
-    my $bytes = $rtty->midi_bytes($text, %options);
+    my $bytes = $rtty->midi_bytes($text, %midi_options);
 
-Returns binary type-0 MIDI bytes in memory, with generate_midi options.
+Returns a binary MIDI scalar. Accepts L</generate_midi> options, without
+C<overwrite>. Collects the entire encoded file in memory.
 
 =head2 decode_wav
 
@@ -486,18 +492,18 @@ L<Ham::RTTY::Audio/new>. The reader preserves trailing-RIFF warnings.
 
 =head2 decode_wav_bytes
 
-    my $result = $rtty->decode_wav_bytes($bytes, %options);
+    my $result = $rtty->decode_wav_bytes($bytes, %reception_options);
 
-Returns a complete Result from binary WAV bytes in memory. Options follow
-decode_wav; undefined, reference or non-byte input raises C<RTTY_E_ARGUMENT>.
+Reads a binary WAV scalar and returns a finalized Result. Accepts
+L</decode_wav> options. The complete WAV byte string must already be in memory.
 
 =head2 read_wav
 
-    my $result = $rtty->read_wav($path, %options);
+    my $result = $rtty->read_wav($path, %reception_options);
 
-opens, receives and closes a WAV file. Options follow decode_wav. It retains
-bounded decisions, not the full raw sample array. Inspect Result warnings even
-when text is nonempty.
+Opens, decodes and closes a WAV file; returns a finalized Result. Accepts
+L</decode_wav> options. Empty or uncertain reception is represented in the
+Result; invalid paths, unsupported files and resource errors throw exceptions.
 
 =head1 POLARITY AND TIMING
 
@@ -527,24 +533,93 @@ Floating-point roundoff can differ across backends; decoded text must agree.
 
 =head1 FILE OWNERSHIP AND REPLACEMENT
 
-Path helpers own their handles. By default output uses exclusive creation;
-existing files are protected. overwrite => 1 writes a temporary sibling,
-closes it and renames it onto the destination. Failed generation preserves the
-previous file. Symlink and nonregular replacement destinations are rejected.
-Replacement retains destination permissions. Filesystem durability and racing
-third-party changes cannot be guaranteed. Caller-owned handles remain open;
-stdout and other stream writes cannot be rolled back.
+Path methods open and close their own handles. Paths must be nonempty strings
+without NUL characters. Parent directories must already exist. Existing
+output paths, including symlinks, are rejected by default with C<RTTY_E_IO>.
+On failure, a newly created output is closed and removal is attempted.
+
+With C<overwrite =E<gt> 1>, output is first written to a temporary file in the
+same directory and renamed after successful generation and close. Failure
+before replacement preserves the old destination and attempts temporary-file
+cleanup. Existing regular-file permission bits are preserved. Symbolic-link
+destinations, including dangling links, are rejected with C<RTTY_E_IO> when
+detected during preparation. These checks and the final rename are separate
+operations: a concurrently substituted destination can still be replaced.
+Use an output directory whose entries are not being changed by other writers.
+A new path follows the process umask. Replacement creates a new file identity;
+ownership, ACLs and other hard links are not transferred. Replacement can
+fail if directory permissions or the operating system prevent rename.
+
+Handle methods never close caller-owned handles. Set binary mode when
+opening WAV/MIDI files and check C<close> errors yourself:
+
+    open my $out, '>:raw', 'handle-demo.wav' or die $!;
+    $rtty->generate_wav('SOS', $out);
+    close $out or die $!;
+
+Unlike path methods, this C<open> truncates an existing file immediately.
+A failed handle write can leave partial output for the caller to discard.
+
+=head1 RESULTS AND WARNINGS
+
+Reception returns L<Ham::RTTY::Result>. C<text> may be empty, partial or contain
+U+FFFD replacement characters. C<has_text> only tests nonempty text.
+C<complete> means finalized, not correct. C<warnings> returns an array of
+C<< {code => ..., message => ...} >> hashes. Inspect it even when text exists.
+C<frequency> and C<baud> can be undefined when a producer has no corresponding measurement or setting.
+
+Result reference fields are copied on input and access. Diagnostic fields
+explain analysis; they are not confidence scores. L<Ham::RTTY::Result> documents
+every accessor, warning code and diagnostic field.
 
 =head1 ERRORS
 
-Unknown, duplicate, odd or invalid options raise C<RTTY_E_ARGUMENT>.
-Unsupported characters/notation raise C<RTTY_E_SYMBOL>. Invalid event timing
-or conversion resolution raises C<RTTY_E_TIMING>. Limits raise
-C<RTTY_E_RESOURCE>; invalid lifecycle raises C<RTTY_E_STATE>; I/O failures
-raise C<RTTY_E_IO>. Malformed WAV uses C<RTTY_E_WAV_FORMAT> or
-C<RTTY_E_WAV_TRUNCATED>. Catch L<Ham::RTTY::Error> objects and inspect code,
-message and context. Recoverable reception problems use RTTY_W_* warnings in
-L<Ham::RTTY::Result>.
+Failures throw L<Ham::RTTY::Error>. Capture C<$@> immediately after C<eval>:
+
+    my $ok = eval { $rtty->encode('CQ!'); 1 };
+    if (!$ok) {
+        my $error = $@;
+        if (ref($error) && $error->isa('Ham::RTTY::Error')) {
+            warn $error->code . ': ' . $error->message . "\n";
+        }
+        else { die $error; }
+    }
+
+=over 4
+
+=item * C<RTTY_E_ARGUMENT>: invalid option, value or data shape.
+
+=item * C<RTTY_E_SYMBOL>: unsupported text or invalid textual ITA2 codes.
+
+=item * C<RTTY_E_TIMING>: invalid event alternation or insufficient sample/tick resolution.
+
+=item * C<RTTY_E_WAV_FORMAT>: unsupported or inconsistent WAV format.
+
+=item * C<RTTY_E_WAV_TRUNCATED>: insufficient bytes for the declared structure.
+
+=item * C<RTTY_E_IO>: open, read, write, seek, close or replacement failure.
+
+=item * C<RTTY_E_RESOURCE>: configured or format size/history limit exceeded.
+
+=item * C<RTTY_E_STATE>: invalid incremental lifecycle or invalidated iterator.
+
+=item * C<RTTY_E_INTERNAL>: unspecified/internal failure.
+
+=back
+
+Validation failures preserve decoder/detector history and writer counters.
+I/O failures can leave partial output; a WAV writer enters C<FAILED> and must
+be replaced. No error code or successful call guarantees error-free reception.
+
+=head1 SEE ALSO
+
+L<Ham::RTTY::Encoder>, L<Ham::RTTY::Decoder>, L<Ham::RTTY::Events>,
+L<Ham::RTTY::Generator>, L<Ham::RTTY::Detector>, L<Ham::RTTY::Audio>,
+L<Ham::RTTY::MIDI>, L<Ham::RTTY::Result>, L<Ham::RTTY::Error>.
+
+In the source distribution, F<docs/usage.md> is a task guide and
+F<examples/workflows.pl> is a runnable tour using temporary files.
+F<docs/verification.md> records dated checks and their limits.
 
 =head1 AUTHOR
 

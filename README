@@ -1,11 +1,65 @@
-Ham::RTTY 0.01
+Ham::RTTY
+=========
 
-Pure-Perl ITA2 RTTY text, timing, AFSK WAV and debug MIDI toolkit.
-Perl 5.20 or later; core runtime modules; PDL 2.081 or later optional.
+RTTY for Perl and the command line: ITA2 text, start-stop events,
+AFSK WAV and debug MIDI generation, and experimental decoding of recorded RTTY.
 
-perl Makefile.PL
-make
-make test
+Requirements
+------------
 
-Read README.md and docs/verification.md before use or release.
-Copyright 2026 Giacomo Picchiarelli. Artistic License 2.0.
+Perl 5.20 or later and ExtUtils::MakeMaker 7.22 or later.
+The default backend uses only core Perl modules. PDL 2.081 or later is
+optional; performance depends on the operation and workload.
+
+Installation
+------------
+
+    perl Makefile.PL
+    make
+    make test
+    make install
+
+Use the make program supplied with your Perl installation. For a user-owned
+installation, configure with INSTALL_BASE=/your/install/directory and add
+its lib/perl5 directory to PERL5LIB. See README.md for details.
+
+First commands
+--------------
+
+    ham-rtty encode "CQ TEST"
+    ham-rtty decode "[LTRS] 00101 11000 00101"
+    ham-rtty wav --output practice.wav "CQ TEST"
+    ham-rtty receive --mark 2125 --baud 45.45 practice.wav
+    ham-rtty help receive
+
+Existing output files are protected. Use --overwrite for deliberate
+replacement. Text is UTF-8; WAV and MIDI output is binary.
+From a checkout, use perl -Ilib bin/ham-rtty in place of ham-rtty.
+
+Documentation and limits
+------------------------
+
+    perldoc Ham::RTTY
+    perldoc ham-rtty
+
+README.md is the repository overview. docs/README.md indexes the guides.
+docs/usage.md contains recipes;
+examples/README.md indexes independent runnable examples. The API reference
+is installed as POD with each public module.
+
+The repertoire follows ITU-T S.1. Audio reception is experimental;
+inspect warnings even when text is present. The library does not record a
+microphone, play audio or control radio/MIDI devices. Benchmark and corpus
+results are dated observations, not general accuracy or speed guarantees.
+
+Support and license
+-------------------
+
+Repository: https://github.com/gipidevdor/ham-rtty
+Issues: https://github.com/gipidevdor/ham-rtty/issues
+Private security reports: see SECURITY.md.
+
+Copyright (c) 2026 Giacomo Picchiarelli.
+Project code and original material: Artistic License 2.0; see LICENSE.
+No third-party recordings are currently distributed. See NOTICE and
+corpus/real/LICENSES.md for attribution and recording admission requirements.

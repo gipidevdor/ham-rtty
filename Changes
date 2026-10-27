@@ -1,6 +1,7 @@
 Revision history for Ham-RTTY
 
 0.01  2026-10-27
+    - Restore the shared Ham-CW guides, example catalog and runner.
     - Align POD signatures, option lists and architecture notes with Ham-CW.
     - Make project copyright visible in README, guides and every site footer.
     - Align README and documentation navigation with the Ham-CW structure.

@@ -82,5 +82,54 @@
     "license_text_sha256": "bae466ac8d7100c304fe76632ccc627203a3897d3f7166f3cce00fb9df8c2074",
     "reference_css_sha256": "4d48d00e36e29e9f4d79d428f37f9cf26c13e9f8148605343519ba1690b438a9",
     "scope": "README, guide index, NOTICE, all public module POD and every rendered page footer; no signal-processing changes."
+  },
+  "shared_reference_alignment": {
+    "date": "2026-10-27",
+    "reference": "https://github.com/gipidevdor/ham-cw",
+    "reference_revision": "f9a1dac329164cd1a5857ac1fa845e77a3e2e667",
+    "common_implementations": [
+      "lib/Ham/RTTY/Audio.pm",
+      "lib/Ham/RTTY/Error.pm",
+      "lib/Ham/RTTY/_Internal/Data.pm",
+      "lib/Ham/RTTY/_Internal/Validate.pm",
+      "lib/Ham/RTTY/_Internal/IO.pm",
+      "lib/Ham/RTTY/_Internal/WavWriter.pm",
+      "lib/Ham/RTTY/_Internal/Backend.pm",
+      "maint/archive.pl",
+      "maint/check-dist.pl",
+      "maint/check-install.pl",
+      "maint/audit-dependencies.pl",
+      "xt/tidy.t",
+      "xt/critic.t",
+      "xt/pod.t",
+      "xt/metadata.t",
+      "xt/security-audit.t",
+      "xt/release-tools.t",
+      "SECURITY.md",
+      ".github/workflows/security.yml",
+      "examples/run-all.pl",
+      "examples/pcm-streams.pl"
+    ],
+    "comparison": "Normalize package/distribution/command/error-prefix names and public version; format Perl with the same .perltidyrc. Public Audio/Error comparison covers executable code; their RTTY examples differ. Other entries compare complete content.",
+    "ordinary_tests": {
+      "files": 18,
+      "assertions": 1952,
+      "exit_status": 0
+    },
+    "author_tests": {
+      "files": 12,
+      "assertions": 716,
+      "exit_status": 0
+    },
+    "catalog_examples": 10,
+    "remaining_differences": [
+      "RTTY character/framing/tone/DSP and receiver options",
+      "two-note MIDI and USOS",
+      "single-station reception; no CW multichannel methods",
+      "missing reviewed real RTTY recordings and their unmeasured CER",
+      "actual RTTY measurement/advisory records",
+      "additional minimum-version/spelling/per-module coverage gates and audited workflow changes",
+      "requested visible project copyright"
+    ]
   }
 }

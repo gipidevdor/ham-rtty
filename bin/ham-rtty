@@ -35,6 +35,52 @@ continuous-phase AFSK; MIDI renders MARK/SPACE as two debug notes.
 Reception requires configured baud (default 45.45), without automatic baud
 or shift identification. No simultaneous stations, equalisation or diversity.
 
+=head1 COMMANDS
+
+=head2 encode
+
+Convert text to five-bit ITA2 codes, with C<[LTRS]> and C<[FIGS]> markers.
+Unsupported characters raise an error; C<--lenient> substitutes C<?> with a warning.
+
+=head2 decode
+
+Convert five-bit numeric codes and shift markers to text. Codes are written
+most significant digit first; spaces separate tokens.
+
+=head2 bits
+
+Emit start, LSB-first data and stop bits in transmission order. The logical
+string rounds a 1.5-bit stop up to two digits. Use events for exact timing.
+
+=head2 events
+
+Export canonical timed events as JSON. C<--sample-rate HZ> instead exports
+sampled events. Accepts encoding options, including C<--baud> and C<--stop-bits>.
+
+=head2 wav
+
+Generate mono PCM WAV. C<--output FILE> or C<--output -> is required.
+Timing, tone, backend, amplitude, PCM depth and limits follow L<Ham::RTTY>.
+
+=head2 midi
+
+Generate an SMF type 0 MIDI file. Explicit C<--output> is required.
+MARK and SPACE use C<--mark-note> and C<--space-note>; baud controls frame
+timing and BPM controls MIDI tick mapping. This is a visual/debug rendering.
+
+=head2 receive
+
+Decode a PCM WAV recording. Supply one filename, C<--input FILE>, or
+standard input when neither is given. C<-> also selects standard input.
+Stdin is copied to a temporary seekable file and bounded by C<--max-bytes>
+(64000000 by default); audio is then processed in bounded blocks.
+
+C<--json> outputs the complete Result, including events and warnings.
+Otherwise text goes to stdout and warnings to stderr. C<--strict> returns
+status 1 for any warning, even when text was recovered. Set C<--baud>,
+C<--mark>, C<--shift> and polarity to match the sender. Automatic tone-pair
+search is optional; automatic baud/shift identification is not implemented.
+
 =head1 INPUT AND OUTPUT
 
 For text commands, supply positional words or C<--input FILE> (C<-i FILE>).
