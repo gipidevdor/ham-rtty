@@ -1,6 +1,8 @@
 Revision history for Ham-RTTY
 
 0.001  2026-10-27
+    - Refresh complete CPU, WAV, generation and five-platform PDL benchmarks.
+    - Publish current verification first while retaining historical evidence.
     - Bound receiver working buffers and PDL tone-search projection batches.
     - Acquire from the first half second independently of caller block size.
     - Reject WAV history budgets from metadata before reading PCM data.

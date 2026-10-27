@@ -74,7 +74,12 @@ caller data, and reference-valued accessors return independent copies.
 The detector analyses rectangular windows of approximately 0.65 bit, advancing
 about 1/12 bit per hop. Perl uses a Goertzel recurrence at each of the two
 frequencies. PDL evaluates both sinusoidal projections in one broadcast.
-Neither path retains the complete raw recording.
+Neither path retains the complete raw recording. Incoming arrays are consumed
+in pieces of at most 4,096 samples; acquisition retains only the initial half
+second. Wide PDL searches split frequency projections into matrices of at most
+65,536 cells. WAV reception checks declared sample counts against frame/run
+budgets before reading PCM. Decoder history and public snapshots remain
+bounded by the configured limits; they still contribute to resident memory.
 
 ## Detector power heuristics
 

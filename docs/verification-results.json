@@ -875,5 +875,93 @@
     "old_failed_assertions": 9,
     "default_backend": "perl",
     "streaming_block_samples": 4096
+  },
+  "current_summary": {
+    "date": "2026-10-27",
+    "version": "0.001",
+    "production_revision": "084dbc682b3fc29714a0b9e8c0ffcab0424bc770",
+    "documentation_revision": "bad2d2f6f56b56590bb84bedbb2f8f4f252021fd",
+    "historical_top_level_fields": "The original top-level measurements remain tied to production_revision; this summary links subsequent evidence without relabelling it.",
+    "ordinary_tests": {
+      "files": 20,
+      "assertions": 2059,
+      "exit_status": 0
+    },
+    "author_tests": {
+      "files": 12,
+      "assertions": 824,
+      "exit_status": 0
+    },
+    "coverage_raw": "memory-optimization-results.json",
+    "performance_raw": "performance-results.json",
+    "platform_raw": "platform-results.json",
+    "hosted_run": "https://github.com/gipidevdor/ham-rtty/actions/runs/40528671415",
+    "hosted_jobs": [
+      {
+        "name": "Author checks and distribution",
+        "conclusion": "failure",
+        "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40528671415/job/122275126414"
+      },
+      {
+        "name": "ubuntu-latest / Perl 5.20",
+        "conclusion": "success",
+        "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40528671415/job/122275126856"
+      },
+      {
+        "name": "ubuntu-latest / Perl 5.40",
+        "conclusion": "success",
+        "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40528671415/job/122275126888"
+      },
+      {
+        "name": "PDL / macos-15-intel",
+        "conclusion": "success",
+        "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40528671415/job/122275126958"
+      },
+      {
+        "name": "ubuntu-latest / Perl 5.34",
+        "conclusion": "success",
+        "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40528671415/job/122275126967"
+      },
+      {
+        "name": "PDL minimum / Perl 5.20",
+        "conclusion": "success",
+        "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40528671415/job/122275126996"
+      },
+      {
+        "name": "PDL / windows-latest",
+        "conclusion": "success",
+        "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40528671415/job/122275127016"
+      },
+      {
+        "name": "PDL / ubuntu-latest",
+        "conclusion": "success",
+        "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40528671415/job/122275127082"
+      },
+      {
+        "name": "PDL / macos-latest",
+        "conclusion": "success",
+        "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40528671415/job/122275127226"
+      },
+      {
+        "name": "windows-latest / Perl 5.40",
+        "conclusion": "success",
+        "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40528671415/job/122275127295"
+      },
+      {
+        "name": "ubuntu-latest / Perl 5.44",
+        "conclusion": "success",
+        "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40528671415/job/122275127324"
+      },
+      {
+        "name": "macos-latest / Perl 5.40",
+        "conclusion": "success",
+        "url": "https://github.com/gipidevdor/ham-rtty/actions/runs/40528671415/job/122275127920"
+      }
+    ],
+    "release_qualified": false,
+    "open_release_gates": [
+      "Four licensed independently annotated off-air fixtures",
+      "Dependency CVE audit findings"
+    ]
   }
 }
