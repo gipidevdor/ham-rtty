@@ -1,23 +1,110 @@
-# Benchmarks
+# Measured performance
 
-[Overview](../README.md) · [Verification](verification.md) · [CPU raw results](performance-results.json) · [RAM raw results](memory-results.json)
+[Overview](../README.md) · [Task guide](usage.md) · [Examples](../examples/README.md) · [Verification](verification.md)
 
-## Protocol
+## Current local measurements, 2026-10-27
 
-The CPU timing observations below were measured 2026-10-27 on Apple M4 / macOS ARM64, Perl 5.44.0, PDL 2.106; production revision `3627c44`. The RAM comparison has its own revision and protocol below.
+Measured source: `6b036001daed9cb5c1dae1dd301915638fc2d142`.
+Environment: Apple M4, macOS 27.0.1 ARM64, Perl 5.44.0, PDL 2.106.
+[Raw results](performance-results.json) include commands, sample counts,
+CPU/wall totals, ratios and source hashes. These runs use the bounded receiver.
 
-Message `CQ CQ DE TESTCALL`, 45.45 baud, 2125 Hz MARK, +170 Hz SPACE, 1.5 stop bits. Three iterations, 4096-sample blocks, 8/16 kHz mono. R is processing seconds divided by audio seconds; smaller is faster. CPU uses Perl `times`; wall uses Time::HiRes. Each input is approximately 3.17 seconds. Generation, reception, WAV conversion and snapshot costs are separate. Reception excludes fixture generation. Timing workloads ran sequentially without tests or coverage collection. Raw results retain exact commands, counts, source hashes and timing totals.
+All cases generate `CQ CQ DE TESTCALL` at 45.45 baud, 2125 Hz MARK,
+170 Hz shift and 1.5 stop bits: approximately **3.17 seconds of audio**, fed in
+4,096-sample blocks. Search acquires one tone pair over the initial half second
+on a 10 Hz grid; the known-tone case supplies the MARK and shift. Baud and
+shift are configured in both cases. Times are the mean of three calls.
+Workloads ran sequentially, without concurrent tests or coverage collection.
 
-## Streaming reception
+### Sample reception
 
-| Rate | Tones | Perl CPU R | PDL CPU R | Perl wall R | PDL wall R |
-| --- | --- | ---: | ---: | ---: | ---: |
-| 8000 Hz | known | 0.0179 | 0.0263 | 0.0179 | 0.0267 |
-| 8000 Hz | search | 0.0862 | 0.0357 | 0.0868 | 0.0364 |
-| 16000 Hz | known | 0.0347 | 0.0336 | 0.0340 | 0.0337 |
-| 16000 Hz | search | 0.1661 | 0.0526 | 0.1666 | 0.0525 |
+`R` is processing seconds divided by audio seconds. Lower is better; `R < 1`
+means this in-memory recording was processed faster than playback duration.
+Its inverse, `1/R`, is audio seconds processed per wall second. Live capture
+latency is excluded. Times and ratios in these tables use wall time.
 
-Known tones are supplied explicitly; search acquires one pair over the first half second at the configured 170 Hz shift, using a 10 Hz grid. Baud is always configured; neither case estimates baud or shift. These are short synthetic workloads, not field reception accuracy measurements.
+| Workload | Perl time | PDL time | Perl R | PDL R |
+| --- | ---: | ---: | ---: | ---: |
+| 8 kHz, tone search | 0.2814 s | 0.1161 s | 0.0888 | 0.0366 |
+| 8 kHz, known tones | 0.0572 s | 0.0856 s | 0.0181 | 0.0270 |
+| 16 kHz, tone search | 0.5331 s | 0.1675 s | 0.1682 | 0.0528 |
+| 16 kHz, known tones | 0.1095 s | 0.1096 s | 0.0346 | 0.0346 |
+
+### Complete WAV decoding
+
+These calls also include in-memory WAV reading, PCM conversion and close:
+
+| Workload | Perl time | PDL time |
+| --- | ---: | ---: |
+| 8 kHz, tone search | 0.2833 s | 0.1161 s |
+| 8 kHz, known tones | 0.0589 s | 0.0865 s |
+| 16 kHz, tone search | 0.5366 s | 0.1742 s |
+| 16 kHz, known tones | 0.1116 s | 0.1125 s |
+
+### Generation
+
+WAV generation includes PCM conversion. These rows use the corresponding
+known-tone command; search commands repeat generation and retain their own totals.
+
+| Sample rate | Samples, Perl | Samples, PDL | WAV, Perl | WAV, PDL |
+| --- | ---: | ---: | ---: | ---: |
+| 8 kHz | 0.0046 s | 0.0047 s | 0.0169 s | 0.0114 s |
+| 16 kHz | 0.0086 s | 0.0070 s | 0.0327 s | 0.0199 s |
+
+### What the timers include
+
+Sample generation includes generator construction and synthesis. Sample
+reception includes detector construction, block feeds and finalization. WAV
+operations include in-memory handles, library construction, conversion and
+close. The WAV reader uses its default block size; `--block` controls direct
+sample reception. Event preparation and source audio preparation are outside
+the operation timers. Disk I/O, devices, Perl startup and module loading are
+excluded. RAM measurements below use a separate fresh-process protocol.
+
+Operations and backends run in a fixed order within one process, with a
+prepared detector retained for snapshot measurements. Allocation history can
+affect timings. Raw output also includes analyzer rebuilds and batches of
+100 cached snapshot reads; tiny CPU deltas reflect timer precision. Three calls
+are insufficient to estimate variance or percentile latency. Synthetic speed
+measurements do not establish field reception accuracy.
+
+## CI platform measurements, 2026-10-27
+
+[Test run 40524668493](https://github.com/gipidevdor/ham-rtty/actions/runs/40524668493)
+measured source `084dbc682b3fc29714a0b9e8c0ffcab0424bc770` on five configurations.
+This source already contains the bounded receiver; subsequent changes up to the
+local measured revision only update documentation. The
+[raw platform results](platform-results.json) retain absolute rates, call counts,
+elapsed times, Perl/PDL versions, artifact names and SHA-256 digests.
+The runner labels distinguish the configured macOS ARM64 and Intel jobs.
+
+The message is `CQ CQ DE TESTCALL` at 8,000 Hz; receiver uses the default known 2125/2295-Hz tone pair.
+Each operation is warmed once, then measured for at least one wall-clock second
+with complete calls. PCM cases read/write one second of mono audio in memory
+at each bit depth; they are raw PCM conversion, distinct from complete message
+WAV generation/decoding. All use Perl 5.40 and PDL 2.106 except the minimum
+configuration, Perl 5.20 and PDL 2.081; exact patch versions are in the raw data.
+
+Each ratio is PDL calls/second divided by Perl calls/second on the same runner.
+Above 1 favours PDL; below 1 favours Perl. These are single shared-runner
+observations, not stable platform rankings or processor comparisons.
+
+| Operation | Linux | macOS ARM64 | macOS Intel | Windows | Linux minimum |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Generate samples | 0.92x | 1.18x | 1.15x | 0.79x | 0.91x |
+| Receive, complete feed | 0.59x | 0.77x | 0.79x | 0.36x | 0.51x |
+| Receive, 4,096-sample feeds | 0.58x | 0.79x | 0.76x | 0.37x | 0.51x |
+| Read PCM WAV, 8-bit | 0.96x | 0.97x | 1.00x | 0.80x | 1.02x |
+| Read PCM WAV, 16-bit | 1.35x | 1.00x | 1.22x | 0.93x | 1.14x |
+| Read PCM WAV, 24-bit | 1.07x | 0.97x | 1.82x | 1.00x | 1.08x |
+| Write PCM WAV, 8-bit | 1.41x | 1.53x | 1.58x | 1.39x | 1.41x |
+| Write PCM WAV, 16-bit | 1.48x | 1.61x | 1.75x | 1.45x | 1.48x |
+| Write PCM WAV, 24-bit | 1.28x | 1.59x | 1.43x | 1.26x | 1.32x |
+
+PDL performance varies by workload and feed pattern. Compare absolute rates in
+the raw record and measure your own workload before choosing a backend.
+`perl` remains the default; `auto` selects availability rather than speed.
+The CI rate protocol and local call means are not interchangeable.
 
 ## Why PDL is only partly accelerated
 
@@ -29,7 +116,7 @@ Measured 2026-10-27 on Apple M4, 16 GiB RAM, macOS 27.0.1 ARM64,
 Perl 5.44.0 and PDL 2.106, source revision `e55326fb2a3d835ce27387e64527f0e330ecc4d4`.
 The [raw RAM results](memory-results.json) retain all 30 observations,
 commands, input and source hashes, native timer output, decoded text,
-warnings and module-loading checks. Earlier CPU timing tables above retain
+warnings and module-loading checks. CPU timing tables above retain
 their own source revision and protocol.
 
 Each workload/backend has three fresh-process observations, run sequentially
@@ -72,7 +159,7 @@ bounded decoder history; these measurements do not establish constant memory
 for recordings of arbitrary length.
 
 The earlier single-process **19.80 MiB** Perl observation is retained in
-[the historical performance data](performance-results.json). The new paired
+[the historical performance data](performance-history-results.json). The new paired
 comparison uses the updated measurement helper and repeated fresh processes.
 Linux/Windows RSS and other recording lengths remain unmeasured.
 
@@ -196,3 +283,10 @@ systems require their own RSS instrumentation. Read `perl maint/memory.pl --help
 for the supported workloads. The raw report also retains process wall/user/system
 times; those include startup and follow a different protocol from the earlier
 CPU timing tables.
+
+## Historical evidence
+
+[Earlier local raw results](performance-history-results.json) preserve the
+measurements of source `3627c44989eff9ab9c9bbfa5fe409e348008dc85` unchanged.
+The current local record is [performance-results.json](performance-results.json).
+RAM records retain their own source revisions and protocols above.
