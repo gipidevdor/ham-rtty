@@ -3,7 +3,7 @@ use 5.020;
 use strict;
 use warnings;
 use Ham::RTTY::Baudot;
-use Ham::RTTY::Events qw(validate_events to_timed);
+use Ham::RTTY::Events qw(validate_events);
 use Ham::RTTY::Result;
 use Ham::RTTY::_Internal::Validate qw(fail number integer options named_arguments);
 our $VERSION = '0.001';
@@ -28,7 +28,7 @@ sub reset {    ## no critic (Subroutines::ProhibitBuiltinHomonyms)
     $self->{warnings} = [];
     $self->{segments} = [];
     $self->{codec}->reset;
-    delete @{$self}{qw(candidate final)};
+    delete @{$self}{qw(candidate final clock)};
     return $self;
 }
 sub state { my ($self) = @_; return $self->{state} }    ## no critic (Subroutines::ProhibitBuiltinHomonyms)
@@ -114,24 +114,58 @@ sub _run {
     return;
 }
 
+sub _timed_block {
+    my ($self, $events, $field) = @_;
+    my $key =
+          $field eq 'samples'       ? "samples:$events->{sample_rate}"
+        : $events->{unit} eq 'bits' ? "bits:$events->{baud}"
+        :                             $events->{unit};
+    my $scale =
+          $field eq 'samples'       ? 1000000 / $events->{sample_rate}
+        : $events->{unit} eq 'bits' ? 1000000 / $events->{baud}
+        : $events->{unit} eq 's'    ? 1000000
+        :                             1;
+    my $clock = $self->{clock} // {key => $key, total => 0, base => 0, exact => 0};
+    my ($total, $base) = $clock->{key} eq $key ? @{$clock}{qw(total base)} : (0, $clock->{exact});
+    my $previous = $self->{time};
+    my $exact    = $clock->{exact};
+    my @segments;
+
+    for my $segment (@{$events->{segments}}) {
+        $total += $segment->{$field};
+        $exact = $base + $total * $scale;
+        fail('RTTY_E_RESOURCE', 'Cumulative duration exceeds exact integer range')
+            if $exact > 2**52;
+        my $end = int($exact + 0.5);
+        fail('RTTY_E_TIMING', 'Resolution would produce a zero-length segment')
+            if $end <= $previous;
+        push @segments, {state => $segment->{state}, duration => $end - $previous};
+        $previous = $end;
+    }
+    return (\@segments, {key => $key, total => $total, base => $base, exact => $exact});
+}
+
 sub feed {
     my ($self, $events) = @_;
     fail('RTTY_E_STATE', 'Decoder is finalized') if $self->{state} eq 'FINISHED';
-    my $field = validate_events($events);
-    my $timed = to_timed($events);
+    my $field = validate_events($events, $self->{max_segments});
+    my ($segments, $clock) = $self->_timed_block($events, $field);
+    my $count = @{$self->{segments}} + @{$segments};
+    --$count
+        if @{$self->{segments}}
+        && @{$segments}
+        && $self->{segments}[-1]{state} eq $segments->[0]{state};
     fail('RTTY_E_RESOURCE', 'Event history exceeds max_segments')
-        if @{$self->{segments}} + @{$timed->{segments}} > $self->{max_segments};
-    my $total = $self->{time};
-    $total += $_->{duration} for @{$timed->{segments}};
-    fail('RTTY_E_RESOURCE', 'Cumulative duration exceeds exact integer range') if $total > 2**52;
+        if $count > $self->{max_segments};
 
-    for my $s (@{$timed->{segments}}) {
+    for my $s (@{$segments}) {
         $self->_run($s->{state}, $s->{duration});
         if (@{$self->{segments}} && $self->{segments}[-1]{state} eq $s->{state}) {
             $self->{segments}[-1]{duration} += $s->{duration};
         }
         else { push @{$self->{segments}}, {state => $s->{state}, duration => $s->{duration}} }
     }
+    $self->{clock} = $clock;
     $self->{state} = 'ACTIVE';
     return $self;
 }
@@ -241,7 +275,10 @@ receiver for a new message; fractional stop duration belongs in events.
 
 Validates timed or sampled runs, then appends them to bounded history and
 returns the receiver. Runs can be split across calls; each input must validate
-independently. A MARK-to-SPACE transition starts a UART frame. The receiver
+independently. Cumulative source boundaries retain sub-microsecond precision
+across calls, so splitting sampled runs does not accumulate rounding error.
+Adjacent equal states across calls count as one retained segment. Reset clears
+the conversion clock. A MARK-to-SPACE transition starts a UART frame. The receiver
 validates start at half a bit, samples five data centres and checks MARK at
 the stop centre. Invalid stops produce C<RTTY_W_FRAMING> and
 resynchronisation. Unassigned received figures produce U+FFFD and

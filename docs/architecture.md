@@ -36,7 +36,11 @@ integer Hz in 1000..384000. Input sequences are not modified.
 Timed events also accept seconds (`unit => 's'`) or fractional bits
 (`unit => 'bits'`, with explicit `baud`). Conversions round cumulative
 boundaries to nearest integer, halves upward. They reject a conversion that
-would create a zero-length segment. MIDI uses the same boundary rule at the
+would create a zero-length segment. The incremental decoder retains cumulative
+source boundaries and fractional time across calls, including changes of units.
+Its history limit counts merged runs; failed feeds leave the clock and history
+unchanged. Reception Results contain integer-microsecond TimedEvents.
+MIDI uses the same boundary rule at the
 encoded tempo and tick resolution.
 
 The encoder emits one SPACE start bit, five data bits LSB first and MARK stop

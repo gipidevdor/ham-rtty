@@ -879,6 +879,54 @@
   "current_summary": {
     "date": "2026-10-27",
     "version": "0.001",
+    "production_revision": "f7cc5d908426b1a7d07eeb7fc4d96b671f940755",
+    "raw": "correctness-results.json",
+    "ordinary_tests": {
+      "command": "HARNESS_PERL_SWITCHES='-Mwarnings=FATAL,all' prove -lr t",
+      "files": 21,
+      "assertions": 2099,
+      "exit_status": 0
+    },
+    "author_tests": {
+      "command": "PATH=/tmp/rtty-spelling-correctness/bin:$PATH prove -lr xt",
+      "files": 12,
+      "assertions": 826,
+      "exit_status": 0,
+      "skipped_files": 0,
+      "codespell": "2.4.1"
+    },
+    "coverage": {
+      "branch": {
+        "covered": 622,
+        "error": 18,
+        "percentage": 97.1875,
+        "total": 640,
+        "uncoverable": 0
+      },
+      "statement": {
+        "covered": 1771,
+        "error": 1,
+        "percentage": 99.9435665914221,
+        "total": 1772
+      },
+      "total": {
+        "covered": 2393,
+        "error": 19,
+        "percentage": 99.212271973466,
+        "total": 2412,
+        "uncoverable": 0
+      }
+    },
+    "per_module_coverage_gate_exit_status": 0,
+    "release_qualified": false,
+    "open_release_gates": [
+      "Four independently reviewed off-air fixtures",
+      "Dependency audit findings"
+    ]
+  },
+  "pre_correctness_summary": {
+    "date": "2026-10-27",
+    "version": "0.001",
     "production_revision": "084dbc682b3fc29714a0b9e8c0ffcab0424bc770",
     "documentation_revision": "bad2d2f6f56b56590bb84bedbb2f8f4f252021fd",
     "historical_top_level_fields": "The original top-level measurements remain tied to production_revision; this summary links subsequent evidence without relabelling it.",

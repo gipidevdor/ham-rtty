@@ -64,7 +64,7 @@ sub sampled_events {
     my ($self, $text, @pairs) = @_;
     my %args = named_arguments(@pairs);
     my $rate = delete($args{sample_rate}) // $self->{generator}{sample_rate} // 16000;
-    return Ham::RTTY::Events::to_samples($self->events($text, %args), $rate);
+    return Ham::RTTY::Events::to_samples($self->events($text, %args), $rate, 1000000);
 }
 
 sub decoder {
@@ -193,7 +193,7 @@ sub generate_wav {
     my ($events, $gen) = $self->_generation($text, \%args);
     options(\%args, qw(bits max_bytes block_size));
     my $rate    = $gen->{sample_rate};
-    my $sampled = Ham::RTTY::Events::to_samples($events, $rate);
+    my $sampled = Ham::RTTY::Events::to_samples($events, $rate, 1000000);
     my $count   = 0;
     $count += $_->{samples} for @{$sampled->{segments}};
     my $audio = Ham::RTTY::Audio->new(

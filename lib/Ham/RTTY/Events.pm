@@ -50,10 +50,10 @@ sub validate_events {
 }
 
 sub _convert {
-    my ($events, $ratio, $field, $header) = @_;
+    my ($events, $ratio, $field, $header, $max_segments) = @_;
     my ($total, $previous) = (0, 0);
     my @out;
-    my $input = validate_events($events);
+    my $input = validate_events($events, $max_segments);
     for my $s (@{$events->{segments}}) {
         $total += $s->{$input};
         fail('RTTY_E_RESOURCE', 'Converted duration exceeds exact integer range')
@@ -68,22 +68,23 @@ sub _convert {
 }
 
 sub to_samples {
-    my ($events, $rate) = @_;
+    my ($events, $rate, $max_segments) = @_;
     integer('sample_rate', $rate, 1000, 384000);
-    fail('RTTY_E_ARGUMENT', 'Expected TimedEvents') unless validate_events($events) eq 'duration';
+    fail('RTTY_E_ARGUMENT', 'Expected TimedEvents')
+        unless validate_events($events, $max_segments) eq 'duration';
     my $scale = $events->{unit} eq 'us' ? 1e-6 : $events->{unit} eq 's' ? 1 : 1 / $events->{baud};
-    return _convert($events, $rate * $scale, 'samples', {sample_rate => $rate});
+    return _convert($events, $rate * $scale, 'samples', {sample_rate => $rate}, $max_segments);
 }
 
 sub to_timed {
-    my ($events) = @_;
-    my $field = validate_events($events);
+    my ($events, $max_segments) = @_;
+    my $field = validate_events($events, $max_segments);
     my $scale =
           $field eq 'samples'     ? 1 / $events->{sample_rate}
         : $events->{unit} eq 'us' ? 1e-6
         : $events->{unit} eq 's'  ? 1
         :                           1 / $events->{baud};
-    return _convert($events, 1_000_000 * $scale, 'duration', {unit => 'us'});
+    return _convert($events, 1_000_000 * $scale, 'duration', {unit => 'us'}, $max_segments);
 }
 1;
 
@@ -129,7 +130,9 @@ Timed units may also be C<s> (seconds) or C<bits> (requiring C<baud>, 20..300). 
 
 Use C<unit> or C<sample_rate>, never both. Rates are integer Hz in
 1000..384000. Each segment duration/count is a positive integer, and the
-sum is at most C<2**52> in the sequence's units. Input hashes are not modified.
+sum is at most C<2**52> in the sequence's units. Input hashes are not modified. C<to_samples> accepts an optional third
+C<max_segments> argument; C<to_timed> accepts it as the second argument, with
+the same default and range as C<validate_events>.
 
 =head1 FUNCTIONS
 
@@ -156,8 +159,9 @@ events first; this function is not an audio resampler.
 
     my $timed = to_timed($sampled);
 
-Requires SampledEvents and returns a new TimedEvents hash in microseconds.
-The sample rate is taken from the input header.
+Returns a new TimedEvents hash in microseconds.
+The sample rate is taken from the input header. TimedEvents are also accepted
+and normalized to integer microseconds.
 
 =head1 ROUNDING AND RESOLUTION
 

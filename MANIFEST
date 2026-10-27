@@ -27,6 +27,7 @@ corpus/real/LICENSES.md
 docs/README.md
 docs/architecture.md
 docs/benchmarks.md
+docs/correctness-results.json
 docs/coverage-results.json
 docs/dependency-audit.md
 docs/installing.md
@@ -112,6 +113,7 @@ t/28-file-contracts.t
 t/29-examples.t
 t/30-external-reception.t
 t/31-bounded-reception.t
+t/32-correctness-boundaries.t
 t/lib/CorpusMetrics.pm
 t/lib/FaultHandle.pm
 xt/corpus-licenses.t

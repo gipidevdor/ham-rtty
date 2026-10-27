@@ -110,6 +110,7 @@ sub events {
         return unless $seconds;
         $time += $seconds * 1000000;
         my $end = int($time + 0.5);
+        return if $end == $boundary;
         if (@segments && $segments[-1]{state} eq $state) {
             $segments[-1]{duration} += $end - $boundary;
         }
@@ -187,7 +188,7 @@ with an encoding warning.
 =item * C<leading_idle>, C<trailing_idle>
 
 0.1 each by default; finite number 0..60 seconds of MARK before and after a
-nonempty message.
+nonempty message. Durations rounding to zero microseconds emit no segment.
 
 =item * C<max_segments>
 
