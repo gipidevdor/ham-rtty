@@ -1,0 +1,1365 @@
+{
+  "date_utc": "2026-10-27T13:57:59.332124+00:00",
+  "source_revision": "e55326fb2a3d835ce27387e64527f0e330ecc4d4",
+  "source_sha256": {
+    "lib/Ham/RTTY/Audio.pm": "a6c427d6932134e1a9c314c553c5935aaada0d95d9c917a2ab0663e6ab575798",
+    "lib/Ham/RTTY/Baudot.pm": "203a3972cab5c592898c66376f639beff7498596b5523b49f130aee0eb589032",
+    "lib/Ham/RTTY/Decoder.pm": "303610849424177154ec4c79baefab02e2fe304f2c28895501616166d31dd802",
+    "lib/Ham/RTTY/Detector.pm": "1e7f7872c84ddd15d24ecaea37331266c95b3048fc3cfbebfac947064940bddd",
+    "lib/Ham/RTTY/Encoder.pm": "260e623b3c104c9d7bd8dbf73954053529044ffc25a4bc1bcd07d56da15d9128",
+    "lib/Ham/RTTY/Error.pm": "691583d0f4b5c64061bc103ab2a2b9f00c5926fe047c58ba6e91f917c933e37f",
+    "lib/Ham/RTTY/Events.pm": "0ae66520fddb13dd3ea7c04662c1c8a99880bdf507649795604cccf4aac11d1b",
+    "lib/Ham/RTTY/Generator.pm": "375015e485b6f38f561e02845a7c1efa22d9d67be41f70fb818578ab7f27f01f",
+    "lib/Ham/RTTY/MIDI.pm": "f5d5268bfbd80b262a4e6a15f973b913111c1fdba0936d6baa8c95cbc44fe3ec",
+    "lib/Ham/RTTY/Result.pm": "40dbaafa256001497887f0e293627799db996634c7d5ac98695276290d2b5fd5",
+    "lib/Ham/RTTY/_Internal/Backend.pm": "f2d6cde05da6fa1338d37728d654d8327eb8d35f720eb035468bae91d9c57051",
+    "lib/Ham/RTTY/_Internal/CLI.pm": "b03d72cc45ee02e4f7b784c0967ea30ff24e52610df404ad8dfe127a22b4c2b2",
+    "lib/Ham/RTTY/_Internal/Data.pm": "2eb97d379660230eb4c2b25f11460b517f79a05f2dc2ac2ee8967c57335c9a5e",
+    "lib/Ham/RTTY/_Internal/IO.pm": "40f002ee9e8387683b37bfd6495e65af055bcffacbcdef8f3b5c85e804139c4b",
+    "lib/Ham/RTTY/_Internal/PDL.pm": "64776c39c7d4543b7d83c44c5fb4eddb4fcab92f238becc520f839b63d74405f",
+    "lib/Ham/RTTY/_Internal/Result.pm": "2c766a8d55e308c8c5f18a78c419b995c9668b23050edac81157bb9e0e00663a",
+    "lib/Ham/RTTY/_Internal/Validate.pm": "ae7c1b11263306ee24977e75a7203e6cb6f56d8d55e8e97581c5b4ad4d8505ae",
+    "lib/Ham/RTTY/_Internal/WavWriter.pm": "dda8c056d84c1e328e63f902854cd9f30c28f0dcbff6ab9a1b43d3520ab8c114",
+    "lib/Ham/RTTY.pm": "4c28f29ac5951706d306127d0a925f1f06b60e8b28937599e8ca1c0466233224"
+  },
+  "harness_sha256": "8d98d77015d5da655e86c1b7a0b966db675dfb253b84a23148cd27cb740fc991",
+  "environment": {
+    "os": "macOS",
+    "os_version": "27.0.1",
+    "architecture": "arm64",
+    "cpu": "Apple M4",
+    "physical_memory_bytes": 17179869184,
+    "perl": "v5.44.0",
+    "pdl": "2.106"
+  },
+  "protocol": {
+    "measurement": "macOS /usr/bin/time -l maximum resident set size",
+    "rss_unit": "bytes",
+    "display_unit": "MiB = 1048576 bytes",
+    "repetitions_per_backend_per_case": 3,
+    "fresh_process_per_observation": true,
+    "execution": "sequential; backends alternate within each repetition",
+    "includes": "interpreter, module/native-library loading, fixture event setup, working buffers, retained history, result and diagnostic JSON",
+    "excluded": "input file generation; parent collector; tests and coverage collection",
+    "known_tones": true,
+    "generation_duration_seconds": 120,
+    "generation_rate": 48000,
+    "block_samples": 4096,
+    "fixture_creation_command": [
+      "perl",
+      "maint/memory.pl",
+      "--create",
+      "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-ram-20261027-ie53ig75/memory-120s-48000.wav",
+      "--backend",
+      "perl"
+    ],
+    "baseline_subtracted": false,
+    "synthetic_generation": {
+      "baud": 45.45,
+      "mark_hz": 2125,
+      "shift_hz": 170,
+      "stop_bits": 1.5,
+      "amplitude": 0.8,
+      "leading_idle_seconds": 0.1,
+      "source_message_recipe": "join ' ', ('CQ TEST 123 73') x 100",
+      "trim": "First 5760000 samples; final frame is deliberately incomplete."
+    },
+    "generation_output": {
+      "stream": "Consume each block, count its values, then discard it; no PCM file output.",
+      "collect": "Generator->generate retains a complete public Perl array of 5760000 values."
+    }
+  },
+  "inputs": {
+    "synthetic_120s": {
+      "path": "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-ram-20261027-ie53ig75/memory-120s-48000.wav",
+      "sha256": "c817cd183d9dcc1f545d10614e9927d097b785e3ed4cf70766406dcbeaa4c7a7",
+      "bytes": 11520044,
+      "sample_rate": 48000,
+      "frames": 5760000,
+      "channels": 1,
+      "bits": 16
+    },
+    "dwd_30s": {
+      "path": "corpus/free/dwd-france-day.wav",
+      "sha256": "246c13430248329167eb7fe0a5f586850389d68fba9568e915208dddbc11296e",
+      "bytes": 480044,
+      "sample_rate": 8000,
+      "frames": 240000,
+      "channels": 1,
+      "bits": 16
+    }
+  },
+  "runs": [
+    {
+      "case": "baseline",
+      "backend": "perl",
+      "repetition": 1,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--baseline",
+        "--backend",
+        "perl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 14712832,
+      "result": {
+        "backend": "perl",
+        "block_samples": 4096,
+        "mode": "baseline",
+        "pdl_loaded": false
+      },
+      "time_output": "        0.04 real         0.03 user         0.00 sys\n            14712832  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1141  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  15  involuntary context switches\n           258925385  instructions retired\n            91881461  cycles elapsed\n            11616616  peak memory footprint\n",
+      "wall_seconds": 0.04,
+      "user_seconds": 0.03,
+      "system_seconds": 0.0
+    },
+    {
+      "case": "baseline",
+      "backend": "pdl",
+      "repetition": 1,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--baseline",
+        "--backend",
+        "pdl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 21626880,
+      "result": {
+        "backend": "pdl",
+        "block_samples": 4096,
+        "mode": "baseline",
+        "pdl_loaded": true,
+        "pdl_version": "2.106"
+      },
+      "time_output": "        0.07 real         0.06 user         0.01 sys\n            21626880  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1717  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  15  involuntary context switches\n           430445565  instructions retired\n           147774732  cycles elapsed\n            17957272  peak memory footprint\n",
+      "wall_seconds": 0.07,
+      "user_seconds": 0.06,
+      "system_seconds": 0.01
+    },
+    {
+      "case": "baseline",
+      "backend": "perl",
+      "repetition": 2,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--baseline",
+        "--backend",
+        "perl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 14729216,
+      "result": {
+        "backend": "perl",
+        "block_samples": 4096,
+        "mode": "baseline",
+        "pdl_loaded": false
+      },
+      "time_output": "        0.04 real         0.03 user         0.00 sys\n            14729216  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1142  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  15  involuntary context switches\n           253388086  instructions retired\n            90802243  cycles elapsed\n            11633000  peak memory footprint\n",
+      "wall_seconds": 0.04,
+      "user_seconds": 0.03,
+      "system_seconds": 0.0
+    },
+    {
+      "case": "baseline",
+      "backend": "pdl",
+      "repetition": 2,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--baseline",
+        "--backend",
+        "pdl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 21725184,
+      "result": {
+        "backend": "pdl",
+        "block_samples": 4096,
+        "mode": "baseline",
+        "pdl_loaded": true,
+        "pdl_version": "2.106"
+      },
+      "time_output": "        0.07 real         0.05 user         0.01 sys\n            21725184  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1723  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   8  involuntary context switches\n           427010559  instructions retired\n           145084769  cycles elapsed\n            18055576  peak memory footprint\n",
+      "wall_seconds": 0.07,
+      "user_seconds": 0.05,
+      "system_seconds": 0.01
+    },
+    {
+      "case": "baseline",
+      "backend": "perl",
+      "repetition": 3,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--baseline",
+        "--backend",
+        "perl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 14712832,
+      "result": {
+        "backend": "perl",
+        "block_samples": 4096,
+        "mode": "baseline",
+        "pdl_loaded": false
+      },
+      "time_output": "        0.04 real         0.03 user         0.00 sys\n            14712832  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1142  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  20  involuntary context switches\n           253353508  instructions retired\n            89028752  cycles elapsed\n            11616616  peak memory footprint\n",
+      "wall_seconds": 0.04,
+      "user_seconds": 0.03,
+      "system_seconds": 0.0
+    },
+    {
+      "case": "baseline",
+      "backend": "pdl",
+      "repetition": 3,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--baseline",
+        "--backend",
+        "pdl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 21692416,
+      "result": {
+        "backend": "pdl",
+        "block_samples": 4096,
+        "mode": "baseline",
+        "pdl_loaded": true,
+        "pdl_version": "2.106"
+      },
+      "time_output": "        0.06 real         0.05 user         0.00 sys\n            21692416  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1723  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   8  involuntary context switches\n           426964685  instructions retired\n           138200534  cycles elapsed\n            18022808  peak memory footprint\n",
+      "wall_seconds": 0.06,
+      "user_seconds": 0.05,
+      "system_seconds": 0.0
+    },
+    {
+      "case": "read_wav_120s_48khz",
+      "backend": "perl",
+      "repetition": 1,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--read",
+        "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-ram-20261027-ie53ig75/memory-120s-48000.wav",
+        "--backend",
+        "perl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 21708800,
+      "result": {
+        "backend": "perl",
+        "block_samples": 4096,
+        "complete": 1,
+        "diagnostics": {
+          "analyzed_samples": 5760000,
+          "configured_bit_period": 0.022002200220022,
+          "frame_samples": 88,
+          "framing_error_count": 0,
+          "mark_space_level_ratio": 0.930790852284736,
+          "measured_bit_period": 0.022
+        },
+        "mode": "read",
+        "pdl_loaded": false,
+        "reception": {
+          "baud": 45.45,
+          "mark": 2125,
+          "shift": 170
+        },
+        "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 12",
+        "text_characters": 640,
+        "warnings": [
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Incomplete frame at end of input"
+          }
+        ]
+      },
+      "time_output": "       12.27 real        12.23 user         0.02 sys\n            21708800  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1569  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                2119  involuntary context switches\n        143797676393  instructions retired\n         25533446543  cycles elapsed\n            18563480  peak memory footprint\n",
+      "wall_seconds": 12.27,
+      "user_seconds": 12.23,
+      "system_seconds": 0.02
+    },
+    {
+      "case": "read_wav_120s_48khz",
+      "backend": "pdl",
+      "repetition": 1,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--read",
+        "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-ram-20261027-ie53ig75/memory-120s-48000.wav",
+        "--backend",
+        "pdl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 28884992,
+      "result": {
+        "backend": "pdl",
+        "block_samples": 4096,
+        "complete": 1,
+        "diagnostics": {
+          "analyzed_samples": 5760000,
+          "configured_bit_period": 0.022002200220022,
+          "frame_samples": 88,
+          "framing_error_count": 0,
+          "mark_space_level_ratio": 0.930790852284731,
+          "measured_bit_period": 0.022
+        },
+        "mode": "read",
+        "pdl_loaded": true,
+        "pdl_version": "2.106",
+        "reception": {
+          "baud": 45.45,
+          "mark": 2125,
+          "shift": 170
+        },
+        "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 12",
+        "text_characters": 640,
+        "warnings": [
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Incomplete frame at end of input"
+          }
+        ]
+      },
+      "time_output": "        7.72 real         7.70 user         0.01 sys\n            28884992  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                2163  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 305  involuntary context switches\n         76204298125  instructions retired\n         16075036587  cycles elapsed\n            24707504  peak memory footprint\n",
+      "wall_seconds": 7.72,
+      "user_seconds": 7.7,
+      "system_seconds": 0.01
+    },
+    {
+      "case": "read_wav_120s_48khz",
+      "backend": "perl",
+      "repetition": 2,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--read",
+        "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-ram-20261027-ie53ig75/memory-120s-48000.wav",
+        "--backend",
+        "perl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 21708800,
+      "result": {
+        "backend": "perl",
+        "block_samples": 4096,
+        "complete": 1,
+        "diagnostics": {
+          "analyzed_samples": 5760000,
+          "configured_bit_period": 0.022002200220022,
+          "frame_samples": 88,
+          "framing_error_count": 0,
+          "mark_space_level_ratio": 0.930790852284736,
+          "measured_bit_period": 0.022
+        },
+        "mode": "read",
+        "pdl_loaded": false,
+        "reception": {
+          "baud": 45.45,
+          "mark": 2125,
+          "shift": 170
+        },
+        "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 12",
+        "text_characters": 640,
+        "warnings": [
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Incomplete frame at end of input"
+          }
+        ]
+      },
+      "time_output": "       12.34 real        12.31 user         0.01 sys\n            21708800  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1569  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 626  involuntary context switches\n        143790657872  instructions retired\n         25734237986  cycles elapsed\n            18563480  peak memory footprint\n",
+      "wall_seconds": 12.34,
+      "user_seconds": 12.31,
+      "system_seconds": 0.01
+    },
+    {
+      "case": "read_wav_120s_48khz",
+      "backend": "pdl",
+      "repetition": 2,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--read",
+        "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-ram-20261027-ie53ig75/memory-120s-48000.wav",
+        "--backend",
+        "pdl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 28917760,
+      "result": {
+        "backend": "pdl",
+        "block_samples": 4096,
+        "complete": 1,
+        "diagnostics": {
+          "analyzed_samples": 5760000,
+          "configured_bit_period": 0.022002200220022,
+          "frame_samples": 88,
+          "framing_error_count": 0,
+          "mark_space_level_ratio": 0.930790852284731,
+          "measured_bit_period": 0.022
+        },
+        "mode": "read",
+        "pdl_loaded": true,
+        "pdl_version": "2.106",
+        "reception": {
+          "baud": 45.45,
+          "mark": 2125,
+          "shift": 170
+        },
+        "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 12",
+        "text_characters": 640,
+        "warnings": [
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Incomplete frame at end of input"
+          }
+        ]
+      },
+      "time_output": "        7.82 real         7.80 user         0.01 sys\n            28917760  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                2166  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 338  involuntary context switches\n         76198031733  instructions retired\n         16279969846  cycles elapsed\n            24740272  peak memory footprint\n",
+      "wall_seconds": 7.82,
+      "user_seconds": 7.8,
+      "system_seconds": 0.01
+    },
+    {
+      "case": "read_wav_120s_48khz",
+      "backend": "perl",
+      "repetition": 3,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--read",
+        "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-ram-20261027-ie53ig75/memory-120s-48000.wav",
+        "--backend",
+        "perl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 21757952,
+      "result": {
+        "backend": "perl",
+        "block_samples": 4096,
+        "complete": 1,
+        "diagnostics": {
+          "analyzed_samples": 5760000,
+          "configured_bit_period": 0.022002200220022,
+          "frame_samples": 88,
+          "framing_error_count": 0,
+          "mark_space_level_ratio": 0.930790852284736,
+          "measured_bit_period": 0.022
+        },
+        "mode": "read",
+        "pdl_loaded": false,
+        "reception": {
+          "baud": 45.45,
+          "mark": 2125,
+          "shift": 170
+        },
+        "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 12",
+        "text_characters": 640,
+        "warnings": [
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Incomplete frame at end of input"
+          }
+        ]
+      },
+      "time_output": "       12.25 real        12.22 user         0.01 sys\n            21757952  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1571  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 481  involuntary context switches\n        143782494369  instructions retired\n         25498274056  cycles elapsed\n            18612632  peak memory footprint\n",
+      "wall_seconds": 12.25,
+      "user_seconds": 12.22,
+      "system_seconds": 0.01
+    },
+    {
+      "case": "read_wav_120s_48khz",
+      "backend": "pdl",
+      "repetition": 3,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--read",
+        "/var/folders/07/57bk4fl91n9_9gk_j124c_q80000gn/T/ham-rtty-ram-20261027-ie53ig75/memory-120s-48000.wav",
+        "--backend",
+        "pdl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 28803072,
+      "result": {
+        "backend": "pdl",
+        "block_samples": 4096,
+        "complete": 1,
+        "diagnostics": {
+          "analyzed_samples": 5760000,
+          "configured_bit_period": 0.022002200220022,
+          "frame_samples": 88,
+          "framing_error_count": 0,
+          "mark_space_level_ratio": 0.930790852284731,
+          "measured_bit_period": 0.022
+        },
+        "mode": "read",
+        "pdl_loaded": true,
+        "pdl_version": "2.106",
+        "reception": {
+          "baud": 45.45,
+          "mark": 2125,
+          "shift": 170
+        },
+        "text": "CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 123 73 CQ TEST 12",
+        "text_characters": 640,
+        "warnings": [
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Incomplete frame at end of input"
+          }
+        ]
+      },
+      "time_output": "        7.80 real         7.77 user         0.01 sys\n            28803072  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                2159  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 322  involuntary context switches\n         76207799010  instructions retired\n         16234644423  cycles elapsed\n            24592768  peak memory footprint\n",
+      "wall_seconds": 7.8,
+      "user_seconds": 7.77,
+      "system_seconds": 0.01
+    },
+    {
+      "case": "read_wav_dwd_30s_8khz",
+      "backend": "perl",
+      "repetition": 1,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--read",
+        "corpus/free/dwd-france-day.wav",
+        "--baud",
+        "50",
+        "--mark",
+        "1275",
+        "--shift",
+        "450",
+        "--backend",
+        "perl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 17498112,
+      "result": {
+        "backend": "perl",
+        "block_samples": 4096,
+        "complete": 1,
+        "diagnostics": {
+          "analyzed_samples": 240000,
+          "configured_bit_period": 0.02,
+          "frame_samples": 13,
+          "framing_error_count": 0,
+          "mark_space_level_ratio": 1.65839397028108,
+          "measured_bit_period": 0.0195
+        },
+        "mode": "read",
+        "pdl_loaded": false,
+        "reception": {
+          "baud": "50",
+          "mark": "1275",
+          "shift": "450"
+        },
+        "text": "YRYRYRYRYRYRYRYRYRYRYRYRYRY\r\r\nCQ CQ CQ DE DDK2 DDH7 DDK9\r\r\nFREQUENCIES   4583 KHZ   7646 KHZ   10100.8 KHZ\r\r\nRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRY\r\r\nZCZC 17",
+        "text_characters": 183,
+        "warnings": [
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Incomplete frame at end of input"
+          }
+        ]
+      },
+      "time_output": "        0.63 real         0.62 user         0.00 sys\n            17498112  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1312  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  14  involuntary context switches\n          7023537868  instructions retired\n          1325705148  cycles elapsed\n            14319976  peak memory footprint\n",
+      "wall_seconds": 0.63,
+      "user_seconds": 0.62,
+      "system_seconds": 0.0
+    },
+    {
+      "case": "read_wav_dwd_30s_8khz",
+      "backend": "pdl",
+      "repetition": 1,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--read",
+        "corpus/free/dwd-france-day.wav",
+        "--baud",
+        "50",
+        "--mark",
+        "1275",
+        "--shift",
+        "450",
+        "--backend",
+        "pdl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 24625152,
+      "result": {
+        "backend": "pdl",
+        "block_samples": 4096,
+        "complete": 1,
+        "diagnostics": {
+          "analyzed_samples": 240000,
+          "configured_bit_period": 0.02,
+          "frame_samples": 13,
+          "framing_error_count": 0,
+          "mark_space_level_ratio": 1.65839397028108,
+          "measured_bit_period": 0.0195
+        },
+        "mode": "read",
+        "pdl_loaded": true,
+        "pdl_version": "2.106",
+        "reception": {
+          "baud": "50",
+          "mark": "1275",
+          "shift": "450"
+        },
+        "text": "YRYRYRYRYRYRYRYRYRYRYRYRYRY\r\r\nCQ CQ CQ DE DDK2 DDH7 DDK9\r\r\nFREQUENCIES   4583 KHZ   7646 KHZ   10100.8 KHZ\r\r\nRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRY\r\r\nZCZC 17",
+        "text_characters": 183,
+        "warnings": [
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Incomplete frame at end of input"
+          }
+        ]
+      },
+      "time_output": "        0.98 real         0.96 user         0.01 sys\n            24625152  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1903  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  21  involuntary context switches\n          9283872160  instructions retired\n          2037361456  cycles elapsed\n            20431256  peak memory footprint\n",
+      "wall_seconds": 0.98,
+      "user_seconds": 0.96,
+      "system_seconds": 0.01
+    },
+    {
+      "case": "read_wav_dwd_30s_8khz",
+      "backend": "perl",
+      "repetition": 2,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--read",
+        "corpus/free/dwd-france-day.wav",
+        "--baud",
+        "50",
+        "--mark",
+        "1275",
+        "--shift",
+        "450",
+        "--backend",
+        "perl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 17678336,
+      "result": {
+        "backend": "perl",
+        "block_samples": 4096,
+        "complete": 1,
+        "diagnostics": {
+          "analyzed_samples": 240000,
+          "configured_bit_period": 0.02,
+          "frame_samples": 13,
+          "framing_error_count": 0,
+          "mark_space_level_ratio": 1.65839397028108,
+          "measured_bit_period": 0.0195
+        },
+        "mode": "read",
+        "pdl_loaded": false,
+        "reception": {
+          "baud": "50",
+          "mark": "1275",
+          "shift": "450"
+        },
+        "text": "YRYRYRYRYRYRYRYRYRYRYRYRYRY\r\r\nCQ CQ CQ DE DDK2 DDH7 DDK9\r\r\nFREQUENCIES   4583 KHZ   7646 KHZ   10100.8 KHZ\r\r\nRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRY\r\r\nZCZC 17",
+        "text_characters": 183,
+        "warnings": [
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Incomplete frame at end of input"
+          }
+        ]
+      },
+      "time_output": "        0.63 real         0.62 user         0.00 sys\n            17678336  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1322  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  20  involuntary context switches\n          7015128917  instructions retired\n          1316334378  cycles elapsed\n            14500200  peak memory footprint\n",
+      "wall_seconds": 0.63,
+      "user_seconds": 0.62,
+      "system_seconds": 0.0
+    },
+    {
+      "case": "read_wav_dwd_30s_8khz",
+      "backend": "pdl",
+      "repetition": 2,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--read",
+        "corpus/free/dwd-france-day.wav",
+        "--baud",
+        "50",
+        "--mark",
+        "1275",
+        "--shift",
+        "450",
+        "--backend",
+        "pdl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 24756224,
+      "result": {
+        "backend": "pdl",
+        "block_samples": 4096,
+        "complete": 1,
+        "diagnostics": {
+          "analyzed_samples": 240000,
+          "configured_bit_period": 0.02,
+          "frame_samples": 13,
+          "framing_error_count": 0,
+          "mark_space_level_ratio": 1.65839397028108,
+          "measured_bit_period": 0.0195
+        },
+        "mode": "read",
+        "pdl_loaded": true,
+        "pdl_version": "2.106",
+        "reception": {
+          "baud": "50",
+          "mark": "1275",
+          "shift": "450"
+        },
+        "text": "YRYRYRYRYRYRYRYRYRYRYRYRYRY\r\r\nCQ CQ CQ DE DDK2 DDH7 DDK9\r\r\nFREQUENCIES   4583 KHZ   7646 KHZ   10100.8 KHZ\r\r\nRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRY\r\r\nZCZC 17",
+        "text_characters": 183,
+        "warnings": [
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Incomplete frame at end of input"
+          }
+        ]
+      },
+      "time_output": "        0.98 real         0.96 user         0.01 sys\n            24756224  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1911  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 104  involuntary context switches\n          9283435764  instructions retired\n          2044057376  cycles elapsed\n            20578736  peak memory footprint\n",
+      "wall_seconds": 0.98,
+      "user_seconds": 0.96,
+      "system_seconds": 0.01
+    },
+    {
+      "case": "read_wav_dwd_30s_8khz",
+      "backend": "perl",
+      "repetition": 3,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--read",
+        "corpus/free/dwd-france-day.wav",
+        "--baud",
+        "50",
+        "--mark",
+        "1275",
+        "--shift",
+        "450",
+        "--backend",
+        "perl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 17661952,
+      "result": {
+        "backend": "perl",
+        "block_samples": 4096,
+        "complete": 1,
+        "diagnostics": {
+          "analyzed_samples": 240000,
+          "configured_bit_period": 0.02,
+          "frame_samples": 13,
+          "framing_error_count": 0,
+          "mark_space_level_ratio": 1.65839397028108,
+          "measured_bit_period": 0.0195
+        },
+        "mode": "read",
+        "pdl_loaded": false,
+        "reception": {
+          "baud": "50",
+          "mark": "1275",
+          "shift": "450"
+        },
+        "text": "YRYRYRYRYRYRYRYRYRYRYRYRYRY\r\r\nCQ CQ CQ DE DDK2 DDH7 DDK9\r\r\nFREQUENCIES   4583 KHZ   7646 KHZ   10100.8 KHZ\r\r\nRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRY\r\r\nZCZC 17",
+        "text_characters": 183,
+        "warnings": [
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Incomplete frame at end of input"
+          }
+        ]
+      },
+      "time_output": "        0.63 real         0.62 user         0.00 sys\n            17661952  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1321  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  38  involuntary context switches\n          7023308304  instructions retired\n          1312397012  cycles elapsed\n            14483816  peak memory footprint\n",
+      "wall_seconds": 0.63,
+      "user_seconds": 0.62,
+      "system_seconds": 0.0
+    },
+    {
+      "case": "read_wav_dwd_30s_8khz",
+      "backend": "pdl",
+      "repetition": 3,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--read",
+        "corpus/free/dwd-france-day.wav",
+        "--baud",
+        "50",
+        "--mark",
+        "1275",
+        "--shift",
+        "450",
+        "--backend",
+        "pdl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 24657920,
+      "result": {
+        "backend": "pdl",
+        "block_samples": 4096,
+        "complete": 1,
+        "diagnostics": {
+          "analyzed_samples": 240000,
+          "configured_bit_period": 0.02,
+          "frame_samples": 13,
+          "framing_error_count": 0,
+          "mark_space_level_ratio": 1.65839397028108,
+          "measured_bit_period": 0.0195
+        },
+        "mode": "read",
+        "pdl_loaded": true,
+        "pdl_version": "2.106",
+        "reception": {
+          "baud": "50",
+          "mark": "1275",
+          "shift": "450"
+        },
+        "text": "YRYRYRYRYRYRYRYRYRYRYRYRYRY\r\r\nCQ CQ CQ DE DDK2 DDH7 DDK9\r\r\nFREQUENCIES   4583 KHZ   7646 KHZ   10100.8 KHZ\r\r\nRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRY\r\r\nZCZC 17",
+        "text_characters": 183,
+        "warnings": [
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Incomplete frame at end of input"
+          }
+        ]
+      },
+      "time_output": "        0.97 real         0.95 user         0.01 sys\n            24657920  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1905  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  24  involuntary context switches\n          9282681655  instructions retired\n          2017768992  cycles elapsed\n            20464024  peak memory footprint\n",
+      "wall_seconds": 0.97,
+      "user_seconds": 0.95,
+      "system_seconds": 0.01
+    },
+    {
+      "case": "stream_samples_120s_48khz",
+      "backend": "perl",
+      "repetition": 1,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--stream",
+        "--backend",
+        "perl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 19496960,
+      "result": {
+        "backend": "perl",
+        "block_samples": 4096,
+        "generation": {
+          "sample_rate": 48000,
+          "samples": 5760000,
+          "state": "FINISHED"
+        },
+        "mode": "stream",
+        "pdl_loaded": false,
+        "sample_count": 5760000
+      },
+      "time_output": "        0.91 real         0.90 user         0.00 sys\n            19496960  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1433  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  82  involuntary context switches\n          9803566442  instructions retired\n          1906758178  cycles elapsed\n            16384384  peak memory footprint\n",
+      "wall_seconds": 0.91,
+      "user_seconds": 0.9,
+      "system_seconds": 0.0
+    },
+    {
+      "case": "stream_samples_120s_48khz",
+      "backend": "pdl",
+      "repetition": 1,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--stream",
+        "--backend",
+        "pdl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 28082176,
+      "result": {
+        "backend": "pdl",
+        "block_samples": 4096,
+        "generation": {
+          "sample_rate": 48000,
+          "samples": 5760000,
+          "state": "FINISHED"
+        },
+        "mode": "stream",
+        "pdl_loaded": true,
+        "pdl_version": "2.106",
+        "sample_count": 5760000
+      },
+      "time_output": "        0.70 real         0.69 user         0.01 sys\n            28082176  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                2115  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  42  involuntary context switches\n          7131487903  instructions retired\n          1465552057  cycles elapsed\n            23953816  peak memory footprint\n",
+      "wall_seconds": 0.7,
+      "user_seconds": 0.69,
+      "system_seconds": 0.01
+    },
+    {
+      "case": "stream_samples_120s_48khz",
+      "backend": "perl",
+      "repetition": 2,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--stream",
+        "--backend",
+        "perl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 19480576,
+      "result": {
+        "backend": "perl",
+        "block_samples": 4096,
+        "generation": {
+          "sample_rate": 48000,
+          "samples": 5760000,
+          "state": "FINISHED"
+        },
+        "mode": "stream",
+        "pdl_loaded": false,
+        "sample_count": 5760000
+      },
+      "time_output": "        0.91 real         0.90 user         0.00 sys\n            19480576  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1432  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 134  involuntary context switches\n          9803152874  instructions retired\n          1891658846  cycles elapsed\n            16368000  peak memory footprint\n",
+      "wall_seconds": 0.91,
+      "user_seconds": 0.9,
+      "system_seconds": 0.0
+    },
+    {
+      "case": "stream_samples_120s_48khz",
+      "backend": "pdl",
+      "repetition": 2,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--stream",
+        "--backend",
+        "pdl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 28196864,
+      "result": {
+        "backend": "pdl",
+        "block_samples": 4096,
+        "generation": {
+          "sample_rate": 48000,
+          "samples": 5760000,
+          "state": "FINISHED"
+        },
+        "mode": "stream",
+        "pdl_loaded": true,
+        "pdl_version": "2.106",
+        "sample_count": 5760000
+      },
+      "time_output": "        0.70 real         0.68 user         0.00 sys\n            28196864  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                2121  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  23  involuntary context switches\n          7131235166  instructions retired\n          1456175372  cycles elapsed\n            24068504  peak memory footprint\n",
+      "wall_seconds": 0.7,
+      "user_seconds": 0.68,
+      "system_seconds": 0.0
+    },
+    {
+      "case": "stream_samples_120s_48khz",
+      "backend": "perl",
+      "repetition": 3,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--stream",
+        "--backend",
+        "perl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 19398656,
+      "result": {
+        "backend": "perl",
+        "block_samples": 4096,
+        "generation": {
+          "sample_rate": 48000,
+          "samples": 5760000,
+          "state": "FINISHED"
+        },
+        "mode": "stream",
+        "pdl_loaded": false,
+        "sample_count": 5760000
+      },
+      "time_output": "        0.91 real         0.90 user         0.00 sys\n            19398656  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1427  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  29  involuntary context switches\n          9802664572  instructions retired\n          1908166942  cycles elapsed\n            16286080  peak memory footprint\n",
+      "wall_seconds": 0.91,
+      "user_seconds": 0.9,
+      "system_seconds": 0.0
+    },
+    {
+      "case": "stream_samples_120s_48khz",
+      "backend": "pdl",
+      "repetition": 3,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--stream",
+        "--backend",
+        "pdl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 28246016,
+      "result": {
+        "backend": "pdl",
+        "block_samples": 4096,
+        "generation": {
+          "sample_rate": 48000,
+          "samples": 5760000,
+          "state": "FINISHED"
+        },
+        "mode": "stream",
+        "pdl_loaded": true,
+        "pdl_version": "2.106",
+        "sample_count": 5760000
+      },
+      "time_output": "        0.68 real         0.67 user         0.00 sys\n            28246016  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                2124  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   9  involuntary context switches\n          7128769806  instructions retired\n          1417756051  cycles elapsed\n            24117656  peak memory footprint\n",
+      "wall_seconds": 0.68,
+      "user_seconds": 0.67,
+      "system_seconds": 0.0
+    },
+    {
+      "case": "collect_samples_120s_48khz",
+      "backend": "perl",
+      "repetition": 1,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--collect",
+        "--backend",
+        "perl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 215171072,
+      "result": {
+        "backend": "perl",
+        "block_samples": 4096,
+        "generation": {
+          "sample_rate": 48000,
+          "samples": 5760000,
+          "state": "FINISHED"
+        },
+        "mode": "collect",
+        "pdl_loaded": false,
+        "sample_count": 5760000
+      },
+      "time_output": "        1.04 real         1.01 user         0.02 sys\n           215171072  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n               13377  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  79  involuntary context switches\n         11141105378  instructions retired\n          2172561919  cycles elapsed\n           212156944  peak memory footprint\n",
+      "wall_seconds": 1.04,
+      "user_seconds": 1.01,
+      "system_seconds": 0.02
+    },
+    {
+      "case": "collect_samples_120s_48khz",
+      "backend": "pdl",
+      "repetition": 1,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--collect",
+        "--backend",
+        "pdl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 224018432,
+      "result": {
+        "backend": "pdl",
+        "block_samples": 4096,
+        "generation": {
+          "sample_rate": 48000,
+          "samples": 5760000,
+          "state": "FINISHED"
+        },
+        "mode": "collect",
+        "pdl_loaded": true,
+        "pdl_version": "2.106",
+        "sample_count": 5760000
+      },
+      "time_output": "        0.74 real         0.71 user         0.03 sys\n           224018432  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n               14051  page reclaims\n                  25  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  84  involuntary context switches\n          8459967118  instructions retired\n          1541009820  cycles elapsed\n           219988520  peak memory footprint\n",
+      "wall_seconds": 0.74,
+      "user_seconds": 0.71,
+      "system_seconds": 0.03
+    },
+    {
+      "case": "collect_samples_120s_48khz",
+      "backend": "perl",
+      "repetition": 2,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--collect",
+        "--backend",
+        "perl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 215171072,
+      "result": {
+        "backend": "perl",
+        "block_samples": 4096,
+        "generation": {
+          "sample_rate": 48000,
+          "samples": 5760000,
+          "state": "FINISHED"
+        },
+        "mode": "collect",
+        "pdl_loaded": false,
+        "sample_count": 5760000
+      },
+      "time_output": "        1.05 real         1.02 user         0.03 sys\n           215171072  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n               13377  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  23  involuntary context switches\n         11129954554  instructions retired\n          2182996991  cycles elapsed\n           212156944  peak memory footprint\n",
+      "wall_seconds": 1.05,
+      "user_seconds": 1.02,
+      "system_seconds": 0.03
+    },
+    {
+      "case": "collect_samples_120s_48khz",
+      "backend": "pdl",
+      "repetition": 2,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--collect",
+        "--backend",
+        "pdl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 223887360,
+      "result": {
+        "backend": "pdl",
+        "block_samples": 4096,
+        "generation": {
+          "sample_rate": 48000,
+          "samples": 5760000,
+          "state": "FINISHED"
+        },
+        "mode": "collect",
+        "pdl_loaded": true,
+        "pdl_version": "2.106",
+        "sample_count": 5760000
+      },
+      "time_output": "        0.74 real         0.70 user         0.03 sys\n           223887360  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n               14065  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  19  involuntary context switches\n          8456482638  instructions retired\n          1538799901  cycles elapsed\n           219841040  peak memory footprint\n",
+      "wall_seconds": 0.74,
+      "user_seconds": 0.7,
+      "system_seconds": 0.03
+    },
+    {
+      "case": "collect_samples_120s_48khz",
+      "backend": "perl",
+      "repetition": 3,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--collect",
+        "--backend",
+        "perl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 215138304,
+      "result": {
+        "backend": "perl",
+        "block_samples": 4096,
+        "generation": {
+          "sample_rate": 48000,
+          "samples": 5760000,
+          "state": "FINISHED"
+        },
+        "mode": "collect",
+        "pdl_loaded": false,
+        "sample_count": 5760000
+      },
+      "time_output": "        1.06 real         1.02 user         0.03 sys\n           215138304  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n               13375  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  34  involuntary context switches\n         11189869342  instructions retired\n          2202379989  cycles elapsed\n           212124176  peak memory footprint\n",
+      "wall_seconds": 1.06,
+      "user_seconds": 1.02,
+      "system_seconds": 0.03
+    },
+    {
+      "case": "collect_samples_120s_48khz",
+      "backend": "pdl",
+      "repetition": 3,
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "perl",
+        "maint/memory.pl",
+        "--collect",
+        "--backend",
+        "pdl"
+      ],
+      "exit_status": 0,
+      "peak_rss_bytes": 223887360,
+      "result": {
+        "backend": "pdl",
+        "block_samples": 4096,
+        "generation": {
+          "sample_rate": 48000,
+          "samples": 5760000,
+          "state": "FINISHED"
+        },
+        "mode": "collect",
+        "pdl_loaded": true,
+        "pdl_version": "2.106",
+        "sample_count": 5760000
+      },
+      "time_output": "        0.74 real         0.71 user         0.02 sys\n           223887360  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n               14065  page reclaims\n                   3  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  85  involuntary context switches\n          8455623377  instructions retired\n          1537353225  cycles elapsed\n           219857448  peak memory footprint\n",
+      "wall_seconds": 0.74,
+      "user_seconds": 0.71,
+      "system_seconds": 0.02
+    }
+  ],
+  "summary": [
+    {
+      "case": "baseline",
+      "backend": "perl",
+      "observations": 3,
+      "median_peak_rss_bytes": 14712832,
+      "min_peak_rss_bytes": 14712832,
+      "max_peak_rss_bytes": 14729216,
+      "median_wall_seconds": 0.04
+    },
+    {
+      "case": "baseline",
+      "backend": "pdl",
+      "observations": 3,
+      "median_peak_rss_bytes": 21692416,
+      "min_peak_rss_bytes": 21626880,
+      "max_peak_rss_bytes": 21725184,
+      "median_wall_seconds": 0.07
+    },
+    {
+      "case": "read_wav_120s_48khz",
+      "backend": "perl",
+      "observations": 3,
+      "median_peak_rss_bytes": 21708800,
+      "min_peak_rss_bytes": 21708800,
+      "max_peak_rss_bytes": 21757952,
+      "median_wall_seconds": 12.27
+    },
+    {
+      "case": "read_wav_120s_48khz",
+      "backend": "pdl",
+      "observations": 3,
+      "median_peak_rss_bytes": 28884992,
+      "min_peak_rss_bytes": 28803072,
+      "max_peak_rss_bytes": 28917760,
+      "median_wall_seconds": 7.8
+    },
+    {
+      "case": "read_wav_dwd_30s_8khz",
+      "backend": "perl",
+      "observations": 3,
+      "median_peak_rss_bytes": 17661952,
+      "min_peak_rss_bytes": 17498112,
+      "max_peak_rss_bytes": 17678336,
+      "median_wall_seconds": 0.63
+    },
+    {
+      "case": "read_wav_dwd_30s_8khz",
+      "backend": "pdl",
+      "observations": 3,
+      "median_peak_rss_bytes": 24657920,
+      "min_peak_rss_bytes": 24625152,
+      "max_peak_rss_bytes": 24756224,
+      "median_wall_seconds": 0.98
+    },
+    {
+      "case": "stream_samples_120s_48khz",
+      "backend": "perl",
+      "observations": 3,
+      "median_peak_rss_bytes": 19480576,
+      "min_peak_rss_bytes": 19398656,
+      "max_peak_rss_bytes": 19496960,
+      "median_wall_seconds": 0.91
+    },
+    {
+      "case": "stream_samples_120s_48khz",
+      "backend": "pdl",
+      "observations": 3,
+      "median_peak_rss_bytes": 28196864,
+      "min_peak_rss_bytes": 28082176,
+      "max_peak_rss_bytes": 28246016,
+      "median_wall_seconds": 0.7
+    },
+    {
+      "case": "collect_samples_120s_48khz",
+      "backend": "perl",
+      "observations": 3,
+      "median_peak_rss_bytes": 215171072,
+      "min_peak_rss_bytes": 215138304,
+      "max_peak_rss_bytes": 215171072,
+      "median_wall_seconds": 1.05
+    },
+    {
+      "case": "collect_samples_120s_48khz",
+      "backend": "pdl",
+      "observations": 3,
+      "median_peak_rss_bytes": 223887360,
+      "min_peak_rss_bytes": 223887360,
+      "max_peak_rss_bytes": 224018432,
+      "median_wall_seconds": 0.74
+    }
+  ]
+}

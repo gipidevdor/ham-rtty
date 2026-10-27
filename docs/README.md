@@ -14,7 +14,7 @@
 | Choose an API or representation | [Interfaces](usage.md#choose-an-interface) and [data representations](usage.md#choose-the-data-representation) |
 | Understand timing, state and filtering | [Architecture](architecture.md) |
 | Understand detector thresholds | [Power heuristics](architecture.md#detector-power-heuristics) |
-| Compare backend speed | [Measured performance](benchmarks.md) |
+| Compare backend speed and RAM | [Measured performance](benchmarks.md) |
 | Try a licensed radio recording | [Free reception examples](../corpus/free/README.md) |
 | Review tests and recordings | [Verification](verification.md) and [reference corpus](../corpus/README.md) |
 | Change or release the project | [Contributing](../CONTRIBUTING.md) and [release procedure](releasing.md) |
