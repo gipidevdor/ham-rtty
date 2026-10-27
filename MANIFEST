@@ -12,6 +12,16 @@ README.md
 SECURITY.md
 bin/ham-rtty
 corpus/README.md
+corpus/free.json
+corpus/free/CC-BY-4.0.txt
+corpus/free/CC0-1.0.txt
+corpus/free/LICENSES.md
+corpus/free/README.md
+corpus/free/amateur-contest.wav
+corpus/free/dwd-france-afternoon.wav
+corpus/free/dwd-france-day.wav
+corpus/free/dwd-uk-morning.wav
+corpus/free/wikipedia-generated.wav
 corpus/real.json
 corpus/real/LICENSES.md
 docs/README.md
@@ -21,6 +31,7 @@ docs/coverage-results.json
 docs/dependency-audit.md
 docs/installing.md
 docs/performance-results.json
+docs/reception-examples-results.json
 docs/releasing.md
 docs/security-audit-results.json
 docs/security-ci.md
@@ -73,6 +84,7 @@ maint/check-cli-install.pl
 maint/check-dist.pl
 maint/check-install.pl
 maint/coverage.pl
+maint/external-reception.pl
 maint/memory.pl
 maint/reception-corpus.pl
 maint/site.css
@@ -94,6 +106,7 @@ t/20-failure-atomicity.t
 t/22-cli.t
 t/28-file-contracts.t
 t/29-examples.t
+t/30-external-reception.t
 t/lib/CorpusMetrics.pm
 t/lib/FaultHandle.pm
 xt/corpus-licenses.t

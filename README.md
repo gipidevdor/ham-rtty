@@ -45,6 +45,9 @@ ham-rtty receive --mark 2125 --baud 50 --shift 450 practice.wav
 This creates a 50-baud recording with 450 Hz shift, then reads it with matching
 tones and speed. Add `--overwrite` to replace an existing file.
 
+Try the [free reception recordings](corpus/free/README.md) for real radio
+examples with matching settings and their own licence notices.
+
 | You want to… | Command |
 | --- | --- |
 | Convert text | `ham-rtty encode "CQ TEST"` |
@@ -122,5 +125,6 @@ calling application. MIDI is a two-note visual/debug rendering.
 dependency versions remain under review.
 
 Copyright © 2026 Giacomo Picchiarelli. Project code and original material use
-[Artistic License 2.0](LICENSE). No third-party recordings are currently
-distributed; see [NOTICE](NOTICE) and [recording licenses](corpus/real/LICENSES.md).
+[Artistic License 2.0](LICENSE). The [free reception examples](corpus/free/README.md)
+retain their own licences; see [NOTICE](NOTICE) and
+[recording credits](corpus/free/LICENSES.md).

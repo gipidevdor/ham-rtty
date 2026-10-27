@@ -1,0 +1,306 @@
+{
+  "date": "2026-10-27",
+  "production_source_revision": "74cd1b13bcb2b50c7fa088641c68218b42c2e379",
+  "version": "0.001",
+  "environment": {
+    "perl": "5.44.0",
+    "pdl": "2.106",
+    "platform": "macOS ARM64 / Apple M4",
+    "independent_decoder": "minimodem 0.24",
+    "conversion": "SoX 14.4.2"
+  },
+  "source_sha256": {
+    "lib/Ham/RTTY/Audio.pm": "a6c427d6932134e1a9c314c553c5935aaada0d95d9c917a2ab0663e6ab575798",
+    "lib/Ham/RTTY/Baudot.pm": "203a3972cab5c592898c66376f639beff7498596b5523b49f130aee0eb589032",
+    "lib/Ham/RTTY/Decoder.pm": "303610849424177154ec4c79baefab02e2fe304f2c28895501616166d31dd802",
+    "lib/Ham/RTTY/Detector.pm": "1e7f7872c84ddd15d24ecaea37331266c95b3048fc3cfbebfac947064940bddd",
+    "lib/Ham/RTTY/Encoder.pm": "260e623b3c104c9d7bd8dbf73954053529044ffc25a4bc1bcd07d56da15d9128",
+    "lib/Ham/RTTY/Error.pm": "691583d0f4b5c64061bc103ab2a2b9f00c5926fe047c58ba6e91f917c933e37f",
+    "lib/Ham/RTTY/Events.pm": "0ae66520fddb13dd3ea7c04662c1c8a99880bdf507649795604cccf4aac11d1b",
+    "lib/Ham/RTTY/Generator.pm": "375015e485b6f38f561e02845a7c1efa22d9d67be41f70fb818578ab7f27f01f",
+    "lib/Ham/RTTY/MIDI.pm": "f5d5268bfbd80b262a4e6a15f973b913111c1fdba0936d6baa8c95cbc44fe3ec",
+    "lib/Ham/RTTY/Result.pm": "40dbaafa256001497887f0e293627799db996634c7d5ac98695276290d2b5fd5",
+    "lib/Ham/RTTY/_Internal/Backend.pm": "f2d6cde05da6fa1338d37728d654d8327eb8d35f720eb035468bae91d9c57051",
+    "lib/Ham/RTTY/_Internal/CLI.pm": "b03d72cc45ee02e4f7b784c0967ea30ff24e52610df404ad8dfe127a22b4c2b2",
+    "lib/Ham/RTTY/_Internal/Data.pm": "2eb97d379660230eb4c2b25f11460b517f79a05f2dc2ac2ee8967c57335c9a5e",
+    "lib/Ham/RTTY/_Internal/IO.pm": "40f002ee9e8387683b37bfd6495e65af055bcffacbcdef8f3b5c85e804139c4b",
+    "lib/Ham/RTTY/_Internal/PDL.pm": "64776c39c7d4543b7d83c44c5fb4eddb4fcab92f238becc520f839b63d74405f",
+    "lib/Ham/RTTY/_Internal/Result.pm": "2c766a8d55e308c8c5f18a78c419b995c9668b23050edac81157bb9e0e00663a",
+    "lib/Ham/RTTY/_Internal/Validate.pm": "ae7c1b11263306ee24977e75a7203e6cb6f56d8d55e8e97581c5b4ad4d8505ae",
+    "lib/Ham/RTTY/_Internal/WavWriter.pm": "dda8c056d84c1e328e63f902854cd9f30c28f0dcbff6ab9a1b43d3520ab8c114",
+    "lib/Ham/RTTY.pm": "4c28f29ac5951706d306127d0a925f1f06b60e8b28937599e8ca1c0466233224"
+  },
+  "inventory": "corpus/free.json",
+  "commands": [
+    "perl maint/external-reception.pl --backend perl",
+    "perl maint/external-reception.pl --backend pdl"
+  ],
+  "results": {
+    "perl": [
+      {
+        "authoritative_transcript": false,
+        "backend": "perl",
+        "disagreement_rate": 0.0523255813953488,
+        "id": "dwd-france-day",
+        "kind": "off-air",
+        "max_disagreement_rate": 0.0581395348837209,
+        "text": "YRYRYRYRYRYRYRYRYRYRYRYRYRY\r\r\nCQ CQ CQ DE DDK2 DDH7 DDK9\r\r\nFREQUENCIES   4583 KHZ   7646 KHZ   10100.8 KHZ\r\r\nRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRY\r\r\nZCZC 17",
+        "warnings": [
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Incomplete frame at end of input"
+          }
+        ]
+      },
+      {
+        "authoritative_transcript": false,
+        "backend": "perl",
+        "disagreement_rate": 0.0406976744186047,
+        "id": "dwd-france-afternoon",
+        "kind": "off-air",
+        "max_disagreement_rate": 0.0465116279069767,
+        "text": "Y\r\r\nCQ CQ CQ DE DDK2 DDH7 DDK9\r\r\nFREQUENCIES   4583 KHZ   7646 KHZ   10100.8 KHZ\r\r\nRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYCRYRYRYRYRYRYRY\r\r\nCQ CQ CQ DE DDK2 DDH7 DDK9\r\r\n",
+        "warnings": [
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Stop bit is SPACE; resynchronising"
+          },
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Stop bit is SPACE; resynchronising"
+          },
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Incomplete frame at end of input"
+          }
+        ]
+      },
+      {
+        "authoritative_transcript": false,
+        "backend": "perl",
+        "disagreement_rate": 0.11864406779661,
+        "id": "dwd-uk-morning",
+        "kind": "off-air",
+        "max_disagreement_rate": 0.124293785310734,
+        "text": "QXKRYRYRYRYRY\r\r\nCQ CQ CQ DE DDK2 DDH7 DDK9\r\r\nFREQUENCUES   4583 KHZ   7646 KHZ   10100.8 KHZ\r\r\nRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRY\r\r\nCQ CQ CQ DE DDK2",
+        "warnings": [
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Stop bit is SPACE; resynchronising"
+          },
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Stop bit is SPACE; resynchronising"
+          },
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Stop bit is SPACE; resynchronising"
+          },
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Stop bit is SPACE; resynchronising"
+          },
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Stop bit is SPACE; resynchronising"
+          },
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Incomplete frame at end of input"
+          }
+        ]
+      },
+      {
+        "authoritative_transcript": false,
+        "backend": "perl",
+        "disagreement_rate": 0.2,
+        "id": "amateur-contest",
+        "kind": "off-air",
+        "max_disagreement_rate": 0.214285714285714,
+        "text": "IEB  KCIEB DWSI \u0000\u0000MLG KC2IEB  \r\nKC2IEB 599 65 65 KC2IEB  \r\nGXP\rNA2NY 599 044-044",
+        "warnings": [
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Stop bit is SPACE; resynchronising"
+          },
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Stop bit is SPACE; resynchronising"
+          },
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Stop bit is SPACE; resynchronising"
+          },
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Stop bit is SPACE; resynchronising"
+          },
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Stop bit is SPACE; resynchronising"
+          },
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Stop bit is SPACE; resynchronising"
+          },
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Incomplete frame at end of input"
+          }
+        ]
+      },
+      {
+        "authoritative_transcript": false,
+        "backend": "perl",
+        "disagreement_rate": 0,
+        "id": "wikipedia-generated",
+        "kind": "external-generated",
+        "max_disagreement_rate": 0,
+        "text": "WELCOME TO WIKIPEDIA, THE FREE ENCYCLOPEDIA THAT ANYONE CAN EDIT.\r\n",
+        "warnings": [
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Stop bit is SPACE; resynchronising"
+          }
+        ]
+      }
+    ],
+    "pdl": [
+      {
+        "authoritative_transcript": false,
+        "backend": "pdl",
+        "disagreement_rate": 0.0523255813953488,
+        "id": "dwd-france-day",
+        "kind": "off-air",
+        "max_disagreement_rate": 0.0581395348837209,
+        "text": "YRYRYRYRYRYRYRYRYRYRYRYRYRY\r\r\nCQ CQ CQ DE DDK2 DDH7 DDK9\r\r\nFREQUENCIES   4583 KHZ   7646 KHZ   10100.8 KHZ\r\r\nRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRY\r\r\nZCZC 17",
+        "warnings": [
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Incomplete frame at end of input"
+          }
+        ]
+      },
+      {
+        "authoritative_transcript": false,
+        "backend": "pdl",
+        "disagreement_rate": 0.0406976744186047,
+        "id": "dwd-france-afternoon",
+        "kind": "off-air",
+        "max_disagreement_rate": 0.0465116279069767,
+        "text": "Y\r\r\nCQ CQ CQ DE DDK2 DDH7 DDK9\r\r\nFREQUENCIES   4583 KHZ   7646 KHZ   10100.8 KHZ\r\r\nRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYCRYRYRYRYRYRYRY\r\r\nCQ CQ CQ DE DDK2 DDH7 DDK9\r\r\n",
+        "warnings": [
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Stop bit is SPACE; resynchronising"
+          },
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Stop bit is SPACE; resynchronising"
+          },
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Incomplete frame at end of input"
+          }
+        ]
+      },
+      {
+        "authoritative_transcript": false,
+        "backend": "pdl",
+        "disagreement_rate": 0.11864406779661,
+        "id": "dwd-uk-morning",
+        "kind": "off-air",
+        "max_disagreement_rate": 0.124293785310734,
+        "text": "QXKRYRYRYRYRY\r\r\nCQ CQ CQ DE DDK2 DDH7 DDK9\r\r\nFREQUENCUES   4583 KHZ   7646 KHZ   10100.8 KHZ\r\r\nRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRYRY\r\r\nCQ CQ CQ DE DDK2",
+        "warnings": [
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Stop bit is SPACE; resynchronising"
+          },
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Stop bit is SPACE; resynchronising"
+          },
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Stop bit is SPACE; resynchronising"
+          },
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Stop bit is SPACE; resynchronising"
+          },
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Stop bit is SPACE; resynchronising"
+          },
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Incomplete frame at end of input"
+          }
+        ]
+      },
+      {
+        "authoritative_transcript": false,
+        "backend": "pdl",
+        "disagreement_rate": 0.2,
+        "id": "amateur-contest",
+        "kind": "off-air",
+        "max_disagreement_rate": 0.214285714285714,
+        "text": "IEB  KCIEB DWSI \u0000\u0000MLG KC2IEB  \r\nKC2IEB 599 65 65 KC2IEB  \r\nGXP\rNA2NY 599 044-044",
+        "warnings": [
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Stop bit is SPACE; resynchronising"
+          },
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Stop bit is SPACE; resynchronising"
+          },
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Stop bit is SPACE; resynchronising"
+          },
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Stop bit is SPACE; resynchronising"
+          },
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Stop bit is SPACE; resynchronising"
+          },
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Stop bit is SPACE; resynchronising"
+          },
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Incomplete frame at end of input"
+          }
+        ]
+      },
+      {
+        "authoritative_transcript": false,
+        "backend": "pdl",
+        "disagreement_rate": 0,
+        "id": "wikipedia-generated",
+        "kind": "external-generated",
+        "max_disagreement_rate": 0,
+        "text": "WELCOME TO WIKIPEDIA, THE FREE ENCYCLOPEDIA THAT ANYONE CAN EDIT.\r\n",
+        "warnings": [
+          {
+            "code": "RTTY_W_FRAMING",
+            "message": "Stop bit is SPACE; resynchronising"
+          }
+        ]
+      }
+    ]
+  },
+  "authoritative_off_air_cer_measured": false,
+  "release_qualified": false,
+  "limits": [
+    "Independent decoder output is not authoritative ground truth.",
+    "Four release-quality annotated slots remain unfilled.",
+    "Examples are selected excerpts; they do not establish general receiver accuracy.",
+    "Dependency audit remains an independent open gate."
+  ]
+}

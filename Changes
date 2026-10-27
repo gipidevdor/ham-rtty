@@ -1,6 +1,8 @@
 Revision history for Ham-RTTY
 
 0.001  2026-10-27
+    - Add five licensed external reception examples and offline comparisons.
+    - Retain source hashes, conversion commands and independent-decoder limits.
     - Make CLI quick-start settings consistent and show tone/channel values.
     - Report lenient substitutions for event, WAV and MIDI commands on stderr.
     - Bound default receiver search tones by the actual sample rate.

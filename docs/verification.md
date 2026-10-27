@@ -39,7 +39,7 @@ Every assigned character in both ITU and US tables round-trips through notation,
 
 Additional tests cover uniform white noise at a theoretical 16.7 dB SNR with 0% CER for the fixed test message, ±2% baud mismatch, ±20 Hz tone offset, reversed polarity, independent S.1-frame oscillators, unequal tone levels, a stronger 1100 Hz carrier, mid-stream resynchronisation, bad stops, USOS and repeated shifts. Backend waveform/chunk equality and PCM 8/16/24-bit conversions are checked separately. These cases establish synthetic behavior, not general radio accuracy.
 
-**Four real RTTY recordings remain missing.** The [inventory](../corpus/real.json) contains explicit placeholders; no field CER or regression budget is invented. `perl maint/reception-corpus.pl` intentionally fails until licensed, independently annotated fixtures are admitted. The ≤25% CER target is unchanged.
+**Four release-quality, independently annotated fixtures remain missing.** Licensed exploratory examples are now available in [the free corpus](../corpus/free/README.md); their independent decoder outputs are not authoritative transcripts. The [inventory](../corpus/real.json) contains explicit placeholders; no field CER or regression budget is invented. `perl maint/reception-corpus.pl` intentionally fails until licensed, independently annotated fixtures are admitted. The ≤25% CER target is unchanged.
 
 ## Performance and memory
 
@@ -130,3 +130,25 @@ hashes, commands and the tested archive hash separately from older results.
 Earlier timing/memory measurements have not been repeated for this revision.
 Missing reviewed recordings and the dependency audit still prevent release
 qualification.
+
+## Free reception examples, 2026-10-27
+
+Added three distinct DWD radio captures under CC BY 4.0, an amateur contest
+excerpt under CC0 1.0 and an externally generated Wikimedia signal with a
+public-domain dedication. Source pages, author credits, original-download and
+derivative hashes, exact conversions and independent decoder commands are
+retained in [the inventory](../corpus/free.json) and
+[licence notices](../corpus/free/LICENSES.md).
+
+With the unchanged production modules from `74cd1b1`, Perl and PDL report the
+same disagreement rates against minimodem 0.24: 5.23%, 4.07% and 11.86% for
+the three DWD excerpts, 20.00% for the amateur excerpt and 0.00% for the
+external generated signal. CRLF/bare CR are explicitly converted to LF for
+this comparison only. Warnings and raw decoded text remain in the
+[measured report](reception-examples-results.json).
+
+These are offline interoperability/regression examples, not verified field
+CER. Other examined recordings decoded poorly or lacked established
+parameters; selection was not random. The independently annotated field
+acceptance gate and dependency audit remain unchanged. No release-qualified
+claim follows from these decoder comparisons.
