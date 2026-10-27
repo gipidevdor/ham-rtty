@@ -28,8 +28,11 @@ From a checkout, use `perldoc lib/Ham/RTTY.pm` or `perldoc bin/ham-rtty`.
 ## Reading measurements
 
 Measurements are tied to a source revision and date.
-[Benchmark results](performance-results.json), [coverage](coverage-results.json)
-and the [verification record](verification.md) retain the measured observations.
+[CPU results](performance-results.json), [platform results](platform-results.json),
+[RAM comparisons](memory-optimization-results.json) and the
+[current verification summary](verification.md#current-verification-summary)
+retain the measured observations. Earlier coverage and benchmark records keep
+their original source revisions.
 
 Project code uses [Artistic License 2.0](../LICENSE). Recording-specific terms,
 attribution and transformations are listed in [NOTICE](../NOTICE) and

@@ -2,9 +2,55 @@
 
 Development candidate 0.001, measured 2026-10-27. **Not release-qualified.**
 
+## Current verification summary
+
+Production source `084dbc682b3fc29714a0b9e8c0ffcab0424bc770` contains the
+bounded receiver. Later changes through `bad2d2f6f56b56590bb84bedbb2f8f4f252021fd`
+update documentation and benchmark evidence. Version remains **0.001**.
+
+| Check | Latest recorded result |
+| --- | --- |
+| Warnings-fatal ordinary suite | 20 files, 2,059 assertions, PASS |
+| Author suite | 12 files, 824 assertions, PASS |
+| Statement coverage | 1,750 / 1,751 = 99.94% |
+| Branch coverage | 607 / 622 = 97.59% |
+| Per-module coverage gate | Every production module passes 95% statements and 90% branches |
+| Distribution | Archive checks and isolated installation, CLI and examples PASS |
+| Hosted compatibility | All eleven jobs pass on `bad2d2f` |
+| Reviewed off-air recording acceptance | FAIL: four independently annotated fixtures remain missing |
+| Dependency CVE audit | FAIL: findings remain open; no exclusions added |
+
+[Current coverage and RAM evidence](memory-optimization-results.json),
+[current local performance](performance-results.json),
+[five-platform performance](platform-results.json) and
+[raw verification](verification-results.json) retain their own measured revisions.
+The [latest hosted run](https://github.com/gipidevdor/ham-rtty/actions/runs/40528671415)
+passes six ordinary Perl and five PDL compatibility jobs. Its author job fails
+at real-recording acceptance. Documentation deployment passes in
+[run 40528671622](https://github.com/gipidevdor/ham-rtty/actions/runs/40528671622);
+the dependency audit remains failing in
+[security run 40528671418](https://github.com/gipidevdor/ham-rtty/actions/runs/40528671418).
+These results do not qualify a CPAN release.
+
+For memory-sensitive file workflows use `read_wav` and `write_wav`; use
+`stream_samples` to consume generated blocks. Perl remains the default and
+PDL is optional. Input is processed in bounded pieces, search keeps only the
+initial half second and native projection matrices are capped at 65,536 cells.
+Frame/run budgets are checked before WAV PCM reads. Result history is retained
+within configured limits; streaming does not imply constant memory for every
+recording length. See [memory-conscious operation](usage.md#memory-conscious-operation).
+
+The latest local timing run uses source `6b03600`, four 8/16-kHz known/search
+commands, three calls per operation and separate sample/WAV/generation timers.
+[Benchmarks](benchmarks.md) include wall ratios, CPU totals, RAM ranges and
+repeat commands. CI rate measurements use a separate protocol and known default
+tones. Earlier results below remain tied to their original revisions.
+
+## Initial verification record
+
 Production code revision `3627c44`; final documentation commits may follow. Local environment: Apple M4, macOS ARM64, Perl 5.44.0, PDL 2.106. [Raw verification](verification-results.json), [coverage](coverage-results.json), [performance](performance-results.json) and [security triage](security-audit-results.json) retain the evidence. No results are inherited from Ham::CW.
 
-## Local checks
+### Initial local checks
 
 | Check | Observed result |
 | --- | --- |
@@ -41,11 +87,11 @@ Additional tests cover uniform white noise at a theoretical 16.7 dB SNR with 0% 
 
 **Four release-quality, independently annotated fixtures remain missing.** Licensed exploratory examples are now available in [the free corpus](../corpus/free/README.md); their independent decoder outputs are not authoritative transcripts. The [inventory](../corpus/real.json) contains explicit placeholders; no field CER or regression budget is invented. `perl maint/reception-corpus.pl` intentionally fails until licensed, independently annotated fixtures are admitted. The ≤25% CER target is unchanged.
 
-## Performance and memory
+## Initial performance and memory
 
-Three-iteration CPU/wall benchmarks at 8/16 kHz and 4096-sample blocks are recorded in [benchmarks](benchmarks.md). At known tones the Perl CPU R is 0.0179 at 8 kHz and 0.0347 at 16 kHz; these are short local synthetic workloads. PDL helps some operations and is slower in others. `auto` selects availability, not speed.
+Three-iteration CPU/wall benchmarks at 8/16 kHz and 4096-sample blocks are recorded in [benchmarks](benchmarks.md). In that initial run, at known tones the Perl CPU R was 0.0179 at 8 kHz and 0.0347 at 16 kHz; these are short local synthetic workloads. PDL helps some operations and is slower in others. `auto` selects availability, not speed.
 
-The requested 120-second, 48000-Hz `read_wav` workload used 20,758,528 bytes (**19.80 MiB**) peak RSS in a fresh process, excluding fixture generation. Exactly 5,760,000 samples were analyzed. The fixture intentionally cuts a frame at its end, producing an incomplete-frame warning. This measures the requested workload, not every possible option combination.
+The initial 120-second, 48000-Hz `read_wav` workload used 20,758,528 bytes (**19.80 MiB**) peak RSS in a fresh process, excluding fixture generation. Exactly 5,760,000 samples were analyzed. The fixture intentionally cuts a frame at its end, producing an incomplete-frame warning. This measures the requested workload, not every possible option combination.
 
 ## Security and release limits
 
