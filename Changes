@@ -1,6 +1,7 @@
 Revision history for Ham-RTTY
 
 0.01  2026-10-27
+    - Align POD signatures, option lists and architecture notes with Ham-CW.
     - Make project copyright visible in README, guides and every site footer.
     - Align README and documentation navigation with the Ham-CW structure.
     - Add ITU ITA2 and US tables, FIGS/LTRS state and unshift-on-space.

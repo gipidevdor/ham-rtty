@@ -2,8 +2,8 @@
 
 [Overview](../README.md) · [Verification](verification.md) · [Contributing](../CONTRIBUTING.md)
 
-Do not publish while any required verification gate is open. Version 0.01 is
-a development candidate, not a claim that the requested 1.0 standard is met.
+Version 0.01 is under development. Complete every required verification
+check before tagging or publishing a release.
 
 1. Run warnings-fatal tests on every supported CI platform and Perl version.
 2. Run `make distmeta` and all author tests, including documentation, style,

@@ -7,9 +7,9 @@
 The `ita2` profile implements the repertoire and code-element mapping of
 [ITU-T S.1 (03/93)](https://www.itu.int/rec/T-REC-S.1-199303-I/en), Table 1.
 The ITU catalogue lists that edition as in force (checked 2026-10-27).
-The implementation is an independently written codec, not a copy of ITU prose,
-PDF, diagrams or table artwork. ITU publication copyright is not replaced by
-the software licence; obtain the recommendation from its publisher.
+The distribution includes the codec and numeric test vectors. The ITU
+publication, diagrams and table artwork are not bundled; obtain the
+recommendation from its publisher.
 
 | Source provision | Implementation and evidence |
 | --- | --- |
@@ -23,20 +23,18 @@ the software licence; obtain the recommendation from its publisher.
 
 ASCII apostrophe and hyphen represent the corresponding printed signs.
 Lowercase ASCII is normalized to uppercase; no Unicode transliteration occurs.
-A successful software test is not independent certification by ITU.
 
 ## Separate operating profiles
 
 `us` is a separately named US TTY figures profile. Its exact differences are
 listed in [usage](usage.md#text-and-timing) and Baudot POD. It does not claim
 to be the ITU international figures table. USOS is a receiver/transmitter
-interoperability option requested for amateur practice, not an S.1 requirement.
+interoperability option for amateur practice, separate from the S.1 mapping.
 
 Baud rate, start/stop duration, AFSK frequencies, shift and USB/LSB settings are
-explicit signal parameters. This project tests those requested contracts;
-S.1 alone does not certify a radio transmitter, spectrum allocation, occupied
-bandwidth or authorization to transmit. Device control is outside the library.
-No universal legal or equipment certification is claimed by this distribution.
+explicit signal parameters. S.1 defines the character code; transmitter
+hardware, occupied bandwidth and radio operation require separate assessment.
+The library has no device-control interface.
 
 ## Software and recording licences
 

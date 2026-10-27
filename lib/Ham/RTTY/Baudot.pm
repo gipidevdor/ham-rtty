@@ -72,32 +72,68 @@ Ham::RTTY::Baudot - ITA2 code tables and receiver shift state
     use strict;
     use warnings;
     use Ham::RTTY::Baudot;
+
     my $codec = Ham::RTTY::Baudot->new;
     print $codec->character(3), "\n";
+
+=head1 DESCRIPTION
+
+Stores the international ITA2 table and the US TTY figures profile. Numeric
+codes are integers in 0..31. Each decoder keeps its own letters/figures state.
+C<tables> returns copies for callers that need to inspect the repertoire.
 
 =head1 METHODS
 
 =head2 new
 
-Ham::RTTY::Baudot->new(variant => 'ita2', usos => 1) constructs a fresh LTRS receiver. C<variant> is C<ita2> or C<us>; C<usos> is integer 0 or 1. Unknown or duplicate options raise C<RTTY_E_ARGUMENT>.
+    my $baudot = Ham::RTTY::Baudot->new(variant => 'ita2', usos => 1);
+
+Returns a new codec in LTRS state. Named options:
+
+=over 4
+
+=item * C<variant>
+
+C<ita2> by default, or C<us>. See L</TABLE VARIANTS>.
+
+=item * C<usos>
+
+1 by default; integer 0 or 1. With unshift-on-space enabled, SPACE restores
+LTRS.
+
+=back
+
+Undefined optional values use defaults. Invalid, duplicate and unknown
+options raise C<RTTY_E_ARGUMENT>.
 
 =head2 tables
 
-$codec->tables returns a fresh hash with C<letters> and C<figures> arrays indexed by numeric code 0..31. Undefined entries are shifts or unassigned combinations; changing this copy cannot change the codec.
+    my $tables = $codec->tables;
+
+Returns a fresh hash with C<letters> and C<figures> arrays indexed by numeric
+code 0..31. Undefined entries are shifts or unassigned combinations; changing
+this copy cannot change the codec.
 
 =head2 reset
 
-$codec->reset restores LTRS state and returns the object.
+    $codec->reset;
+
+Restores LTRS state and returns the object.
 
 =head2 character
 
-$codec->character($code) accepts an integer 0..31 and returns a character. Shifts return an empty string and change state. NULL returns U+0000, BELL U+0007 and WRU U+0005. Unassigned figures raise C<RTTY_E_SYMBOL>. SPACE restores LTRS when USOS is enabled.
+    my $character = $codec->character($code);
+
+Accepts an integer 0..31 and returns a character. Shifts return an empty
+string and change state. NULL returns U+0000, BELL U+0007 and WRU U+0005.
+Unassigned figures raise C<RTTY_E_SYMBOL>. SPACE restores LTRS when USOS is
+enabled.
 
 =head1 TABLE VARIANTS
 
 The ITU table follows S.1 (03/93). ASCII apostrophe and hyphen represent its
-printed signs. National FIGS positions F, G and H remain unassigned.
-US TTY changes figures as follows; all other assigned positions are shared:
+printed signs. National FIGS positions F, G and H remain unassigned. US TTY
+changes figures as follows; all other assigned positions are shared:
 
     Letter  ITU       US
     D       WRU       $
@@ -117,6 +153,7 @@ Giacomo Picchiarelli
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2026 Giacomo Picchiarelli. Artistic License 2.0. See F<LICENSE>.
+Copyright (c) 2026 Giacomo Picchiarelli.
+Artistic License 2.0. See F<LICENSE> in the source distribution.
 
 =cut

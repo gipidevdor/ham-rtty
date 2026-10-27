@@ -215,41 +215,133 @@ Ham::RTTY::Detector - incremental dual-tone RTTY audio receiver
     use strict;
     use warnings;
     use Ham::RTTY;
+
     my $rtty = Ham::RTTY->new;
     my $next = $rtty->stream_samples('CQ');
     my $detector = $rtty->detector(baud => 45.45);
     while (my $block = $next->()) { $detector->feed($block) }
     print $detector->finish->text, "\n";
 
+=head1 DESCRIPTION
+
+Receives normalized mono samples in successive blocks. Two narrowband energy
+measurements produce MARK/SPACE decisions, which are passed to the start-stop
+decoder. Supply the recording's sample rate and baud rate.
+
+Audio reception is experimental. Check the Result warnings before using
+received text. WAV helpers read the sample rate from the file header.
+
 =head1 METHODS
 
 =head2 new
 
-Ham::RTTY::Detector->new(%options) constructs a READY receiver. Tone/rate/backend/reverse ranges follow L<Ham::RTTY::Generator/new>. C<baud> defaults to 45.45, finite 20..300; explicit known baud is required for reliable reception in 1.0; the default is a configuration, not auto-detection. C<variant> and C<usos> follow L<Ham::RTTY::Decoder/new>. C<atc> defaults to 1; C<search> defaults to 0; both integer 0 or 1. Search min_frequency defaults to 300 Hz, max_frequency to 3000-shift; the band must lie within 300..3000 and below Nyquist. C<frequency_step> defaults to 10 Hz, finite 1..500; at most 512 pairs. C<max_frames> defaults to 200000 and C<max_segments> to 100000, integer 1..1000000. Both conservatively bound accepted hop count before mutation. Unknown/duplicate options raise C<RTTY_E_ARGUMENT>.
+    my $detector = Ham::RTTY::Detector->new(%options);
+
+Returns a detector in C<READY> state. Named options:
+
+=over 4
+
+=item * C<sample_rate>, C<mark>, C<shift>, C<reverse>, C<backend>
+
+Use the defaults and ranges in L<Ham::RTTY::Generator/new>. These are the only
+Generator options accepted by Detector.
+
+=item * C<baud>
+
+45.45 by default; finite number 20..300. Set this to the sender's rate. There
+is no automatic baud mode.
+
+=item * C<variant>, C<usos>
+
+Use the defaults and ranges in L<Ham::RTTY::Decoder/new>.
+
+=item * C<atc>
+
+1 by default; integer 0 or 1. Enables automatic threshold correction using the
+tracked tone peaks.
+
+=item * C<search>
+
+0 by default; integer 0 or 1. When enabled, acquire a tone pair at the
+configured shift from the first half second of input.
+
+=item * C<min_frequency>, C<max_frequency>
+
+Search bounds for the lower tone, in Hz. Defaults are 300 and C<3000 - shift>.
+The minimum is at least 300; the maximum is at least the minimum and at most
+C<3000 - shift>. Both tones must be below Nyquist. The bounds are validated
+even when search is off.
+
+=item * C<frequency_step>
+
+10 Hz by default; finite number 1..500. The search band may contain at most
+512 candidate pairs.
+
+=item * C<max_frames>
+
+200000 by default; integer 1..1000000.
+
+=item * C<max_segments>
+
+100000 by default; integer 1..1000000. Both history limits conservatively
+bound accepted hop count before a feed changes receiver state.
+
+=back
+
+Undefined optional values use defaults. Invalid, duplicate and unknown
+options raise C<RTTY_E_ARGUMENT>.
+A search band exceeding 512 pairs raises C<RTTY_E_RESOURCE>.
 
 =head2 feed
 
-$detector->feed($samples) accepts arrays of finite normalized mono values in [-1,1], at most 1000000 per call. Validation and conservative feature limits precede mutation. Feed after finish raises C<RTTY_E_STATE>. Windows span approximately 0.65 bit, advancing about 1/12 bit. Fixed tone powers use Goertzel in Perl or a broadcast two-tone projection in PDL. ATC normalizes independently decaying tone peaks with a shared floor. Optional search acquires once from the first half second; acquisition buffer is bounded by half a second plus one input block. No full raw-audio history is retained.
+    $detector->feed($samples);
+
+Accepts arrays of finite normalized mono values in [-1,1], at most 1000000 per
+call. Validation and conservative feature limits precede mutation. Feed after
+finish raises C<RTTY_E_STATE>. Windows span approximately 0.65 bit, advancing
+about 1/12 bit. Fixed tone powers use Goertzel in Perl or a broadcast two-tone
+projection in PDL. ATC normalizes independently decaying tone peaks with a
+shared floor. Optional search acquires once from the first half second;
+acquisition buffer is bounded by half a second plus one input block. No full
+raw-audio history is retained.
 
 =head2 result
 
-$detector->result returns a cumulative provisional Result without flushing partial audio. It runs the UART synchroniser over bounded retained decisions. Diagnostics include measured_bit_period in seconds (median observed one-bit runs, undef without evidence), mark_space_level_ratio, framing_error_count and analyzed_samples. Configured timing is reported separately from measured timing.
+    my $result = $detector->result;
+
+Returns a cumulative provisional Result without flushing partial audio. It
+runs the UART synchroniser over bounded retained decisions. Diagnostics
+include C<measured_bit_period> in seconds (median observed one-bit runs, undef
+without evidence), C<mark_space_level_ratio>, C<framing_error_count> and
+C<analyzed_samples>. Configured timing is reported separately from measured
+timing.
 
 =head2 finish
 
-$detector->finish processes a short pending acquisition once and returns a cached complete Result. The incomplete analysis window is not padded with invented samples. Silence reports RTTY_W_NO_SIGNAL. Reception warnings must be inspected; completion is not an accuracy claim.
+    my $result = $detector->finish;
+
+Processes a short pending acquisition once and returns a cached complete
+Result. A partial analysis window remains unprocessed at EOF. Silence reports
+C<RTTY_W_NO_SIGNAL>. Reception warnings must be inspected; completion is not
+an accuracy claim.
 
 =head2 reset
 
-$detector->reset discards audio/feature history and snapshots, preserves configuration and restores READY. Returns the receiver.
+    $detector->reset;
+
+Discards audio/feature history and snapshots, preserves configuration and
+restores READY. Returns the receiver.
 
 =head2 state
 
-$detector->state returns READY, ACTIVE or FINISHED.
+    my $state = $detector->state;
+
+Returns READY, ACTIVE or FINISHED.
 
 =head1 LIMITS
 
-No simultaneous stations, automatic baud/shift identification, equalisation or diversity. Synthetic performance does not establish off-air accuracy.
+No simultaneous stations, automatic baud/shift identification, equalisation or
+diversity. Synthetic performance does not establish off-air accuracy.
 
 =head1 AUTHOR
 
@@ -257,6 +349,7 @@ Giacomo Picchiarelli
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2026 Giacomo Picchiarelli. Artistic License 2.0. See F<LICENSE>.
+Copyright (c) 2026 Giacomo Picchiarelli.
+Artistic License 2.0. See F<LICENSE> in the source distribution.
 
 =cut

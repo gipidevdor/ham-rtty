@@ -105,9 +105,9 @@ channels. Interference and fading can still produce partial or incorrect text.
 Check warnings; `--strict` returns a nonzero status when warnings occur. See
 [reception settings](docs/usage.md#streaming) and [test results](docs/verification.md).
 
-Version 0.01 is a development candidate, **not release-qualified** while the
-required real-recording, dependency-audit and hosted verification gates remain
-open. See the [verification record](docs/verification.md) for dated evidence.
+Version 0.01 is under development. Real-recording validation, dependency
+review and remaining platform checks must pass before release. See the
+[verification record](docs/verification.md) for results and open items.
 
 Playback, microphone capture and radio or MIDI device control are left to the
 calling application. MIDI is a two-note visual/debug rendering.

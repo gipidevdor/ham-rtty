@@ -136,39 +136,109 @@ Ham::RTTY::Generator - continuous-phase two-tone AFSK synthesis
     use warnings;
     use Ham::RTTY::Encoder;
     use Ham::RTTY::Generator;
+
     my $events = Ham::RTTY::Encoder->new->events('CQ');
     my $samples = Ham::RTTY::Generator->new(sample_rate => 8000)->generate($events);
     print scalar(@{$samples}), " samples\n";
+
+=head1 DESCRIPTION
+
+Produces normalized mono sample arrays from MARK/SPACE events. Both states are
+active tones. Phase advances continuously when the frequency changes. Use
+L<Ham::RTTY::Audio> for PCM WAV output.
 
 =head1 METHODS
 
 =head2 new
 
-Ham::RTTY::Generator->new(%options) returns a READY generator. C<sample_rate> is integer 1000..384000, default 16000; both tones must be strictly below Nyquist. C<mark> defaults to 2125 Hz, range 300..3000; C<shift> defaults to 170 Hz, positive range 1..2700 with mark+shift at most 3000. C<reverse> defaults to 0 (integer 0 or 1). C<amplitude> defaults to 0.8, finite 0..1. C<backend> is perl (default), pdl, or auto (availability only). C<max_samples> defaults to 10000000, integer 1..100000000. Invalid/unknown/duplicate options raise C<RTTY_E_ARGUMENT>.
+    my $generator = Ham::RTTY::Generator->new(%options);
+
+Returns a generator in C<READY> state. Named options:
+
+=over 4
+
+=item * C<sample_rate>
+
+16000 Hz by default; integer 1000..384000. Both configured tones must be
+strictly below half the sample rate (Nyquist).
+
+=item * C<mark>
+
+2125 Hz by default; finite number 300..3000.
+
+=item * C<shift>
+
+170 Hz by default; finite number 1..2700. SPACE is C<mark + shift>, which must
+be at most 3000 Hz.
+
+=item * C<reverse>
+
+0 by default; integer 0 or 1. Swaps the MARK and SPACE frequencies.
+
+=item * C<amplitude>
+
+0.8 by default; finite number 0..1 as a fraction of full scale. Zero produces
+silence.
+
+=item * C<max_samples>
+
+10000000 by default; integer 1..100000000. Limits the complete message,
+including leading and trailing idle.
+
+=item * C<backend>
+
+C<perl> by default, C<pdl> or C<auto>. C<auto> selects by availability. See
+L<Ham::RTTY/OPTIONAL PDL BACKEND>.
+
+=back
+
+Undefined optional values use defaults. Invalid, duplicate and unknown
+options raise C<RTTY_E_ARGUMENT>.
 
 =head2 validate
 
-Ham::RTTY::Generator->validate(%options) returns a normalized fresh configuration using the same validation as new, including optional backend availability checks.
+    my $configuration = Ham::RTTY::Generator->validate(%options);
+
+Returns a normalized fresh configuration using the same validation as new,
+including optional backend availability checks.
 
 =head2 stream
 
-$generator->stream($events, $block_size) validates and copies events before returning an iterator of normalized mono sample arrays. Block size defaults to 4096, integer 1..1000000. The iterator returns undef at EOF. Sampled events must match the configured rate. Total output exceeding max_samples raises C<RTTY_E_RESOURCE>. Invalid state or an iterator invalidated by reset raises C<RTTY_E_STATE>. One phase accumulator advances continuously across every mark/space transition. Frequency-transition shaping is not implemented.
+    my $next = $generator->stream($events, $block_size);
+
+Validates and copies events before returning an iterator of normalized mono
+sample arrays. Block size defaults to 4096, integer 1..1000000. The iterator
+returns undef at EOF. Sampled events must match the configured rate. Total
+output exceeding C<max_samples> raises C<RTTY_E_RESOURCE>. Invalid state or an
+iterator invalidated by reset raises C<RTTY_E_STATE>. One phase accumulator
+advances continuously across every mark/space transition. Frequency-transition
+shaping is not implemented.
 
 =head2 generate
 
-$generator->generate($events) collects stream into one sample array. The same limits and state requirements apply. The array can occupy much more memory than PCM bytes.
+    my $samples = $generator->generate($events);
+
+collects stream into one sample array. The same limits and state requirements
+apply. The array can occupy much more memory than PCM bytes.
 
 =head2 result
 
-$generator->result returns a fresh hash with state, samples produced and sample_rate in Hz.
+    my $result = $generator->result;
+
+Returns a fresh hash with state, samples produced and C<sample_rate> in Hz.
 
 =head2 reset
 
-$generator->reset returns the object in READY state and invalidates all previous iterators. It preserves configuration.
+    $generator->reset;
+
+Returns the object in READY state and invalidates all previous iterators. It
+preserves configuration.
 
 =head2 state
 
-$generator->state returns READY, ACTIVE or FINISHED.
+    my $state = $generator->state;
+
+Returns READY, ACTIVE or FINISHED.
 
 =head1 AUTHOR
 
@@ -176,6 +246,7 @@ Giacomo Picchiarelli
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2026 Giacomo Picchiarelli. Artistic License 2.0. See F<LICENSE>.
+Copyright (c) 2026 Giacomo Picchiarelli.
+Artistic License 2.0. See F<LICENSE> in the source distribution.
 
 =cut

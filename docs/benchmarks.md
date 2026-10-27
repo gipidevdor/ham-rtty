@@ -27,7 +27,9 @@ PDL broadcasts the two projections together and accelerates synthesis and PCM. U
 
 A fresh process receiving exactly 120 seconds at 48000 Hz (5,760,000 samples, 16-bit mono) through `read_wav` used **19.80 MiB peak RSS** (20,758,528 bytes). macOS `/usr/bin/time -l` measured resident memory; fixture creation ran separately. `maint/memory.pl` reproduces both steps. The receiver reports all 5,760,000 samples; the fixture deliberately ends inside a frame and therefore returns an incomplete-frame warning.
 
-This is the requested long/high-rate case, not a proof of the global worst case for all option combinations. Larger configured limits, acquisition bands, full collected sample arrays and PDL have different memory costs. No Linux/Windows RSS result or hosted platform benchmark is claimed.
+The RSS result covers this 120-second configuration. Larger history limits,
+wider acquisition bands, collected sample arrays and PDL have different
+memory costs. Linux and Windows RSS remain unmeasured.
 
 ## Repeat
 

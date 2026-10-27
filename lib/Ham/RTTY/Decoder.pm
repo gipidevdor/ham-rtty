@@ -176,43 +176,105 @@ Ham::RTTY::Decoder - incremental start-stop ITA2 event receiver
     use warnings;
     use Ham::RTTY::Encoder;
     use Ham::RTTY::Decoder;
+
     my $decoder = Ham::RTTY::Decoder->new(baud => 50);
     $decoder->feed(Ham::RTTY::Encoder->new(baud => 50)->events('CQ'));
     print $decoder->finish->text, "\n";
+
+=head1 DESCRIPTION
+
+Decodes ITA2 notation or incremental timed/sampled events. Event reception
+uses the configured baud rate to sample start, data and stop bits. The Baudot
+codec retains shift state between accepted frames.
 
 =head1 METHODS
 
 =head2 new
 
-Ham::RTTY::Decoder->new(%options) constructs a READY receiver. C<baud> defaults to 45.45, finite 20..300; C<variant> defaults to ita2 (or us); C<usos> defaults to 1 (integer 0 or 1). C<max_segments> defaults to 100000, integer 1..1000000. Unknown, duplicate or invalid options raise C<RTTY_E_ARGUMENT>.
+    my $decoder = Ham::RTTY::Decoder->new(%options);
+
+Returns a decoder in C<READY> state. Named options:
+
+=over 4
+
+=item * C<baud>
+
+45.45 by default; finite number 20..300 bits per second.
+
+=item * C<variant>
+
+C<ita2> by default, or C<us>.
+
+=item * C<usos>
+
+1 by default; integer 0 or 1. SPACE restores LTRS when enabled.
+
+=item * C<max_segments>
+
+100000 by default; integer 1..1000000, bounding retained event history.
+
+=back
+
+Undefined optional values use defaults. Invalid, duplicate and unknown
+options raise C<RTTY_E_ARGUMENT>.
 
 =head2 decode
 
-$decoder->decode($notation) returns text from five-bit numeric codes and shift markers. This operation uses fresh LTRS state and does not modify incremental history. Invalid tokens or unassigned codes raise C<RTTY_E_SYMBOL>; undefined or reference input raises C<RTTY_E_ARGUMENT>.
+    my $text = $decoder->decode($notation);
+
+Returns text from five-bit numeric codes and shift markers. This operation
+uses fresh LTRS state and does not modify incremental history. Invalid tokens
+or unassigned codes raise C<RTTY_E_SYMBOL>; undefined or reference input
+raises C<RTTY_E_ARGUMENT>.
 
 =head2 decode_bits
 
-$decoder->decode_bits($bits) feeds a defined 0/1 scalar into the incremental receiver at one configured bit period per digit and finalizes it. Returns a Result. Use a fresh/reset receiver for a new message; fractional stop duration belongs in events.
+    my $result = $decoder->decode_bits($bits);
+
+Feeds a defined 0/1 scalar into the incremental receiver at one configured bit
+period per digit and finalizes it. Returns a Result. Use a fresh/reset
+receiver for a new message; fractional stop duration belongs in events.
 
 =head2 feed
 
-$decoder->feed($events) validates timed or sampled runs, then appends them to bounded history and returns the receiver. Runs can be split across calls; each input must validate independently. A MARK-to-SPACE transition starts a UART frame. The receiver validates start at half a bit, samples five data centres and checks MARK at the stop centre. Invalid stops produce C<RTTY_W_FRAMING> and resynchronisation. Unassigned received figures produce U+FFFD and C<RTTY_W_SYMBOL>. A retained-history overflow raises C<RTTY_E_RESOURCE> before mutation. Feed after finish raises C<RTTY_E_STATE>.
+    $decoder->feed($events);
+
+Validates timed or sampled runs, then appends them to bounded history and
+returns the receiver. Runs can be split across calls; each input must validate
+independently. A MARK-to-SPACE transition starts a UART frame. The receiver
+validates start at half a bit, samples five data centres and checks MARK at
+the stop centre. Invalid stops produce C<RTTY_W_FRAMING> and
+resynchronisation. Unassigned received figures produce U+FFFD and
+C<RTTY_W_SYMBOL>. A retained-history overflow raises C<RTTY_E_RESOURCE> before
+mutation. Feed after finish raises C<RTTY_E_STATE>.
 
 =head2 result
 
-$decoder->result returns a cumulative deep-copied Result, with complete 0 before finalization. Replace previous snapshots; do not append them. Diagnostics include configured bit period in seconds and framing error count.
+    my $result = $decoder->result;
+
+Returns a cumulative deep-copied Result, with complete 0 before finalization.
+Replace previous snapshots; do not append them. Diagnostics include configured
+bit period in seconds and framing error count.
 
 =head2 finish
 
-$decoder->finish returns a complete Result, warning on an incomplete frame. Repeated calls return the same final snapshot. It consumes no imaginary stop padding.
+    my $result = $decoder->finish;
+
+Returns a complete Result, warning on an incomplete frame. Repeated calls
+return the same final snapshot. It does not add stop bits to incomplete input.
 
 =head2 reset
 
-$decoder->reset discards history, text, warnings and partial frames, restores LTRS and READY, and returns the object. Previously returned Results remain independent.
+    $decoder->reset;
+
+Discards history, text, warnings and partial frames, restores LTRS and READY,
+and returns the object. Previously returned Results remain independent.
 
 =head2 state
 
-$decoder->state returns READY, ACTIVE or FINISHED.
+    my $state = $decoder->state;
+
+Returns READY, ACTIVE or FINISHED.
 
 =head1 AUTHOR
 
@@ -220,6 +282,7 @@ Giacomo Picchiarelli
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2026 Giacomo Picchiarelli. Artistic License 2.0. See F<LICENSE>.
+Copyright (c) 2026 Giacomo Picchiarelli.
+Artistic License 2.0. See F<LICENSE> in the source distribution.
 
 =cut

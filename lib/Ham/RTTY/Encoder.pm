@@ -142,38 +142,115 @@ Ham::RTTY::Encoder - encode ITA2 notation, frames, bits and timed events
     use strict;
     use warnings;
     use Ham::RTTY::Encoder;
+
     my $encoder = Ham::RTTY::Encoder->new(baud => 50);
     print $encoder->encode('CQ 123'), "\n";
+
+=head1 DESCRIPTION
+
+Converts a Perl character string into ITA2 codes, asynchronous frames or
+alternating MARK/SPACE runs. Each encoding starts a new message. Use
+L<Ham::RTTY::Generator> to turn events into audio samples.
 
 =head1 METHODS
 
 =head2 new
 
-Ham::RTTY::Encoder->new(%options) returns a stateless message encoder. C<baud> defaults to 45.45, finite range 20..300. C<stop_bits> defaults to 1.5; allowed values 1, 1.5, 2. C<variant> is C<ita2> (default) or C<us>. C<usos> defaults to 1; C<lenient> defaults to 0; both accept integer 0 or 1. C<leading_idle> and C<trailing_idle> default to 0.1 seconds, range 0..60. C<max_segments> defaults to 100000, integer 1..1000000, bounding frames and runs. Unknown/duplicate options raise C<RTTY_E_ARGUMENT>.
+    my $encoder = Ham::RTTY::Encoder->new(%options);
+
+Returns a new encoder. Named options:
+
+=over 4
+
+=item * C<baud>
+
+45.45 by default; finite number 20..300 bits per second.
+
+=item * C<stop_bits>
+
+1.5 by default; allowed values 1, 1.5 and 2.
+
+=item * C<variant>
+
+C<ita2> by default, or C<us>. See L<Ham::RTTY::Baudot/TABLE VARIANTS>.
+
+=item * C<usos>
+
+1 by default; integer 0 or 1. When enabled, FIGS is resent after SPACE if the
+next character needs figures.
+
+=item * C<lenient>
+
+0 by default; integer 0 or 1. When enabled, unsupported characters become C<?>
+with an encoding warning.
+
+=item * C<leading_idle>, C<trailing_idle>
+
+0.1 each by default; finite number 0..60 seconds of MARK before and after a
+nonempty message.
+
+=item * C<max_segments>
+
+100000 by default; integer 1..1000000. Limits the number of frames and the
+number of event runs.
+
+=back
+
+Undefined optional values use defaults. Invalid, duplicate and unknown
+options raise C<RTTY_E_ARGUMENT>.
 
 =head2 validate
 
-Ham::RTTY::Encoder->validate(%options) validates the same options as C<new> and returns a fresh normalized hash. It produces no output.
+    my $configuration = Ham::RTTY::Encoder->validate(%options);
+
+Validates the same options as C<new> and returns a fresh normalized hash. It
+produces no output.
 
 =head2 frames
 
-$encoder->frames($text) returns fresh per-frame hashes: numeric C<code>, C<character>, C<shift> (LTRS, FIGS or empty), five C<data_bits> in transmission order and C<stop_bits>. Each message begins with a shift. ASCII lowercase becomes uppercase. Undefined text and references raise C<RTTY_E_ARGUMENT>. Unsupported characters raise C<RTTY_E_SYMBOL>; lenient input substitutes ? and records C<RTTY_W_SYMBOL> in C<result>. Input is a Perl character string, without transliteration.
+    my $frames = $encoder->frames($text);
+
+Returns fresh per-frame hashes: numeric C<code>, C<character>, C<shift> (LTRS,
+FIGS or empty), five C<data_bits> in transmission order and C<stop_bits>. Each
+message begins with a shift. ASCII lowercase becomes uppercase. Undefined text
+and references raise C<RTTY_E_ARGUMENT>. Unsupported characters raise
+C<RTTY_E_SYMBOL>; lenient input substitutes ? and records C<RTTY_W_SYMBOL> in
+C<result>. Input is a Perl character string, without transliteration.
 
 =head2 encode
 
-$encoder->encode($text) returns space-separated five-bit numeric codes, most significant digit first, with C<[LTRS]> and C<[FIGS]> shift markers. Empty text returns an empty string. Options and text validation are those of C<frames>.
+    my $notation = $encoder->encode($text);
+
+Returns space-separated five-bit numeric codes, most significant digit first,
+with C<[LTRS]> and C<[FIGS]> shift markers. Empty text returns an empty
+string. Options and text validation are those of C<frames>.
 
 =head2 bits
 
-$encoder->bits($text) returns 0/1 transmission order: SPACE start, five LSB-first data bits, MARK stop. A string cannot represent a fractional bit: stop 1.5 is rounded up to two 1 digits. Use C<frames> or C<events> for exact fractional timing. Idle padding is omitted from this logical bit string.
+    my $bits = $encoder->bits($text);
+
+Returns 0/1 transmission order: SPACE start, five LSB-first data bits, MARK
+stop. A string cannot represent a fractional bit: stop 1.5 is rounded up to
+two 1 digits. Use C<frames> or C<events> for exact fractional timing. Idle
+padding is omitted from this logical bit string.
 
 =head2 events
 
-$encoder->events($text) returns alternating C<mark>/C<space> integer-microsecond runs with C<unit =E<gt> 'us'>. Cumulative boundaries round once to avoid drift; stop duration remains exactly the requested fractional bit before rounding. Empty text has no idle runs. C<usos> resends FIGS after SPACE when needed. Exceeding the configured run/frame limit raises C<RTTY_E_RESOURCE>.
+    my $events = $encoder->events($text);
+
+Returns alternating C<mark>/C<space> integer-microsecond runs with C<unit
+=E<gt> 'us'>. Cumulative boundaries round once to avoid drift; stop duration
+remains exactly the requested fractional bit before rounding. Empty text has
+no idle runs. C<usos> resends FIGS after SPACE when needed. Exceeding the
+configured run/frame limit raises C<RTTY_E_RESOURCE>.
 
 =head2 result
 
-$encoder->result returns an independent L<Ham::RTTY::Result> from the last successful encoding, including substitution warnings; before encoding it returns an empty provisional Result.
+    my $result = $encoder->result;
+
+Returns an independent L<Ham::RTTY::Result> from the last successful encoding,
+including substitution warnings; before encoding it returns an empty
+provisional Result.
 
 =head1 AUTHOR
 
@@ -181,6 +258,7 @@ Giacomo Picchiarelli
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2026 Giacomo Picchiarelli. Artistic License 2.0. See F<LICENSE>.
+Copyright (c) 2026 Giacomo Picchiarelli.
+Artistic License 2.0. See F<LICENSE> in the source distribution.
 
 =cut
