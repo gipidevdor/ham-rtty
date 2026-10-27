@@ -29,7 +29,8 @@ From a checkout, use `perldoc lib/Ham/RTTY.pm` or `perldoc bin/ham-rtty`.
 
 Measurements are tied to a source revision and date.
 [CPU results](performance-results.json), [platform results](platform-results.json),
-[RAM comparisons](memory-optimization-results.json) and the
+[RAM comparisons](memory-optimization-results.json),
+[correctness results](correctness-results.json) and the
 [current verification summary](verification.md#current-verification-summary)
 retain the measured observations. Earlier coverage and benchmark records keep
 their original source revisions.

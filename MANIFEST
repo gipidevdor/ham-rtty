@@ -27,6 +27,7 @@ corpus/real/LICENSES.md
 docs/README.md
 docs/architecture.md
 docs/benchmarks.md
+docs/correctness-results.json
 docs/coverage-results.json
 docs/dependency-audit.md
 docs/installing.md

@@ -4,6 +4,33 @@ Development candidate 0.001, measured 2026-10-27. **Not release-qualified.**
 
 ## Current verification summary
 
+Source `f7cc5d908426b1a7d07eeb7fc4d96b671f940755` corrects incremental event timing, expanded history limits,
+merged-run accounting and rounded idle segments. Reception Results are documented
+as integer-microsecond TimedEvents. Version remains **0.001**.
+
+| Check | Current local result |
+| --- | --- |
+| Warnings-fatal ordinary suite | 21 files, 2,099 assertions, PASS |
+| Author suite | 12 files, 826 assertions, PASS; no skipped files |
+| Correctness regressions | 40 assertions, PASS |
+| Statement coverage | 1,771 / 1,772 = 99.94% |
+| Branch coverage | 622 / 640 = 97.19% |
+| Per-module coverage gate | Every production module passes 95% statements and 90% branches |
+| Distribution | Archive checks, isolated installation, CLI and examples PASS |
+
+[Raw correctness results](correctness-results.json) retain source hashes,
+commands, per-module coverage and regression cases. The prior source fails six
+of the first ten assertions and then aborts at its history-limit defect.
+The new tests compare complete results at 44.1/384 kHz with one sample per feed,
+exercise reset and unit changes, preserve rejection atomicity and verify
+100,001-segment paths. No coverage points are excluded.
+
+Earlier CPU/RAM measurements and hosted runs below remain tied to their own
+revisions; they are not relabelled as measurements of this fix. The missing
+reviewed off-air recordings and dependency audit remain open release gates.
+
+## Verification before incremental correctness fixes
+
 Production source `084dbc682b3fc29714a0b9e8c0ffcab0424bc770` contains the
 bounded receiver. Later changes through `bad2d2f6f56b56590bb84bedbb2f8f4f252021fd`
 update documentation and benchmark evidence. Version remains **0.001**.
