@@ -1,6 +1,8 @@
 # Real recordings: sources and licences
 
-No real RTTY recording has yet been admitted. The inventory contains four
+No release-quality real RTTY transcript has yet been admitted. Licensed
+exploratory recordings are distributed separately in [free examples](../free/README.md).
+The strict inventory contains four
 explicit placeholders, not licensed or measured fixtures. The inherited CW
 recordings and their evidence have been removed from this RTTY distribution.
 

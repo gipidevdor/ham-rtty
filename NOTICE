@@ -19,10 +19,14 @@ The copyright of The Perl Foundation in LICENSE applies to the license
 text itself; it does not replace the project copyright stated above.
 The license text is included unchanged.
 
-No third-party received-radio recordings are currently distributed.
-corpus/real.json contains explicit missing-fixture entries, not audio or
-license grants. See corpus/real/LICENSES.md for source review and admission
-requirements. Any future third-party recording retains its own terms and
-must include source, author, license evidence, transformations and hashes.
+Third-party recordings in corpus/free retain their own licences:
+NIL HEARD / Reception Log DWD excerpts use CC BY 4.0; Bryce835's amateur
+excerpt uses CC0 1.0; the external Wikimedia generated signal has its stated
+public-domain dedication. See corpus/free/LICENSES.md for per-file source
+links, creators, transformations, licence texts and disclaimers, and
+corpus/free.json for hashes and exact reproduction commands.
+
+corpus/real.json separately contains missing release-quality transcript
+entries. Independent decoder comparisons are not verified field CER.
 Attribution does not imply endorsement. Files without documented provenance
 are not part of the distribution.

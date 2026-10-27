@@ -15,6 +15,7 @@
 | Understand timing, state and filtering | [Architecture](architecture.md) |
 | Understand detector thresholds | [Power heuristics](architecture.md#detector-power-heuristics) |
 | Compare backend speed | [Measured performance](benchmarks.md) |
+| Try a licensed radio recording | [Free reception examples](../corpus/free/README.md) |
 | Review tests and recordings | [Verification](verification.md) and [reference corpus](../corpus/README.md) |
 | Change or release the project | [Contributing](../CONTRIBUTING.md) and [release procedure](releasing.md) |
 | Review dependencies or security | [Dependency decisions](dependency-audit.md), [security CI](security-ci.md) and [reporting](../SECURITY.md) |
