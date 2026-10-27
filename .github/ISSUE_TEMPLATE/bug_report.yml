@@ -1,0 +1,22 @@
+name: Bug report
+description: Report a reproducible behavior or packaging problem.
+body:
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Include a small Perl example, input and actual/expected output.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Ham::RTTY version, perl -V, operating system and relevant options.
+    validations:
+      required: true
+  - type: textarea
+    id: signal
+    attributes:
+      label: Audio conditions, if applicable
+      description: Sample format, frequency/WPM hints and Result warnings. Share only recordings you may redistribute.

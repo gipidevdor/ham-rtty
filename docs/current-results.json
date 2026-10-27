@@ -1,0 +1,655 @@
+{
+  "date": "2026-10-25",
+  "source_revision": "85eb8f3fce614d30cb53eaeb0da6b978dbc3dacc",
+  "scope": "Local measurements; no cross-platform, field-accuracy or security certification.",
+  "environment": {
+    "system": "Darwin",
+    "release": "27.0.0",
+    "machine": "arm64",
+    "perl": "v5.44.0",
+    "pdl": "2.106"
+  },
+  "workloads": [
+    {
+      "audio_seconds": 9.18,
+      "block_samples": 4096,
+      "known_frequency": 0,
+      "pdl_available": 1,
+      "perl": "v5.44.0",
+      "results": [
+        {
+          "backend": "perl",
+          "cpu_seconds": 8.63,
+          "cpu_seconds_per_call": 2.87666666666667,
+          "iterations": 3,
+          "operation": "detect",
+          "wall_seconds": 8.63211512565613
+        },
+        {
+          "backend": "perl",
+          "cpu_seconds": 0.119999999999999,
+          "cpu_seconds_per_call": 0.0399999999999995,
+          "iterations": 3,
+          "operation": "generate",
+          "wall_seconds": 0.12620210647583
+        },
+        {
+          "backend": "perl",
+          "cpu_seconds": 0.0799999999999994,
+          "cpu_seconds_per_call": 0.0266666666666665,
+          "iterations": 3,
+          "operation": "snapshot_rebuild",
+          "wall_seconds": 0.073983907699585
+        },
+        {
+          "backend": "perl",
+          "cpu_seconds": -6.38378239159465e-16,
+          "cpu_seconds_per_call": -2.12792746386488e-16,
+          "iterations": 3,
+          "operation": "snapshots",
+          "wall_seconds": 4.88758087158203e-05
+        },
+        {
+          "backend": "perl",
+          "cpu_seconds": 8.73,
+          "cpu_seconds_per_call": 2.91,
+          "iterations": 3,
+          "operation": "wav_decode",
+          "wall_seconds": 8.72558403015137
+        },
+        {
+          "backend": "perl",
+          "cpu_seconds": 0.23,
+          "cpu_seconds_per_call": 0.0766666666666665,
+          "iterations": 3,
+          "operation": "wav_generate",
+          "wall_seconds": 0.227436065673828
+        },
+        {
+          "backend": "pdl",
+          "cpu_seconds": 9.48999999999999,
+          "cpu_seconds_per_call": 3.16333333333333,
+          "iterations": 3,
+          "operation": "detect",
+          "wall_seconds": 9.49723887443542
+        },
+        {
+          "backend": "pdl",
+          "cpu_seconds": 0.0299999999999983,
+          "cpu_seconds_per_call": 0.00999999999999943,
+          "iterations": 3,
+          "operation": "generate",
+          "wall_seconds": 0.0366280078887939
+        },
+        {
+          "backend": "pdl",
+          "cpu_seconds": 0.0800000000000026,
+          "cpu_seconds_per_call": 0.0266666666666675,
+          "iterations": 3,
+          "operation": "snapshot_rebuild",
+          "wall_seconds": 0.0783288478851318
+        },
+        {
+          "backend": "pdl",
+          "cpu_seconds": -2.84494650060196e-15,
+          "cpu_seconds_per_call": -9.48315500200654e-16,
+          "iterations": 3,
+          "operation": "snapshots",
+          "wall_seconds": 5.00679016113281e-05
+        },
+        {
+          "backend": "pdl",
+          "cpu_seconds": 10.78,
+          "cpu_seconds_per_call": 3.59333333333333,
+          "iterations": 3,
+          "operation": "wav_decode",
+          "wall_seconds": 10.7717499732971
+        },
+        {
+          "backend": "pdl",
+          "cpu_seconds": 0.0800000000000006,
+          "cpu_seconds_per_call": 0.0266666666666669,
+          "iterations": 3,
+          "operation": "wav_generate",
+          "wall_seconds": 0.087108850479126
+        }
+      ],
+      "sample_count": 73440,
+      "sample_rate": 8000,
+      "snapshots_per_call": 100,
+      "command": "perl maint/benchmark.pl --json --iterations 3"
+    },
+    {
+      "audio_seconds": 9.18,
+      "block_samples": 4096,
+      "known_frequency": 1,
+      "pdl_available": 1,
+      "perl": "v5.44.0",
+      "results": [
+        {
+          "backend": "perl",
+          "cpu_seconds": 0.88,
+          "cpu_seconds_per_call": 0.293333333333333,
+          "iterations": 3,
+          "operation": "detect",
+          "wall_seconds": 0.886319875717163
+        },
+        {
+          "backend": "perl",
+          "cpu_seconds": 0.12,
+          "cpu_seconds_per_call": 0.04,
+          "iterations": 3,
+          "operation": "generate",
+          "wall_seconds": 0.123454093933105
+        },
+        {
+          "backend": "perl",
+          "cpu_seconds": 0.03,
+          "cpu_seconds_per_call": 0.01,
+          "iterations": 3,
+          "operation": "snapshot_rebuild",
+          "wall_seconds": 0.0265219211578369
+        },
+        {
+          "backend": "perl",
+          "cpu_seconds": 8.67361737988404e-18,
+          "cpu_seconds_per_call": 2.89120579329468e-18,
+          "iterations": 3,
+          "operation": "snapshots",
+          "wall_seconds": 4.79221343994141e-05
+        },
+        {
+          "backend": "perl",
+          "cpu_seconds": 0.91,
+          "cpu_seconds_per_call": 0.303333333333333,
+          "iterations": 3,
+          "operation": "wav_decode",
+          "wall_seconds": 0.910346031188965
+        },
+        {
+          "backend": "perl",
+          "cpu_seconds": 0.23,
+          "cpu_seconds_per_call": 0.0766666666666666,
+          "iterations": 3,
+          "operation": "wav_generate",
+          "wall_seconds": 0.227243900299072
+        },
+        {
+          "backend": "pdl",
+          "cpu_seconds": 0.76,
+          "cpu_seconds_per_call": 0.253333333333333,
+          "iterations": 3,
+          "operation": "detect",
+          "wall_seconds": 0.756352186203003
+        },
+        {
+          "backend": "pdl",
+          "cpu_seconds": 0.0299999999999996,
+          "cpu_seconds_per_call": 0.00999999999999986,
+          "iterations": 3,
+          "operation": "generate",
+          "wall_seconds": 0.0306229591369629
+        },
+        {
+          "backend": "pdl",
+          "cpu_seconds": 0.03,
+          "cpu_seconds_per_call": 0.01,
+          "iterations": 3,
+          "operation": "snapshot_rebuild",
+          "wall_seconds": 0.0269410610198975
+        },
+        {
+          "backend": "pdl",
+          "cpu_seconds": -2.13370987545147e-16,
+          "cpu_seconds_per_call": -7.11236625150491e-17,
+          "iterations": 3,
+          "operation": "snapshots",
+          "wall_seconds": 4.88758087158203e-05
+        },
+        {
+          "backend": "pdl",
+          "cpu_seconds": 0.79,
+          "cpu_seconds_per_call": 0.263333333333333,
+          "iterations": 3,
+          "operation": "wav_decode",
+          "wall_seconds": 0.790087223052979
+        },
+        {
+          "backend": "pdl",
+          "cpu_seconds": 0.0799999999999999,
+          "cpu_seconds_per_call": 0.0266666666666666,
+          "iterations": 3,
+          "operation": "wav_generate",
+          "wall_seconds": 0.0838339328765869
+        }
+      ],
+      "sample_count": 73440,
+      "sample_rate": 8000,
+      "snapshots_per_call": 100,
+      "command": "perl maint/benchmark.pl --json --iterations 3 --known-frequency"
+    }
+  ],
+  "reception": {
+    "command": "perl maint/reception-corpus.pl",
+    "results": [
+      {
+        "cer": 0,
+        "cer_estimated": 0,
+        "cer_hinted": 0,
+        "estimated_wpm": 22.3255813953488,
+        "frequency": 450,
+        "frequency_estimated": 450,
+        "max_regression_cer": 0,
+        "max_regression_cer_estimated": 0,
+        "max_regression_cer_hinted": 0,
+        "meets_quality_target": true,
+        "meets_quality_target_estimated": true,
+        "name": "4u1un",
+        "quality_target_cer": 0.25,
+        "reference": "4U1UN",
+        "text": "4U1UN",
+        "text_estimated": "4U1UN",
+        "warnings": [],
+        "warnings_estimated": []
+      },
+      {
+        "cer": 0,
+        "cer_estimated": 0,
+        "cer_hinted": 0,
+        "estimated_wpm": 21.5845824411135,
+        "frequency": 550,
+        "frequency_estimated": 550,
+        "max_regression_cer": 0,
+        "max_regression_cer_estimated": 0,
+        "max_regression_cer_hinted": 0,
+        "meets_quality_target": true,
+        "meets_quality_target_estimated": true,
+        "name": "oh2b",
+        "quality_target_cer": 0.25,
+        "reference": "OH2B",
+        "text": "OH2B",
+        "text_estimated": "OH2B",
+        "warnings": [],
+        "warnings_estimated": []
+      },
+      {
+        "cer": 0,
+        "cer_estimated": 0,
+        "cer_hinted": 0,
+        "estimated_wpm": 21.5862632869992,
+        "frequency": 550,
+        "frequency_estimated": 550,
+        "max_regression_cer": 0,
+        "max_regression_cer_estimated": 0,
+        "max_regression_cer_hinted": 0,
+        "meets_quality_target": true,
+        "meets_quality_target_estimated": true,
+        "name": "cs3b",
+        "quality_target_cer": 0.25,
+        "reference": "CS3B",
+        "text": "CS3B",
+        "text_estimated": "CS3B",
+        "warnings": [],
+        "warnings_estimated": []
+      },
+      {
+        "cer": 0,
+        "cer_estimated": 0,
+        "cer_hinted": 0,
+        "estimated_wpm": 17.6069868995633,
+        "frequency": 750,
+        "frequency_estimated": 750,
+        "max_regression_cer": 0,
+        "max_regression_cer_estimated": 0,
+        "max_regression_cer_hinted": 0,
+        "meets_quality_target": true,
+        "meets_quality_target_estimated": true,
+        "name": "sk6rud",
+        "quality_target_cer": 0.25,
+        "reference": "SK6RUD",
+        "text": "SK6RUD",
+        "text_estimated": "SK6RUD",
+        "warnings": [],
+        "warnings_estimated": []
+      }
+    ]
+  },
+  "measured_files_sha256": {
+    "corpus/real/4u1un.wav": "2c9d2320ea89d57601a7c9dcdc78168b64e2090211690eee156a42846a59dfb0",
+    "corpus/real/cs3b.wav": "87edd7a61f0c873de9521e98116db32b66c946fdba4b1101544a6949462acdfe",
+    "corpus/real/oh2b.wav": "2c439fec507ec62bfffca4109bf7e91cbf560b7f9e90969c003eb0c07b2a13ab",
+    "corpus/real/sk6rud.wav": "9a19e77951137713518238aef49cbd3104cab19ee82672d722de6b7d8ef6b6f1",
+    "corpus/real.json": "4f5fc5cd9ba0c1f4a97a8e736b487f65cdbaf537c4bc91538d483837966da65d",
+    "lib/Ham/RTTY/Audio.pm": "5974b321cbdea2ebaca066398ec1056d8e508be05ac5d19292b763a8820816a4",
+    "lib/Ham/RTTY/Decoder.pm": "ec46c3d4978fec64e715e51eab5922a0f8d625459cb4d5612676f146cdacaa8f",
+    "lib/Ham/RTTY/Detector.pm": "77eb84060036e7fd6192da0b622766bab86ad96771163c2e2cf5f55416474491",
+    "lib/Ham/RTTY/Encoder.pm": "1c434bb5628f62776decb9e3fa1db933180563ca68b15e6868e764ae9332cfe0",
+    "lib/Ham/RTTY/Error.pm": "635cd1e45942df8050277d3a65e39d0feaa71bc4a2448301f01097b356805073",
+    "lib/Ham/RTTY/Events.pm": "81015aefd2a85b1705e4b336677202268b2dd0ba74d030e881209546c571c5b5",
+    "lib/Ham/RTTY/Generator.pm": "42b31334182f57a8ebc65011a9cb603dac48016729db22357fc26fcbb936ed54",
+    "lib/Ham/RTTY/MIDI.pm": "07f3a201ed88d66d4da654472bfd67eeb8b8912a3a11b41ea0598b5646e04023",
+    "lib/Ham/RTTY/Result.pm": "6a0257d5fb6abc2bae900b679e5c6d02ad43db0801f29ad2669a3a4e3de28586",
+    "lib/Ham/RTTY/_Internal/Backend.pm": "82302017f8259dfab0e0cfdb1ca49bbd46b038939b3a77a13b13661986e07f9e",
+    "lib/Ham/RTTY/_Internal/Biquad.pm": "64688868677be3fed646f210e1fd0b48998602d936e73fd0348b326e4949ca69",
+    "lib/Ham/RTTY/_Internal/CLI.pm": "25cae44fb5cc90214b9509d0e92620a0f66f9a5674ef82481febd8205565b9e7",
+    "lib/Ham/RTTY/_Internal/Data.pm": "b2ce1d861ce7dedb61e903778aac5f577b9815032932c3250fc2d55de25da8cc",
+    "lib/Ham/RTTY/_Internal/IO.pm": "ef0fb3a8dffde4d0ca578dbd488b20da6697e0ab0c70a9c47201070e7969b74c",
+    "lib/Ham/RTTY/_Internal/PDL.pm": "db82927009b4df523c482b83a643b09091cc93d74165fe052c4b2207ba52fabd",
+    "lib/Ham/RTTY/_Internal/Result.pm": "8cbad8839aa81cf4519246702aeb93f58b015d6d0d89b941d3f1148f133e3f96",
+    "lib/Ham/RTTY/_Internal/Symbols.pm": "423d1755acceb143eda2eb83ba79e936fac874b7df20dd796f517e34a2becb90",
+    "lib/Ham/RTTY/_Internal/Validate.pm": "f5168dac6642c20890d2fd07ab37432e5e5ae92e736e357c77b79c5cbafc3a4b",
+    "lib/Ham/RTTY/_Internal/WavWriter.pm": "1abca7e6c2985eea57b619bfa397ebaf6124daac360f5874fba976db8f0b1964",
+    "lib/Ham/RTTY.pm": "88a38cf7a2b9f5a4e8600582d25c833de8100c082458456eb249d42ccb53d5ce",
+    "maint/benchmark.pl": "5d7cc311bc1d1a8dde2fb0214b45b7101523bb1122664ac3c38c38cad340f37c",
+    "maint/reception-corpus.pl": "91fe8a1e18d90eb8f578d98bcb9978cd09fcc5a62961f8482acd22e256c54625",
+    "t/lib/CorpusMetrics.pm": "46b0b68bb947f8ee17112e55e3e018b73b711a6d5a8cb626fdb40f7018a15b3e"
+  },
+  "verification": {
+    "date": "2026-10-25",
+    "source_scope": "Working tree based on the measured revision. Numerical generation and reception are unchanged; command help, usage diagnostics and example interfaces have since been refined.",
+    "local_suite": {
+      "command": "PERL5OPT=-Mwarnings=FATAL,all prove -lr t xt",
+      "files": 39,
+      "tests": 3034,
+      "result": "PASS",
+      "output_sha256": "d648a00d78d0beb4ad41537ed40423858a5bcf180af9e58535c40005fea33bc2"
+    },
+    "navigation": {
+      "local_links_checked": 178,
+      "result": "PASS"
+    },
+    "ci": {
+      "source_revision": "85eb8f3fce614d30cb53eaeb0da6b978dbc3dacc",
+      "tests": {
+        "run_id": 40187441836,
+        "result": "success",
+        "jobs": [
+          {
+            "name": "Author checks and distribution",
+            "conclusion": "success"
+          },
+          {
+            "name": "windows-latest / Perl 5.40",
+            "conclusion": "success"
+          },
+          {
+            "name": "PDL / ubuntu-latest",
+            "conclusion": "success"
+          },
+          {
+            "name": "ubuntu-latest / Perl 5.40",
+            "conclusion": "success"
+          },
+          {
+            "name": "macos-latest / Perl 5.40",
+            "conclusion": "success"
+          },
+          {
+            "name": "PDL / macos-latest",
+            "conclusion": "success"
+          },
+          {
+            "name": "ubuntu-latest / Perl 5.20",
+            "conclusion": "success"
+          },
+          {
+            "name": "PDL / windows-latest",
+            "conclusion": "success"
+          },
+          {
+            "name": "ubuntu-latest / Perl 5.34",
+            "conclusion": "success"
+          },
+          {
+            "name": "ubuntu-latest / Perl 5.44",
+            "conclusion": "success"
+          },
+          {
+            "name": "PDL minimum / Perl 5.20",
+            "conclusion": "success"
+          },
+          {
+            "name": "PDL / macos-15-intel",
+            "conclusion": "success"
+          }
+        ],
+        "coverage": {
+          "branch": {
+            "covered": 751,
+            "error": 29,
+            "percentage": 96.2820512820513,
+            "total": 780,
+            "uncoverable": 0
+          },
+          "statement": {
+            "covered": 2245,
+            "error": 22,
+            "percentage": 99.0295544772828,
+            "total": 2267
+          },
+          "total": {
+            "covered": 2996,
+            "error": 51,
+            "percentage": 98.3262225139481,
+            "total": 3047,
+            "uncoverable": 0
+          }
+        },
+        "archive_installation": "PASS in author/distribution job"
+      },
+      "security": {
+        "run_id": 40187441825,
+        "result": "failure",
+        "jobs": [
+          {
+            "name": "Secrets / complete Git history",
+            "conclusion": "success"
+          },
+          {
+            "name": "Perl unsafe constructs",
+            "conclusion": "success"
+          },
+          {
+            "name": "Workflow security and syntax",
+            "conclusion": "success"
+          },
+          {
+            "name": "CVEs / Perl and installed CPAN dependencies",
+            "conclusion": "failure"
+          },
+          {
+            "name": "Security checks",
+            "conclusion": "failure"
+          }
+        ],
+        "audit_summary": {
+          "installed": {
+            "meta": {
+              "args": [],
+              "command": "installed",
+              "cpan_audit": {
+                "db": "20261018.001",
+                "version": "20261013.002"
+              },
+              "total_advisories": 2
+            },
+            "errors": [],
+            "artifact_sha256": "5473a59ad23f40d86ab82e29c47979a27d48d8ed9623235bda8f0384384d01df",
+            "advisory_ids_by_distribution": {
+              "File-Temp": [
+                "CPANSA-File-Temp-2011-4116"
+              ],
+              "perl": [
+                "CPANSA-perl-2026-15534"
+              ]
+            }
+          },
+          "declared": {
+            "meta": {
+              "args": [
+                "MYMETA.json"
+              ],
+              "command": "declared",
+              "cpan_audit": {
+                "db": "20261018.001",
+                "version": "20261013.002"
+              },
+              "scopes": [
+                {
+                  "phase": "build",
+                  "ranges": {
+                    "ExtUtils-MakeMaker": "7.22",
+                    "perl": "5.020"
+                  },
+                  "relation": "requires",
+                  "unmapped_modules": []
+                },
+                {
+                  "phase": "configure",
+                  "ranges": {
+                    "ExtUtils-MakeMaker": "7.22",
+                    "perl": "5.020"
+                  },
+                  "relation": "requires",
+                  "unmapped_modules": []
+                },
+                {
+                  "phase": "develop",
+                  "ranges": {
+                    "Archive-Tar": "3.10",
+                    "Perl-Tidy": "20260826",
+                    "perl": "5.020",
+                    "podlators": "v6.1.1"
+                  },
+                  "relation": "requires",
+                  "unmapped_modules": [
+                    "CPAN::Audit",
+                    "Devel::Cover",
+                    "Module::CPANTS::Analyse",
+                    "PPI",
+                    "Perl::Critic",
+                    "Test::CPAN::Changes",
+                    "Test::CPAN::Meta",
+                    "Test::Kwalitee",
+                    "Test::Pod"
+                  ]
+                },
+                {
+                  "phase": "runtime",
+                  "ranges": {
+                    "perl": "5.020"
+                  },
+                  "relation": "recommends",
+                  "unmapped_modules": [
+                    "PDL"
+                  ]
+                },
+                {
+                  "phase": "runtime",
+                  "ranges": {
+                    "Encode": "0",
+                    "File-Temp": "0",
+                    "Storable": "0",
+                    "perl": "5.020"
+                  },
+                  "relation": "requires",
+                  "unmapped_modules": [
+                    "Carp",
+                    "Exporter",
+                    "Getopt::Long",
+                    "IO::Handle",
+                    "JSON::PP",
+                    "Scalar::Util",
+                    "Text::Wrap"
+                  ]
+                },
+                {
+                  "phase": "test",
+                  "ranges": {
+                    "Digest-SHA": "5.96",
+                    "File-Temp": "0",
+                    "PathTools": "0",
+                    "perl": "5.020"
+                  },
+                  "relation": "requires",
+                  "unmapped_modules": [
+                    "JSON::PP",
+                    "Test::More"
+                  ]
+                }
+              ],
+              "total_advisories": 38
+            },
+            "errors": [],
+            "artifact_sha256": "eb8290d9d4f96da295858d80dd7a01571b95d106b3327fa87f08925386801c10",
+            "advisory_ids_by_distribution": {
+              "Encode": [
+                "CPANSA-Encode-2011-2939",
+                "CPANSA-Encode-2016-01",
+                "CPANSA-Encode-2021-01"
+              ],
+              "File-Temp": [
+                "CPANSA-File-Temp-2011-4116"
+              ],
+              "PathTools": [
+                "CPANSA-PathTools-2016-01",
+                "CPANSA-PathTools-2016-02"
+              ],
+              "Storable": [
+                "CPANSA-Storable-2026-57433",
+                "CPANSA-Storable-2017-01",
+                "CPANSA-Storable-2017-20230"
+              ],
+              "perl": [
+                "CPANSA-perl-2025-40909",
+                "CPANSA-perl-2026-57432",
+                "CPANSA-perl-2023-47038",
+                "CPANSA-perl-2026-13221",
+                "CPANSA-perl-2026-19487",
+                "CPANSA-perl-2026-8376",
+                "CPANSA-ExtUtils-ParseXS-2016-1238",
+                "CPANSA-perl-2023-47039",
+                "CPANSA-perl-2017-12883",
+                "CPANSA-perl-2023-47100",
+                "CPANSA-perl-2017-12814",
+                "CPANSA-perl-2020-12723",
+                "CPANSA-perl-2016-2381",
+                "CPANSA-perl-2016-6185",
+                "CPANSA-perl-2018-18314",
+                "CPANSA-perl-2026-15534",
+                "CPANSA-perl-2018-18313",
+                "CPANSA-perl-2018-6798",
+                "CPANSA-perl-2022-48522",
+                "CPANSA-perl-2018-18311",
+                "CPANSA-perl-2018-18312",
+                "CPANSA-perl-2015-8608",
+                "CPANSA-perl-2017-12837",
+                "CPANSA-perl-2024-56406",
+                "CPANSA-perl-2018-6797",
+                "CPANSA-perl-2020-10878",
+                "CPANSA-perl-2015-8853",
+                "CPANSA-perl-2020-10543",
+                "CPANSA-perl-2018-6913"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "local_distribution": {
+      "commands": [
+        "make distcheck",
+        "make dist",
+        "perl maint/check-dist.pl Ham-RTTY-0.001.tar.gz"
+      ],
+      "result": "PASS",
+      "scope": "Interface working tree; isolated installation result remains from the cited CI revision."
+    },
+    "author_repeat": {
+      "command": "PERL5OPT=-Mwarnings=FATAL,all prove -lr xt",
+      "files": 9,
+      "tests": 498,
+      "result": "PASS"
+    }
+  }
+}

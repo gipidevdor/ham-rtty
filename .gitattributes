@@ -1,0 +1,9 @@
+* text=auto
+*.pm text eol=lf
+*.pl text eol=lf
+*.t text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.json text eol=lf
+*.wav binary
+*.mid binary

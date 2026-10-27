@@ -1,0 +1,204 @@
+[
+  {
+    "file": "text-events.pl",
+    "backend": false,
+    "description": "ITU symbols, shared waveforms, prosigns, Farnsworth events and incremental event decoding",
+    "methods": {
+      "Ham::RTTY": [
+        "new",
+        "encoder",
+        "decoder",
+        "encode",
+        "decode",
+        "events",
+        "sampled_events",
+        "decode_events"
+      ],
+      "Ham::RTTY::Encoder": [
+        "new",
+        "validate",
+        "encode",
+        "events"
+      ],
+      "Ham::RTTY::Decoder": [
+        "new",
+        "decode",
+        "feed",
+        "result",
+        "finish",
+        "reset",
+        "state"
+      ],
+      "Ham::RTTY::Events": [
+        "validate_events",
+        "to_samples",
+        "to_timed"
+      ]
+    }
+  },
+  {
+    "file": "sample-streams.pl",
+    "backend": true,
+    "description": "Collected samples, streamed samples, progress, reset and independent iterators",
+    "methods": {
+      "Ham::RTTY": [
+        "generator",
+        "samples",
+        "stream_samples"
+      ],
+      "Ham::RTTY::Generator": [
+        "new",
+        "validate",
+        "generate",
+        "stream",
+        "result",
+        "state",
+        "reset"
+      ]
+    }
+  },
+  {
+    "file": "memory-files.pl",
+    "backend": true,
+    "description": "WAV byte strings, borrowed handles, named paths and explicit replacement",
+    "methods": {
+      "Ham::RTTY": [
+        "wav_bytes",
+        "decode_wav_bytes",
+        "generate_wav",
+        "decode_wav",
+        "write_wav",
+        "read_wav"
+      ]
+    }
+  },
+  {
+    "file": "pcm-streams.pl",
+    "backend": true,
+    "description": "PCM 8/16/24, callback and pull I/O, writer lifecycle and stereo selection",
+    "methods": {
+      "Ham::RTTY::Audio": [
+        "new",
+        "read_file",
+        "write_file",
+        "read_blocks",
+        "write_blocks",
+        "reader",
+        "read",
+        "writer",
+        "write"
+      ],
+      "WAV writer": [
+        "feed",
+        "result",
+        "finish",
+        "state"
+      ]
+    }
+  },
+  {
+    "file": "reception-channels.pl",
+    "backend": true,
+    "description": "Known/estimated tone and speed, filtered multiple stations, silence and snapshots",
+    "methods": {
+      "Ham::RTTY": [
+        "detector",
+        "decode_samples",
+        "decode_samples_channels",
+        "read_wav_channels",
+        "decode_wav_channels"
+      ],
+      "Ham::RTTY::Detector": [
+        "new",
+        "feed",
+        "result",
+        "finish",
+        "channels",
+        "state",
+        "reset"
+      ]
+    }
+  },
+  {
+    "file": "midi-paths.pl",
+    "backend": false,
+    "description": "Timed/sampled events to SMF bytes, handles and files, MIDI settings",
+    "methods": {
+      "Ham::RTTY": [
+        "midi_bytes",
+        "generate_midi",
+        "write_midi"
+      ],
+      "Ham::RTTY::MIDI": [
+        "new",
+        "encode",
+        "write",
+        "write_file"
+      ]
+    }
+  },
+  {
+    "file": "results.pl",
+    "backend": false,
+    "description": "Result construction, every accessor, independent copies and JSON",
+    "methods": {
+      "Ham::RTTY::Result": [
+        "new",
+        "text",
+        "morse",
+        "frequency",
+        "wpm",
+        "events",
+        "warnings",
+        "diagnostics",
+        "complete",
+        "has_text",
+        "has_warnings",
+        "as_hash"
+      ]
+    }
+  },
+  {
+    "file": "failure-recovery.pl",
+    "backend": true,
+    "description": "All library error families, failed replacement, recoverable validation and failed writers",
+    "methods": {
+      "Ham::RTTY::Error": [
+        "new",
+        "throw",
+        "code",
+        "message",
+        "context",
+        "as_string"
+      ]
+    }
+  },
+  {
+    "file": "cli-paths.pl",
+    "backend": true,
+    "description": "All CLI commands, UTF-8 files/stdin, binary stdout, station JSON and exit codes",
+    "methods": {},
+    "commands": [
+      "encode",
+      "decode",
+      "events",
+      "wav",
+      "midi",
+      "receive",
+      "help",
+      "version"
+    ]
+  },
+  {
+    "file": "corpus-reception.pl",
+    "backend": true,
+    "description": "Redistributable off-air recordings, references, warnings and attribution",
+    "methods": {}
+  },
+  {
+    "file": "workflows.pl",
+    "backend": false,
+    "description": "Common end-to-end workflows with temporary files",
+    "methods": {}
+  }
+]

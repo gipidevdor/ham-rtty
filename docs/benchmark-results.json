@@ -1,0 +1,226 @@
+{
+  "status": "historical",
+  "date": "2026-10-24",
+  "units": "seconds",
+  "note": "ARCHIVED: predates the current receiver; do not use these rates as current performance. Local wall and CPU timings; no memory profiling or cross-platform performance claim. Snapshot rebuild calls the internal full analyzer once; snapshots performs 100 cached public result reads. WAV decode uses its default reader block size, independent of --block.",
+  "workloads": [
+    {
+      "audio_seconds": 9.18,
+      "block_samples": 4096,
+      "known_frequency": 0,
+      "pdl_available": 1,
+      "perl": "v5.44.0",
+      "results": [
+        {
+          "backend": "perl",
+          "cpu_seconds": 2.62,
+          "cpu_seconds_per_call": 0.262,
+          "iterations": 10,
+          "operation": "detect",
+          "wall_seconds": 2.6435170173645
+        },
+        {
+          "backend": "perl",
+          "cpu_seconds": 0.49,
+          "cpu_seconds_per_call": 0.049,
+          "iterations": 10,
+          "operation": "generate",
+          "wall_seconds": 0.502504110336304
+        },
+        {
+          "backend": "perl",
+          "cpu_seconds": 0.0700000000000003,
+          "cpu_seconds_per_call": 0.00700000000000003,
+          "iterations": 10,
+          "operation": "snapshot_rebuild",
+          "wall_seconds": 0.0661089420318604
+        },
+        {
+          "backend": "perl",
+          "cpu_seconds": 1.73472347597681e-17,
+          "cpu_seconds_per_call": 1.73472347597681e-18,
+          "iterations": 10,
+          "operation": "snapshots",
+          "wall_seconds": 0.000190019607543945
+        },
+        {
+          "backend": "perl",
+          "cpu_seconds": 2.66,
+          "cpu_seconds_per_call": 0.266,
+          "iterations": 10,
+          "operation": "wav_decode",
+          "wall_seconds": 2.66931986808777
+        },
+        {
+          "backend": "perl",
+          "cpu_seconds": 0.840000000000001,
+          "cpu_seconds_per_call": 0.0840000000000001,
+          "iterations": 10,
+          "operation": "wav_generate",
+          "wall_seconds": 0.838157892227173
+        },
+        {
+          "backend": "pdl",
+          "cpu_seconds": 0.43,
+          "cpu_seconds_per_call": 0.043,
+          "iterations": 10,
+          "operation": "detect",
+          "wall_seconds": 0.432078123092651
+        },
+        {
+          "backend": "pdl",
+          "cpu_seconds": 0.110000000000001,
+          "cpu_seconds_per_call": 0.0110000000000001,
+          "iterations": 10,
+          "operation": "generate",
+          "wall_seconds": 0.106452226638794
+        },
+        {
+          "backend": "pdl",
+          "cpu_seconds": 0.0599999999999999,
+          "cpu_seconds_per_call": 0.00599999999999999,
+          "iterations": 10,
+          "operation": "snapshot_rebuild",
+          "wall_seconds": 0.0647270679473877
+        },
+        {
+          "backend": "pdl",
+          "cpu_seconds": 2.4980018054066e-16,
+          "cpu_seconds_per_call": 2.4980018054066e-17,
+          "iterations": 10,
+          "operation": "snapshots",
+          "wall_seconds": 0.000158071517944336
+        },
+        {
+          "backend": "pdl",
+          "cpu_seconds": 0.49,
+          "cpu_seconds_per_call": 0.049,
+          "iterations": 10,
+          "operation": "wav_decode",
+          "wall_seconds": 0.491614103317261
+        },
+        {
+          "backend": "pdl",
+          "cpu_seconds": 0.289999999999998,
+          "cpu_seconds_per_call": 0.0289999999999998,
+          "iterations": 10,
+          "operation": "wav_generate",
+          "wall_seconds": 0.275352001190186
+        }
+      ],
+      "sample_count": 73440,
+      "sample_rate": 8000,
+      "snapshots_per_call": 100,
+      "command": "perl maint/benchmark.pl --iterations 10 --json"
+    },
+    {
+      "audio_seconds": 9.18,
+      "block_samples": 137,
+      "known_frequency": 1,
+      "pdl_available": 1,
+      "perl": "v5.44.0",
+      "results": [
+        {
+          "backend": "perl",
+          "cpu_seconds": 0.15,
+          "cpu_seconds_per_call": 0.05,
+          "iterations": 3,
+          "operation": "detect",
+          "wall_seconds": 0.143468141555786
+        },
+        {
+          "backend": "perl",
+          "cpu_seconds": 0.14,
+          "cpu_seconds_per_call": 0.0466666666666667,
+          "iterations": 3,
+          "operation": "generate",
+          "wall_seconds": 0.150012016296387
+        },
+        {
+          "backend": "perl",
+          "cpu_seconds": 0.0199999999999999,
+          "cpu_seconds_per_call": 0.00666666666666664,
+          "iterations": 3,
+          "operation": "snapshot_rebuild",
+          "wall_seconds": 0.012188196182251
+        },
+        {
+          "backend": "perl",
+          "cpu_seconds": 1.73472347597681e-17,
+          "cpu_seconds_per_call": 5.78241158658936e-18,
+          "iterations": 3,
+          "operation": "snapshots",
+          "wall_seconds": 5.19752502441406e-05
+        },
+        {
+          "backend": "perl",
+          "cpu_seconds": 0.15,
+          "cpu_seconds_per_call": 0.05,
+          "iterations": 3,
+          "operation": "wav_decode",
+          "wall_seconds": 0.153740882873535
+        },
+        {
+          "backend": "perl",
+          "cpu_seconds": 0.25,
+          "cpu_seconds_per_call": 0.0833333333333333,
+          "iterations": 3,
+          "operation": "wav_generate",
+          "wall_seconds": 0.251673936843872
+        },
+        {
+          "backend": "pdl",
+          "cpu_seconds": 0.2,
+          "cpu_seconds_per_call": 0.0666666666666667,
+          "iterations": 3,
+          "operation": "detect",
+          "wall_seconds": 0.18642783164978
+        },
+        {
+          "backend": "pdl",
+          "cpu_seconds": 0.02,
+          "cpu_seconds_per_call": 0.00666666666666668,
+          "iterations": 3,
+          "operation": "generate",
+          "wall_seconds": 0.027911901473999
+        },
+        {
+          "backend": "pdl",
+          "cpu_seconds": 0.02,
+          "cpu_seconds_per_call": 0.00666666666666668,
+          "iterations": 3,
+          "operation": "snapshot_rebuild",
+          "wall_seconds": 0.011991024017334
+        },
+        {
+          "backend": "pdl",
+          "cpu_seconds": 2.77555756156289e-17,
+          "cpu_seconds_per_call": 9.25185853854297e-18,
+          "iterations": 3,
+          "operation": "snapshots",
+          "wall_seconds": 5.00679016113281e-05
+        },
+        {
+          "backend": "pdl",
+          "cpu_seconds": 0.0800000000000001,
+          "cpu_seconds_per_call": 0.0266666666666667,
+          "iterations": 3,
+          "operation": "wav_decode",
+          "wall_seconds": 0.0828721523284912
+        },
+        {
+          "backend": "pdl",
+          "cpu_seconds": 0.0799999999999999,
+          "cpu_seconds_per_call": 0.0266666666666666,
+          "iterations": 3,
+          "operation": "wav_generate",
+          "wall_seconds": 0.0818591117858887
+        }
+      ],
+      "sample_count": 73440,
+      "sample_rate": 8000,
+      "snapshots_per_call": 100,
+      "command": "perl maint/benchmark.pl --iterations 3 --block 137 --known-frequency --json"
+    }
+  ]
+}

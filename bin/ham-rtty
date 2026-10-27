@@ -1,0 +1,155 @@
+#!/usr/bin/env perl
+use 5.020;
+use strict;
+use warnings;
+use Ham::RTTY::_Internal::CLI;
+
+local $SIG{PIPE} = 'IGNORE' if exists $SIG{PIPE};
+exit Ham::RTTY::_Internal::CLI::run(\@ARGV, \*STDIN, \*STDOUT, \*STDERR);
+
+=encoding UTF-8
+
+=head1 NAME
+
+ham-rtty - Morse text, event, WAV and MIDI command-line tools
+
+=head1 SYNOPSIS
+
+    ham-rtty encode "CQ DE TESTCALL"
+    ham-rtty decode "... --- ..."
+    ham-rtty events --wpm 20 "SOS"
+    ham-rtty wav --output cq.wav --wpm 20 "CQ TEST"
+    ham-rtty midi --output cq.mid "CQ TEST"
+    ham-rtty receive --json cq.wav
+    ham-rtty help receive
+
+=head1 DESCRIPTION
+
+Command-line interface to L<Ham::RTTY> for Morse conversion, WAV/MIDI output
+and recorded CW reception. Requires Perl 5.20 or later and core modules;
+PDL is optional. Audio reception is experimental: check its warnings.
+Sound devices and live MIDI ports are outside its scope.
+
+=head1 COMMANDS
+
+=head2 encode
+
+Convert text to Morse, with spaces between letters and C</> between words.
+Accepts C<--unknown error|skip>; rejection is the default.
+
+=head2 decode
+
+Convert Morse groups to text. Use C<--prefer-prosigns> to choose named
+operational prosigns for ambiguous groups. Separate letters with spaces
+and words with C</>. Use C<-- > before Morse beginning with a dash.
+
+=head2 events
+
+Export canonical timed events as JSON. C<--sample-rate HZ> instead exports
+sampled events. Accepts C<--wpm>, C<--effective-wpm> and C<--unknown>.
+
+=head2 wav
+
+Generate mono PCM WAV. C<--output FILE> or C<--output -> is required.
+Accepts C<--wpm>, C<--effective-wpm>, C<--unknown>, C<--frequency>,
+C<--sample-rate>, C<--amplitude>, C<--attack-ms>, C<--release-ms>,
+C<--backend perl|pdl|auto>, C<--bits 8|16|24>, C<--block-size>,
+C<--max-bytes> and C<--max-samples>. Values and defaults match L<Ham::RTTY>.
+
+=head2 midi
+
+Generate an SMF type 0 MIDI file. Explicit C<--output> is required.
+Accepts C<--wpm>, C<--effective-wpm>, C<--unknown>, C<--note>,
+C<--velocity>, C<--channel>, C<--program>, C<--bpm>, C<--ppqn> and
+C<--max-bytes>. WPM controls Morse speed; BPM controls MIDI tick mapping.
+Program numbers are zero-based, and channels are 1..16.
+
+=head2 receive
+
+Decode a PCM WAV recording. Supply one filename, C<--input FILE>, or
+standard input when neither is given. C<-> also selects standard input.
+Stdin is copied to a temporary seekable file and bounded by C<--max-bytes>
+(64000000 by default); audio is then processed in bounded blocks.
+
+Accepts C<--frequency>, C<--wpm>, C<--effective-wpm>, C<--backend>,
+C<--stereo mix|left|right>, C<--max-frames>, C<--min-frequency>,
+C<--max-frequency>, C<--frequency-step>, C<--min-contrast>,
+C<--min-purity>, C<--filter-bandwidth>, C<--min-snr-db>, C<--mark-snr-db>, C<--all-stations>, C<--max-bytes> and C<--block-samples>.
+C<--json> outputs the complete result, including events and warnings.
+C<--all-stations> returns up to eight distinct filtered channel Results,
+ordered by accumulated energy. With C<--json>, output is an array (possibly
+empty); otherwise each line starts with the candidate frequency in Hz.
+Without it, one primary Result is returned. WPM hints apply to all stations;
+omit them for independent timing estimates. Station separation and filter
+options follow L<Ham::RTTY::Detector>. Co-channel stations cannot be separated.
+Otherwise text goes to stdout and warnings to stderr. C<--strict> returns
+status 1 for any warning, even when text was recovered. Completion and
+nonempty text do not certify reception accuracy.
+
+=head1 INPUT AND OUTPUT
+
+For text commands, supply positional words or C<--input FILE> (C<-i FILE>).
+Combining both is an error. Omit both to read stdin. Positional words are
+joined with one space. Text input is strict UTF-8, with an optional initial
+BOM; text output is UTF-8 without a BOM, with LF line endings.
+The default text limit is 8192 bytes. C<--max-input-bytes> accepts 1..1048576.
+Library generation and reception limits apply independently.
+
+Text/JSON output defaults to stdout. C<--output FILE> (C<-o FILE>) writes
+a file. C<--output -> explicitly selects stdout, including binary output.
+Existing paths are protected. C<--overwrite> explicitly replaces a named
+file via a temporary sibling; failure preserves the previous contents.
+Stdout cannot be rolled back after an I/O failure. Diagnostics use stderr
+and never contaminate binary/JSON stdout. Broken pipes return status 3.
+
+Options are case-sensitive and must be spelled in full. Repeated options
+are rejected. C<-- > ends option parsing. Quote prosigns and shell special
+characters; double quotes work in common Unix shells and Windows cmd.exe.
+Non-ASCII positional arguments depend on the shell's UTF-8 support. UTF-8
+files supplied with C<--input> provide portable non-ASCII input, including
+on Windows. Windows installs also provide a C<ham-rtty.bat> launcher.
+
+C<--help> and C<--version> work globally and after a command.
+C<ham-rtty help COMMAND> shows an example and groups the available options
+by purpose, with units and defaults. Usage errors point to the relevant help
+page; help output fits a 78-column terminal without tab-dependent alignment.
+
+=head1 EXIT STATUS
+
+=over 4
+
+=item C<0>
+
+Successful conversion or reception with nonempty text.
+
+=item C<1>
+
+Reception produced no text, or C<--strict> found a warning.
+
+=item C<2>
+
+Invalid command, options or argument values.
+
+=item C<3>
+
+Invalid input data, a resource limit or an input/output failure.
+
+=item C<4>
+
+Unexpected internal failure. Report it with the command and a minimal input.
+
+=back
+
+Errors include their stable C<RTTY_E_*> code on stderr. Receive warnings use
+C<RTTY_W_*> codes. See L<Ham::RTTY/ERRORS> for the library codes.
+
+=head1 AUTHOR
+
+Giacomo Picchiarelli
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (c) 2026 Giacomo Picchiarelli.
+Artistic License 2.0. See F<LICENSE> in the source distribution.
+
+=cut

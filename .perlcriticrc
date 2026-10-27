@@ -1,0 +1,2 @@
+severity = 3
+verbose = %f:%l:%c: %m (%p)\n

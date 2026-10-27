@@ -1,0 +1,22 @@
+/.author/
+/blib/
+/cover_db/
+/Makefile
+/Makefile.old
+/MYMETA.*
+/pm_to_blib
+/cli-install tools/
+/Ham-RTTY-*/
+/Ham-RTTY-*.tar
+/Ham-RTTY-*.tar.gz
+*.bak
+*.tdy
+*.ERR
+/examples/*.wav
+.DS_Store
+/local/
+/_site/
+
+# Local recording without documented redistribution provenance.
+/corpus/morse.wav
+/.claude/

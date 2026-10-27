@@ -1,0 +1,27 @@
+Licensing of distributed files
+
+The project source, original documentation and original synthetic fixtures
+are distributed under the Artistic License 2.0 in LICENSE.
+
+The documentation website's layout, CSS and text-based Perl notation are
+original project material under the same license. The site uses system fonts;
+no third-party branding artwork or web fonts are bundled.
+
+The received-radio recordings in corpus/real/ are third-party works and retain
+their own terms:
+
+  corpus/real/4u1un.wav  - Cqdx, CC0 1.0
+  corpus/real/oh2b.wav   - Cqdx, CC0 1.0
+  corpus/real/cs3b.wav   - Cqdx, CC0 1.0
+  corpus/real/sk6rud.wav - HBD20, Creative Commons Attribution-ShareAlike 3.0
+
+See corpus/real/LICENSES.md and corpus/real.json for original work titles,
+author/source links, attribution, transformations and file hashes. The audio
+license texts are included as corpus/real/CC0-1.0.txt and
+corpus/real/CC-BY-SA-3.0.txt. In particular, the adapted SK6RUD recording is
+provided under CC BY-SA 3.0; it is not relicensed under Artistic 2.0.
+
+Recorded license metadata and source page revisions are retained in
+corpus/real/license-evidence.json. Attribution does not imply endorsement by
+the recording authors. Local files without documented provenance are not
+part of the distribution.

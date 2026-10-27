@@ -1,0 +1,11 @@
+[
+  {"name":"slow-low-tone","rate":8000,"wpm":5,"frequency":350,"noise":0.04,"fading":1},
+  {"name":"fast-high-tone","rate":16000,"wpm":60,"frequency":1450,"noise":0.04},
+  {"name":"off-grid-fading","rate":11025,"wpm":25,"frequency":673,"noise":0.08,"fading":1},
+  {"name":"fine-grid","rate":8000,"wpm":20,"frequency":673,"noise":0.02,"frequency_step":25},
+  {"name":"coarse-grid","rate":8000,"wpm":20,"frequency":673,"noise":0.02,"frequency_step":100},
+  {"name":"quiet-signal","rate":8000,"wpm":20,"frequency":650,"amplitude":0.03,"noise":0.005},
+  {"name":"dc-offset","rate":8000,"wpm":30,"frequency":900,"noise":0.04,"dc":0.15},
+  {"name":"silence","rate":8000,"wpm":20,"frequency":650,"amplitude":0,"noise":0,"expected":""},
+  {"name":"noise-only","rate":8000,"wpm":20,"frequency":650,"amplitude":0,"noise":0.2,"expected":""}
+]

@@ -1,0 +1,138 @@
+[
+  {
+    "file_title": "File:4U1UN beacon.ogg",
+    "page_id": 18247058,
+    "page_revision": 768601497,
+    "checked_on": "2026-10-24",
+    "media_sha1": "2e94b76e4994ad8c525cc7773655441600a47893",
+    "media_timestamp": "2012-02-01T17:49:33Z",
+    "source_page": "https://commons.wikimedia.org/wiki/File:4U1UN_beacon.ogg",
+    "license_metadata": {
+      "Credit": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+      "Artist": "<a href=\"//commons.wikimedia.org/wiki/User:Cqdx\" title=\"User:Cqdx\">Cqdx</a>",
+      "LicenseShortName": "CC0",
+      "UsageTerms": "Creative Commons Zero, Public Domain Dedication",
+      "AttributionRequired": "false",
+      "LicenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "Copyrighted": "True",
+      "Restrictions": ""
+    },
+    "source_permalink": "https://commons.wikimedia.org/w/index.php?title=File:4U1UN_beacon.ogg&oldid=768601497",
+    "derivatives": [
+      {
+        "file": "corpus/real/4u1un.wav",
+        "sha256": "2c9d2320ea89d57601a7c9dcdc78168b64e2090211690eee156a42846a59dfb0",
+        "source_sha256": "cebe0193be2a3aa6f75dc54fecd166d261249a209676cf11d443a399fceed73d",
+        "start_seconds": 0,
+        "end_seconds": 3.5,
+        "sample_rate": 8000,
+        "reference": "4U1UN",
+        "wpm": 20,
+        "transformation": "Decoded Ogg, averaged channels, scipy resample_poly to 8000 Hz, cropped, PCM signed 16-bit; no denoising or gain change"
+      }
+    ]
+  },
+  {
+    "file_title": "File:NCDXF beacons.ogg",
+    "page_id": 27802369,
+    "page_revision": 454821829,
+    "checked_on": "2026-10-24",
+    "media_sha1": "7e66e4313ffc38dff82e8b90307885692bf3fc5e",
+    "media_timestamp": "2013-08-20T21:28:07Z",
+    "source_page": "https://commons.wikimedia.org/wiki/File:NCDXF_beacons.ogg",
+    "license_metadata": {
+      "Credit": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+      "Artist": "<a href=\"//commons.wikimedia.org/wiki/User:Cqdx\" title=\"User:Cqdx\">Cqdx</a>",
+      "LicenseShortName": "CC0",
+      "UsageTerms": "Creative Commons Zero, Public Domain Dedication",
+      "AttributionRequired": "false",
+      "LicenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "Copyrighted": "True",
+      "Restrictions": ""
+    },
+    "source_permalink": "https://commons.wikimedia.org/w/index.php?title=File:NCDXF_beacons.ogg&oldid=454821829",
+    "derivative_preparation": {
+      "soundfile": "0.13.1",
+      "libsndfile": "1.2.2",
+      "scipy": "1.13.1",
+      "numpy": "2.0.2",
+      "pipeline": [
+        "decode source Ogg",
+        "average channels",
+        "resample_poly to 8000 Hz",
+        "crop",
+        "write mono PCM16"
+      ]
+    },
+    "derivatives": [
+      {
+        "file": "corpus/real/oh2b.wav",
+        "sha256": "2c439fec507ec62bfffca4109bf7e91cbf560b7f9e90969c003eb0c07b2a13ab",
+        "source_sha256": "8d6dec0c79d2f508b3f08556860bfacfcde2e0a2b2bcb94b175ae9ed2a89d9f8",
+        "start_seconds": 1.84,
+        "end_seconds": 4.66,
+        "sample_rate": 8000,
+        "reference": "OH2B",
+        "wpm": 22,
+        "transformation": "Decoded source Ogg, averaged channels, scipy resample_poly to 8000 Hz, callsign-only crop, PCM signed 16-bit; no denoising or gain change"
+      },
+      {
+        "file": "corpus/real/cs3b.wav",
+        "sha256": "87edd7a61f0c873de9521e98116db32b66c946fdba4b1101544a6949462acdfe",
+        "source_sha256": "8d6dec0c79d2f508b3f08556860bfacfcde2e0a2b2bcb94b175ae9ed2a89d9f8",
+        "start_seconds": 11.85,
+        "end_seconds": 14.46,
+        "sample_rate": 8000,
+        "reference": "CS3B",
+        "wpm": 22,
+        "transformation": "Decoded source Ogg, averaged channels, scipy resample_poly to 8000 Hz, callsign-only crop, PCM signed 16-bit; no denoising or gain change"
+      }
+    ]
+  },
+  {
+    "file_title": "File:SK6RUD.ogg",
+    "page_id": 28057751,
+    "page_revision": 476174355,
+    "checked_on": "2026-10-24",
+    "media_sha1": "e622dd2c3bc751e3a944194be884ed7af3c9c2e6",
+    "media_timestamp": "2013-09-04T20:10:31Z",
+    "source_page": "https://commons.wikimedia.org/wiki/File:SK6RUD.ogg",
+    "license_metadata": {
+      "Credit": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+      "Artist": "<a href=\"//commons.wikimedia.org/wiki/User:HBD20\" title=\"User:HBD20\">HBD20</a>",
+      "LicenseShortName": "CC BY-SA 3.0",
+      "UsageTerms": "Creative Commons Attribution-Share Alike 3.0",
+      "AttributionRequired": "true",
+      "LicenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "Copyrighted": "True",
+      "Restrictions": ""
+    },
+    "source_permalink": "https://commons.wikimedia.org/w/index.php?title=File:SK6RUD.ogg&oldid=476174355",
+    "derivative_preparation": {
+      "soundfile": "0.13.1",
+      "libsndfile": "1.2.2",
+      "scipy": "1.13.1",
+      "numpy": "2.0.2",
+      "pipeline": [
+        "decode source Ogg",
+        "average channels",
+        "resample_poly to 8000 Hz",
+        "crop",
+        "write mono PCM16"
+      ]
+    },
+    "derivatives": [
+      {
+        "file": "corpus/real/sk6rud.wav",
+        "sha256": "9a19e77951137713518238aef49cbd3104cab19ee82672d722de6b7d8ef6b6f1",
+        "source_sha256": "8c61f746af247608a3bb58e4ce89a860f84eb6c6087325be9a5b7e3693baa0b4",
+        "start_seconds": 1.95,
+        "end_seconds": 7.0,
+        "sample_rate": 8000,
+        "reference": "SK6RUD",
+        "wpm": 17,
+        "transformation": "Decoded source Ogg, averaged channels, scipy resample_poly to 8000 Hz, callsign-only crop, PCM signed 16-bit; no denoising or gain change"
+      }
+    ]
+  }
+]

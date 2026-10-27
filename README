@@ -1,0 +1,65 @@
+Ham::RTTY
+=======
+
+Morse code for Perl and the command line: text, timed keying events,
+PCM WAV and MIDI generation, and experimental decoding of recorded CW.
+
+Requirements
+------------
+
+Perl 5.20 or later and ExtUtils::MakeMaker 7.22 or later.
+The default backend uses only core Perl modules. PDL 2.081 or later is
+optional; performance depends on the operation and workload.
+
+Installation
+------------
+
+    perl Makefile.PL
+    make
+    make test
+    make install
+
+Use the make program supplied with your Perl installation. For a user-owned
+installation, configure with INSTALL_BASE=/your/install/directory and add
+its lib/perl5 directory to PERL5LIB. See README.md for details.
+
+First commands
+--------------
+
+    ham-rtty encode "CQ TEST"
+    ham-rtty decode -- "... --- ..."
+    ham-rtty wav --output practice.wav "CQ TEST"
+    ham-rtty receive --frequency 700 --wpm 20 practice.wav
+    ham-rtty help receive
+
+Existing output files are protected. Use --overwrite for deliberate
+replacement. Text is UTF-8; WAV and MIDI output is binary.
+From a checkout, use perl -Ilib bin/ham-rtty in place of ham-rtty.
+
+Documentation and limits
+------------------------
+
+    perldoc Ham::RTTY
+    perldoc ham-rtty
+
+README.md is the repository overview. docs/README.md indexes the guides.
+docs/usage.md contains recipes;
+examples/README.md indexes independent runnable examples. The API reference
+is installed as POD with each public module.
+
+The repertoire follows ITU-R M.1677-1. Audio reception is experimental;
+inspect warnings even when text is present. The library does not record a
+microphone, play audio or control radio/MIDI devices. Benchmark and corpus
+results are dated observations, not general accuracy or speed guarantees.
+
+Support and license
+-------------------
+
+Repository: https://github.com/gipidevdor/ham-rtty
+Issues: https://github.com/gipidevdor/ham-rtty/issues
+Private security reports: see SECURITY.md.
+
+Copyright (c) 2026 Giacomo Picchiarelli.
+Project code and original material: Artistic License 2.0; see LICENSE.
+Third-party recordings retain CC0 or CC BY-SA 3.0 terms; see NOTICE and
+corpus/real/LICENSES.md. Their license texts and attribution are included.

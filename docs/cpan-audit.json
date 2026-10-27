@@ -1,0 +1,483 @@
+{
+  "checked_on": "2026-10-24",
+  "source": "https://fastapi.metacpan.org/v1/release/",
+  "candidates": {
+    "Text-Morse": {
+      "distribution": "Text-Morse",
+      "version": "0.07",
+      "date": "2015-06-10T05:10:53",
+      "license": [
+        "artistic_2"
+      ],
+      "dependency": [
+        {
+          "module": "perl",
+          "phase": "runtime",
+          "relationship": "requires",
+          "version": "5.006001"
+        },
+        {
+          "module": "Test::Simple",
+          "phase": "runtime",
+          "relationship": "requires",
+          "version": "0"
+        },
+        {
+          "module": "Test::More",
+          "phase": "runtime",
+          "relationship": "requires",
+          "version": "0"
+        },
+        {
+          "module": "ExtUtils::MakeMaker",
+          "phase": "configure",
+          "relationship": "requires",
+          "version": "0"
+        },
+        {
+          "module": "ExtUtils::MakeMaker",
+          "phase": "build",
+          "relationship": "requires",
+          "version": "0"
+        }
+      ],
+      "resources": {
+        "bugtracker": {
+          "web": "https://rt.cpan.org/Dist/Display.html?Name=Text-Morse"
+        },
+        "repository": {
+          "type": "git",
+          "url": "git://github.com/bennie/perl-Text-Morse.git",
+          "web": "http://github.com/bennie/perl-Text-Morse"
+        }
+      },
+      "download_url": "https://cpan.metacpan.org/authors/id/B/BE/BENNIE/Text-Morse-0.07.tar.gz",
+      "reviewed_files": [
+        "Text-Morse-0.07/LICENSE",
+        "Text-Morse-0.07/Makefile.PL",
+        "Text-Morse-0.07/t/00-pod.t",
+        "Text-Morse-0.07/t/01-load.t",
+        "Text-Morse-0.07/t/02-decode.t"
+      ]
+    },
+    "Audio-Wav": {
+      "distribution": "Audio-Wav",
+      "version": "0.14",
+      "date": "2014-04-27T04:54:18",
+      "license": [
+        "unknown"
+      ],
+      "dependency": [
+        {
+          "module": "ExtUtils::MakeMaker",
+          "phase": "configure",
+          "relationship": "requires",
+          "version": "0"
+        },
+        {
+          "module": "ExtUtils::MakeMaker",
+          "phase": "build",
+          "relationship": "requires",
+          "version": "0"
+        }
+      ],
+      "resources": {},
+      "download_url": "https://cpan.metacpan.org/authors/id/B/BR/BRIANSKI/Audio-Wav-0.14.tar.gz",
+      "reviewed_files": [
+        "Audio-Wav-0.14/LICENSE",
+        "Audio-Wav-0.14/Makefile.PL"
+      ]
+    },
+    "Audio": {
+      "distribution": "Audio",
+      "version": "1.029",
+      "date": "2004-06-02T18:52:42",
+      "license": [
+        "unknown"
+      ],
+      "dependency": [],
+      "resources": {},
+      "download_url": "https://cpan.metacpan.org/authors/id/N/NI/NI-S/Audio-1.029.tar.gz",
+      "reviewed_files": [
+        "Audio-1.029/Data/Data.xs",
+        "Audio-1.029/Data/Makefile.PL",
+        "Audio-1.029/Data/t/init.t",
+        "Audio-1.029/Data/t/load.t",
+        "Audio-1.029/Data/t/overload.t",
+        "Audio-1.029/Data/t/poly.t",
+        "Audio-1.029/Data/t/test.au",
+        "Audio-1.029/Makefile.PL",
+        "Audio-1.029/Play/Makefile.PL",
+        "Audio-1.029/Play/Net/Makefile.PL",
+        "Audio-1.029/Play/t/tone.t"
+      ]
+    },
+    "PDL": {
+      "distribution": "PDL",
+      "version": "2.106",
+      "date": "2026-08-18T23:54:55",
+      "license": [
+        "perl_5"
+      ],
+      "dependency": [
+        {
+          "module": "Devel::CheckLib",
+          "phase": "configure",
+          "relationship": "requires",
+          "version": "1.01"
+        },
+        {
+          "module": "File::Path",
+          "phase": "configure",
+          "relationship": "requires",
+          "version": "0"
+        },
+        {
+          "module": "ExtUtils::MakeMaker",
+          "phase": "configure",
+          "relationship": "requires",
+          "version": "7.12"
+        },
+        {
+          "module": "File::Which",
+          "phase": "configure",
+          "relationship": "requires",
+          "version": "0"
+        },
+        {
+          "module": "Filter::Simple",
+          "phase": "runtime",
+          "relationship": "requires",
+          "version": "0.88"
+        },
+        {
+          "module": "Pod::Simple",
+          "phase": "runtime",
+          "relationship": "requires",
+          "version": "3.40"
+        },
+        {
+          "module": "File::Which",
+          "phase": "runtime",
+          "relationship": "requires",
+          "version": "0"
+        },
+        {
+          "module": "Text::Balanced",
+          "phase": "runtime",
+          "relationship": "requires",
+          "version": "2.05"
+        },
+        {
+          "module": "List::Util",
+          "phase": "runtime",
+          "relationship": "requires",
+          "version": "1.33"
+        },
+        {
+          "module": "Math::Complex",
+          "phase": "runtime",
+          "relationship": "requires",
+          "version": "0"
+        },
+        {
+          "module": "perl",
+          "phase": "runtime",
+          "relationship": "requires",
+          "version": "5.016"
+        },
+        {
+          "module": "Scalar::Util",
+          "phase": "runtime",
+          "relationship": "requires",
+          "version": "0"
+        },
+        {
+          "module": "Filter::Util::Call",
+          "phase": "runtime",
+          "relationship": "requires",
+          "version": "0"
+        },
+        {
+          "module": "Data::Dumper",
+          "phase": "runtime",
+          "relationship": "requires",
+          "version": "2.121"
+        },
+        {
+          "module": "Storable",
+          "phase": "runtime",
+          "relationship": "requires",
+          "version": "1.03"
+        },
+        {
+          "module": "File::Map",
+          "phase": "runtime",
+          "relationship": "requires",
+          "version": "0.57"
+        },
+        {
+          "module": "Term::ReadKey",
+          "phase": "runtime",
+          "relationship": "recommends",
+          "version": "2.34"
+        },
+        {
+          "module": "Inline::C",
+          "phase": "runtime",
+          "relationship": "recommends",
+          "version": "0.62"
+        },
+        {
+          "module": "Astro::FITS::Header",
+          "phase": "runtime",
+          "relationship": "recommends",
+          "version": "2.1"
+        },
+        {
+          "module": "Inline",
+          "phase": "runtime",
+          "relationship": "recommends",
+          "version": "0.83"
+        },
+        {
+          "module": "Sys::SigAction",
+          "phase": "runtime",
+          "relationship": "suggests",
+          "version": "0"
+        },
+        {
+          "module": "File::Path",
+          "phase": "build",
+          "relationship": "requires",
+          "version": "0"
+        },
+        {
+          "module": "ExtUtils::ParseXS",
+          "phase": "build",
+          "relationship": "requires",
+          "version": "3.21"
+        },
+        {
+          "module": "Pod::Simple",
+          "phase": "build",
+          "relationship": "requires",
+          "version": "3.40"
+        },
+        {
+          "module": "ExtUtils::MakeMaker",
+          "phase": "build",
+          "relationship": "requires",
+          "version": "0"
+        },
+        {
+          "module": "CPAN::Meta",
+          "phase": "test",
+          "relationship": "requires",
+          "version": "2.120900"
+        },
+        {
+          "module": "Test::Deep",
+          "phase": "test",
+          "relationship": "requires",
+          "version": "0"
+        },
+        {
+          "module": "Test::Exception",
+          "phase": "test",
+          "relationship": "requires",
+          "version": "0"
+        },
+        {
+          "module": "Test::Warn",
+          "phase": "test",
+          "relationship": "requires",
+          "version": "0"
+        }
+      ],
+      "resources": {
+        "bugtracker": {
+          "web": "https://github.com/PDLPorters/pdl/issues"
+        },
+        "homepage": "http://pdl.perl.org/",
+        "repository": {
+          "type": "git",
+          "url": "git://github.com/PDLPorters/pdl.git",
+          "web": "https://github.com/PDLPorters/pdl"
+        }
+      },
+      "download_url": "https://cpan.metacpan.org/authors/id/E/ET/ETJ/PDL-2.106.tar.gz"
+    },
+    "Math-FFT": {
+      "distribution": "Math-FFT",
+      "version": "1.36",
+      "date": "2020-10-17T13:23:20",
+      "license": [
+        "perl_5"
+      ],
+      "dependency": [
+        {
+          "module": "vars",
+          "phase": "runtime",
+          "relationship": "requires",
+          "version": "0"
+        },
+        {
+          "module": "DynaLoader",
+          "phase": "runtime",
+          "relationship": "requires",
+          "version": "0"
+        },
+        {
+          "module": "warnings",
+          "phase": "runtime",
+          "relationship": "requires",
+          "version": "0"
+        },
+        {
+          "module": "strict",
+          "phase": "runtime",
+          "relationship": "requires",
+          "version": "0"
+        },
+        {
+          "module": "perl",
+          "phase": "runtime",
+          "relationship": "requires",
+          "version": "5.008"
+        },
+        {
+          "module": "File::Spec",
+          "phase": "test",
+          "relationship": "requires",
+          "version": "0"
+        },
+        {
+          "module": "lib",
+          "phase": "test",
+          "relationship": "requires",
+          "version": "0"
+        },
+        {
+          "module": "Exporter",
+          "phase": "test",
+          "relationship": "requires",
+          "version": "0"
+        },
+        {
+          "module": "IO::Handle",
+          "phase": "test",
+          "relationship": "requires",
+          "version": "0"
+        },
+        {
+          "module": "Test::More",
+          "phase": "test",
+          "relationship": "requires",
+          "version": "0.88"
+        },
+        {
+          "module": "IPC::Open3",
+          "phase": "test",
+          "relationship": "requires",
+          "version": "0"
+        },
+        {
+          "module": "parent",
+          "phase": "test",
+          "relationship": "requires",
+          "version": "0"
+        },
+        {
+          "module": "ExtUtils::MakeMaker",
+          "phase": "configure",
+          "relationship": "requires",
+          "version": "0"
+        },
+        {
+          "module": "Test::Kwalitee",
+          "phase": "develop",
+          "relationship": "requires",
+          "version": "1.21"
+        },
+        {
+          "module": "Test::EOL",
+          "phase": "develop",
+          "relationship": "requires",
+          "version": "0"
+        },
+        {
+          "module": "Test::Pod",
+          "phase": "develop",
+          "relationship": "requires",
+          "version": "1.41"
+        },
+        {
+          "module": "Test::CPAN::Changes",
+          "phase": "develop",
+          "relationship": "requires",
+          "version": "0.19"
+        },
+        {
+          "module": "Test::TrailingSpace",
+          "phase": "develop",
+          "relationship": "requires",
+          "version": "0.0203"
+        },
+        {
+          "module": "Pod::Coverage::TrustPod",
+          "phase": "develop",
+          "relationship": "requires",
+          "version": "0"
+        },
+        {
+          "module": "Test::More",
+          "phase": "develop",
+          "relationship": "requires",
+          "version": "0.96"
+        },
+        {
+          "module": "Test::Pod::Coverage",
+          "phase": "develop",
+          "relationship": "requires",
+          "version": "1.08"
+        },
+        {
+          "module": "Test::NoTabs",
+          "phase": "develop",
+          "relationship": "requires",
+          "version": "0"
+        },
+        {
+          "module": "Test::Code::TidyAll",
+          "phase": "develop",
+          "relationship": "requires",
+          "version": "0.50"
+        }
+      ],
+      "resources": {
+        "bugtracker": {
+          "web": "https://github.com/shlomif/perl-Math-FFT/issues"
+        },
+        "homepage": "http://metacpan.org/release/Math-FFT",
+        "repository": {
+          "type": "git",
+          "url": "git://github.com/shlomif/perl-Math-FFT.git",
+          "web": "https://github.com/shlomif/perl-Math-FFT"
+        }
+      },
+      "download_url": "https://cpan.metacpan.org/authors/id/S/SH/SHLOMIF/Math-FFT-1.36.tar.gz",
+      "reviewed_files": [
+        "Math-FFT-1.36/FFT.xs",
+        "Math-FFT-1.36/LICENSE",
+        "Math-FFT-1.36/t/fft.t",
+        "Math-FFT-1.36/t/apps.t",
+        "Math-FFT-1.36/t/stats.t",
+        "Math-FFT-1.36/Makefile.PL",
+        "Math-FFT-1.36/t/spctrl.dat",
+        "Math-FFT-1.36/t/00-compile.t",
+        "Math-FFT-1.36/t/lib/MathFftResults.pm"
+      ]
+    }
+  }
+}

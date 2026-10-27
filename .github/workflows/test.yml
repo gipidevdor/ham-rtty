@@ -1,0 +1,133 @@
+name: Tests
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: tests-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  perl:
+    name: ${{ matrix.os }} / Perl ${{ matrix.perl }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {os: ubuntu-latest, perl: '5.20'}
+          - {os: ubuntu-latest, perl: '5.34'}
+          - {os: ubuntu-latest, perl: '5.40'}
+          - {os: ubuntu-latest, perl: '5.44'}
+          - {os: macos-latest, perl: '5.40'}
+          - {os: windows-latest, perl: '5.40'}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: shogo82148/actions-setup-perl@84c44b5a14f12b311f1bf3d2a70c8807f30b7ab2 # v1
+        with:
+          perl-version: ${{ matrix.perl }}
+      - name: Install build prerequisite
+        run: cpanm --notest ExtUtils::MakeMaker 'Digest::SHA~5.96'
+      - name: Configure and test
+        env:
+          HARNESS_PERL_SWITCHES: -Mwarnings=FATAL,all
+        run: |
+          perl Makefile.PL
+          prove -lr t
+      - name: Examples
+        run: |
+          perl -Ilib examples/send.pl example.wav CQ DE TESTCALL
+          perl -Ilib examples/receive.pl example.wav
+          perl -Ilib examples/midi.pl example.mid CQ DE TESTCALL
+          perl -Ilib examples/workflows.pl
+      - name: Installed command and launcher
+        run: perl maint/check-cli-install.pl "cli-install tools" --build
+  pdl:
+    name: ${{ matrix.check }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # PDL 2.081 predates C23; use the legacy runner's GCC toolchain.
+          - {os: ubuntu-22.04, perl: '5.20', pdl: '2.081', check: 'PDL minimum / Perl 5.20'}
+          - {os: ubuntu-latest, perl: '5.40', pdl: '2.106', check: 'PDL / ubuntu-latest'}
+          - {os: macos-latest, perl: '5.40', pdl: '2.106', check: 'PDL / macos-latest'}
+          - {os: macos-15-intel, perl: '5.40', pdl: '2.106', check: 'PDL / macos-15-intel'}
+          - {os: windows-latest, perl: '5.40', pdl: '2.106', check: 'PDL / windows-latest'}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: shogo82148/actions-setup-perl@84c44b5a14f12b311f1bf3d2a70c8807f30b7ab2 # v1
+        with:
+          perl-version: ${{ matrix.perl }}
+          distribution: ${{ startsWith(matrix.os, 'windows-') && 'strawberry' || 'default' }}
+          install-modules: |
+            ExtUtils::MakeMaker
+            Digest::SHA
+            PDL@${{ matrix.pdl }}
+          install-modules-args: --notest
+      - name: Verify PDL backend and compatibility
+        env:
+          HARNESS_PERL_SWITCHES: -Mwarnings=FATAL,all
+        run: |
+          perl -Ilib -MHam::RTTY::_Internal::PDL -e 1
+          perl Makefile.PL
+          prove -lr t
+      - name: Compare synthesis, streaming reception and PCM
+        run: perl maint/benchmark-platforms.pl --seconds 1 --json benchmark.json
+      - name: Save benchmark results
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: benchmark-${{ matrix.os }}-perl-${{ matrix.perl }}-pdl-${{ matrix.pdl }}
+          path: benchmark.json
+          if-no-files-found: error
+  author:
+    name: Author checks and distribution
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: shogo82148/actions-setup-perl@84c44b5a14f12b311f1bf3d2a70c8807f30b7ab2 # v1
+        with:
+          perl-version: '5.40'
+          install-modules: |
+            ExtUtils::MakeMaker
+            Digest::SHA
+            PDL@2.106
+            Perl::Tidy@20260826
+          install-modules-args: --notest
+      - name: Install author tools
+        run: |
+          cpanm --notest --installdeps --with-develop .
+      - name: Build and check metadata, POD and style
+        run: |
+          perl Makefile.PL
+          make
+          make test
+          make distmeta
+          prove -lr xt
+      # Condition instrumentation is needed for complete branch counts.
+      # Keep all production modules and tests; avoid unrelated timing/POD collection.
+      - name: Coverage gates
+        env:
+          HARNESS_PERL_SWITCHES: -MDevel::Cover=-db,${{ runner.temp }}/ham-rtty-cover,-blib,0,-coverage,statement,branch,condition,-select,lib/Ham,-ignore,^t/
+        run: prove -j2 -lr t
+      - name: Check measured coverage
+        run: perl maint/coverage.pl '${{ runner.temp }}/ham-rtty-cover'
+      - name: Test release archive
+        run: |
+          make distcheck
+          make disttest
+          make dist
+          perl -Ilib -MHam::RTTY -e 'exec $^X, "maint/check-dist.pl", "Ham-RTTY-$Ham::RTTY::VERSION.tar.gz"'
+          perl -Ilib -MHam::RTTY -e 'exec $^X, "maint/check-install.pl", "Ham-RTTY-$Ham::RTTY::VERSION.tar.gz"'
