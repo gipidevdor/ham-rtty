@@ -118,7 +118,7 @@ sub local_target {
     my ($url, $current) = @_;
     return                                      if $url =~ m{\A(?:[a-z][a-z0-9+.-]*:|//)}ix;
     croak "Root-relative URL in $current: $url" if $url =~ m{\A/}x;
-    my $prefix = '/__ham_cw_site__/';
+    my $prefix = '/__ham_rtty_site__/';
     my $parsed = URI->new_abs($url, "https://site.invalid$prefix$current");
     my $path   = uri_unescape($parsed->path);
     croak "URL escapes the site in $current: $url"

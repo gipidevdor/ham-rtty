@@ -19,4 +19,4 @@ body:
     id: signal
     attributes:
       label: Audio conditions, if applicable
-      description: Sample format, frequency/WPM hints and Result warnings. Share only recordings you may redistribute.
+      description: Sample format, tone/baud settings and Result warnings. Share only recordings you may redistribute.

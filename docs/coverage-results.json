@@ -1,0 +1,425 @@
+{
+  "date": "2026-10-27",
+  "source_revision": "fc8fbd5",
+  "command": "HARNESS_PERL_SWITCHES='-MDevel::Cover=-db,/tmp/ham-rtty-cover-release,-blib,0,-coverage,statement,branch,condition,-select,lib/Ham,-ignore,^t/' prove -j2 -lr t",
+  "gate_command": "perl maint/coverage.pl /tmp/ham-rtty-cover-release",
+  "gate_exit_status": 0,
+  "coverage": {
+    "modules": {
+      "lib/Ham/RTTY.pm": {
+        "branch": {
+          "covered": 28,
+          "error": 0,
+          "percentage": 100,
+          "total": 28,
+          "uncoverable": 0
+        },
+        "statement": {
+          "covered": 186,
+          "percentage": 100,
+          "total": 186
+        },
+        "total": {
+          "covered": 214,
+          "error": 0,
+          "percentage": 100,
+          "total": 214,
+          "uncoverable": 0
+        }
+      },
+      "lib/Ham/RTTY/Audio.pm": {
+        "branch": {
+          "covered": 73,
+          "error": 1,
+          "percentage": 98.6486486486486,
+          "total": 74,
+          "uncoverable": 0
+        },
+        "statement": {
+          "covered": 158,
+          "percentage": 100,
+          "total": 158
+        },
+        "total": {
+          "covered": 231,
+          "error": 1,
+          "percentage": 99.5689655172414,
+          "total": 232,
+          "uncoverable": 0
+        }
+      },
+      "lib/Ham/RTTY/Baudot.pm": {
+        "branch": {
+          "covered": 10,
+          "error": 0,
+          "percentage": 100,
+          "total": 10,
+          "uncoverable": 0
+        },
+        "statement": {
+          "covered": 36,
+          "percentage": 100,
+          "total": 36
+        },
+        "total": {
+          "covered": 46,
+          "error": 0,
+          "percentage": 100,
+          "total": 46,
+          "uncoverable": 0
+        }
+      },
+      "lib/Ham/RTTY/Decoder.pm": {
+        "branch": {
+          "covered": 44,
+          "error": 0,
+          "percentage": 100,
+          "total": 44,
+          "uncoverable": 0
+        },
+        "statement": {
+          "covered": 138,
+          "percentage": 100,
+          "total": 138
+        },
+        "total": {
+          "covered": 182,
+          "error": 0,
+          "percentage": 100,
+          "total": 182,
+          "uncoverable": 0
+        }
+      },
+      "lib/Ham/RTTY/Detector.pm": {
+        "branch": {
+          "covered": 48,
+          "error": 0,
+          "percentage": 100,
+          "total": 48,
+          "uncoverable": 0
+        },
+        "statement": {
+          "covered": 165,
+          "percentage": 100,
+          "total": 165
+        },
+        "total": {
+          "covered": 213,
+          "error": 0,
+          "percentage": 100,
+          "total": 213,
+          "uncoverable": 0
+        }
+      },
+      "lib/Ham/RTTY/Encoder.pm": {
+        "branch": {
+          "covered": 38,
+          "error": 0,
+          "percentage": 100,
+          "total": 38,
+          "uncoverable": 0
+        },
+        "statement": {
+          "covered": 91,
+          "percentage": 100,
+          "total": 91
+        },
+        "total": {
+          "covered": 129,
+          "error": 0,
+          "percentage": 100,
+          "total": 129,
+          "uncoverable": 0
+        }
+      },
+      "lib/Ham/RTTY/Error.pm": {
+        "branch": {
+          "covered": 8,
+          "error": 0,
+          "percentage": 100,
+          "total": 8,
+          "uncoverable": 0
+        },
+        "statement": {
+          "covered": 46,
+          "percentage": 100,
+          "total": 46
+        },
+        "total": {
+          "covered": 54,
+          "error": 0,
+          "percentage": 100,
+          "total": 54,
+          "uncoverable": 0
+        }
+      },
+      "lib/Ham/RTTY/Events.pm": {
+        "branch": {
+          "covered": 39,
+          "error": 1,
+          "percentage": 97.5,
+          "total": 40,
+          "uncoverable": 0
+        },
+        "statement": {
+          "covered": 65,
+          "percentage": 100,
+          "total": 65
+        },
+        "total": {
+          "covered": 104,
+          "error": 1,
+          "percentage": 99.0476190476191,
+          "total": 105,
+          "uncoverable": 0
+        }
+      },
+      "lib/Ham/RTTY/Generator.pm": {
+        "branch": {
+          "covered": 24,
+          "error": 0,
+          "percentage": 100,
+          "total": 24,
+          "uncoverable": 0
+        },
+        "statement": {
+          "covered": 92,
+          "percentage": 100,
+          "total": 92
+        },
+        "total": {
+          "covered": 116,
+          "error": 0,
+          "percentage": 100,
+          "total": 116,
+          "uncoverable": 0
+        }
+      },
+      "lib/Ham/RTTY/MIDI.pm": {
+        "branch": {
+          "covered": 18,
+          "error": 0,
+          "percentage": 100,
+          "total": 18,
+          "uncoverable": 0
+        },
+        "statement": {
+          "covered": 64,
+          "percentage": 100,
+          "total": 64
+        },
+        "total": {
+          "covered": 82,
+          "error": 0,
+          "percentage": 100,
+          "total": 82,
+          "uncoverable": 0
+        }
+      },
+      "lib/Ham/RTTY/Result.pm": {
+        "branch": {
+          "covered": 20,
+          "error": 0,
+          "percentage": 100,
+          "total": 20,
+          "uncoverable": 0
+        },
+        "statement": {
+          "covered": 65,
+          "percentage": 100,
+          "total": 65
+        },
+        "total": {
+          "covered": 85,
+          "error": 0,
+          "percentage": 100,
+          "total": 85,
+          "uncoverable": 0
+        }
+      },
+      "lib/Ham/RTTY/_Internal/Backend.pm": {
+        "branch": {
+          "covered": 8,
+          "error": 0,
+          "percentage": 100,
+          "total": 8,
+          "uncoverable": 0
+        },
+        "statement": {
+          "covered": 21,
+          "error": 1,
+          "percentage": 95.4545454545455,
+          "total": 22
+        },
+        "total": {
+          "covered": 29,
+          "error": 1,
+          "percentage": 96.6666666666667,
+          "total": 30,
+          "uncoverable": 0
+        }
+      },
+      "lib/Ham/RTTY/_Internal/CLI.pm": {
+        "branch": {
+          "covered": 112,
+          "error": 8,
+          "percentage": 93.3333333333333,
+          "total": 120,
+          "uncoverable": 0
+        },
+        "statement": {
+          "covered": 275,
+          "percentage": 100,
+          "total": 275
+        },
+        "total": {
+          "covered": 387,
+          "error": 8,
+          "percentage": 97.9746835443038,
+          "total": 395,
+          "uncoverable": 0
+        }
+      },
+      "lib/Ham/RTTY/_Internal/Data.pm": {
+        "branch": {
+          "covered": 10,
+          "error": 0,
+          "percentage": 100,
+          "total": 10,
+          "uncoverable": 0
+        },
+        "statement": {
+          "covered": 35,
+          "percentage": 100,
+          "total": 35
+        },
+        "total": {
+          "covered": 45,
+          "error": 0,
+          "percentage": 100,
+          "total": 45,
+          "uncoverable": 0
+        }
+      },
+      "lib/Ham/RTTY/_Internal/IO.pm": {
+        "branch": {
+          "covered": 39,
+          "error": 3,
+          "percentage": 92.8571428571429,
+          "total": 42,
+          "uncoverable": 0
+        },
+        "statement": {
+          "covered": 82,
+          "percentage": 100,
+          "total": 82
+        },
+        "total": {
+          "covered": 121,
+          "error": 3,
+          "percentage": 97.5806451612903,
+          "total": 124,
+          "uncoverable": 0
+        }
+      },
+      "lib/Ham/RTTY/_Internal/PDL.pm": {
+        "branch": {
+          "covered": 18,
+          "error": 0,
+          "percentage": 100,
+          "total": 18,
+          "uncoverable": 0
+        },
+        "statement": {
+          "covered": 50,
+          "percentage": 100,
+          "total": 50
+        },
+        "total": {
+          "covered": 68,
+          "error": 0,
+          "percentage": 100,
+          "total": 68,
+          "uncoverable": 0
+        }
+      },
+      "lib/Ham/RTTY/_Internal/Result.pm": {
+        "branch": {},
+        "statement": {
+          "covered": 16,
+          "percentage": 100,
+          "total": 16
+        },
+        "total": {
+          "covered": 16,
+          "percentage": 100,
+          "total": 16
+        }
+      },
+      "lib/Ham/RTTY/_Internal/Validate.pm": {
+        "branch": {
+          "covered": 18,
+          "error": 0,
+          "percentage": 100,
+          "total": 18,
+          "uncoverable": 0
+        },
+        "statement": {
+          "covered": 50,
+          "percentage": 100,
+          "total": 50
+        },
+        "total": {
+          "covered": 68,
+          "error": 0,
+          "percentage": 100,
+          "total": 68,
+          "uncoverable": 0
+        }
+      },
+      "lib/Ham/RTTY/_Internal/WavWriter.pm": {
+        "branch": {
+          "covered": 27,
+          "error": 1,
+          "percentage": 96.4285714285714,
+          "total": 28,
+          "uncoverable": 0
+        },
+        "statement": {
+          "covered": 61,
+          "percentage": 100,
+          "total": 61
+        },
+        "total": {
+          "covered": 88,
+          "error": 1,
+          "percentage": 98.876404494382,
+          "total": 89,
+          "uncoverable": 0
+        }
+      }
+    },
+    "total": {
+      "branch": {
+        "covered": 582,
+        "error": 14,
+        "percentage": 97.6510067114094,
+        "total": 596,
+        "uncoverable": 0
+      },
+      "statement": {
+        "covered": 1696,
+        "error": 1,
+        "percentage": 99.9410724808486,
+        "total": 1697
+      },
+      "total": {
+        "covered": 2278,
+        "error": 15,
+        "percentage": 99.3458351504579,
+        "total": 2293,
+        "uncoverable": 0
+      }
+    }
+  }
+}

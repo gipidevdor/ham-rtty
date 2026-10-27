@@ -1,102 +1,56 @@
 # Verification
 
-[Overview](../README.md) · [Task guide](usage.md) · [Examples](../examples/README.md) · [Measured performance](benchmarks.md)
+Development candidate 0.01, measured 2026-10-27. **Not release-qualified.**
 
-## Scope of this record
+Production code revision `fc8fbd5`; final documentation commits may follow. Local environment: Apple M4, macOS ARM64, Perl 5.44.0, PDL 2.106. [Raw verification](verification-results.json), [coverage](coverage-results.json), [performance](performance-results.json) and [security triage](security-audit-results.json) retain the evidence. No results are inherited from Ham::CW.
 
-Updated 2026-10-25. The latest timing run measures source
-`c635a8ad588558a2d12bb0557d863cd571b61349`; see
-[performance results](performance-results.json) and the [timing protocol](benchmarks.md).
-Corpus, interface and CI results below come from the
-[earlier record](current-results.json) on `85eb8f3`. Those checks were not rerun
-for the timing update.
+## Local checks
 
-## Checks and provenance
-
-Local environment: macOS ARM64, Perl 5.44.0 and PDL 2.106.
-
-| Check | Result and scope |
+| Check | Observed result |
 | --- | --- |
-| Ordinary and author suite | PASS: 3,034 assertions across 39 files, with all Perl warnings fatal, after the interface refinements |
-| Timing | Three sequential, three-iteration workloads on `c635a8a`: 8 kHz searched/known tone and 16 kHz searched tone; [protocol](benchmarks.md) |
-| Corpus reception | Eight decodes across four clips; CER 0% and no warnings in either mode |
-| Documentation links | Checked during the timing refresh; count in [performance results](performance-results.json) |
-| Production coverage | CI on `85eb8f3`: statements 99.03% (2,245/2,267), branches 96.28% (751/780) |
-| Local distribution | Recorded PASS in the earlier interface review; not rerun in this timing refresh |
-| Isolated installation | PASS in CI on `85eb8f3`, including installed CLI and examples |
-| Other Perl/platform combinations | All twelve CI test jobs pass on `85eb8f3` |
-| Security CI | FAIL on `85eb8f3`: installed and declared dependency advisory checks; other scanner jobs pass |
+| Warnings-fatal `make test` | 17 files, 1,796 assertions, PASS |
+| Author suite | 12 files, 630 assertions, PASS |
+| Statement coverage | 1,696 / 1,697 = 99.94% |
+| Branch coverage | 582 / 596 = 97.65% |
+| Per-module coverage gate | Every production module reaches 95% statements and 90% branches; branchless module is N/A |
+| Distribution | `make distcheck`, `make disttest`, archive contract, isolated installation, installed CLI and examples PASS |
+| Public POD and examples | Every public method has its own POD heading; all module synopses and README/usage Perl recipes execute |
+| Style | Pinned Perl::Tidy 20260826 and repository Perl::Critic severity 3 pass |
+| Metadata / manifest / minimum version / spelling | PASS, including static Perl 5.20 analysis and codespell 2.4.1 |
+| Documentation site | 38 HTML pages; 1,735 local links/anchors checked; browser inspection passed |
+| Workflow analyzers | actionlint 1.7.12 and zizmor 1.31.1 auditor persona pass without findings |
+| Unsafe constructs / secrets | Four Perl policies pass; gitleaks 8.30.1 reports no leaks |
 
-The coverage requirements remain 95% statements and 90% branches, with every
-production module included. These gates pass in the cited CI coverage run.
-Coverage was not recollected locally for the interface update. Condition
-instrumentation was used to collect branch counts. See
-[contributing](../CONTRIBUTING.md) for collection instructions.
+Coverage includes statement, branch and condition instrumentation, both numerical backends and production-module inventory validation. `maint/coverage.pl` checks each module separately; it does not substitute an aggregate percentage. No coverage points were marked uncoverable. The one uncovered statement is the return after a throwing backend error. Raw per-module counts are retained.
+
+```sh
+HARNESS_PERL_SWITCHES='-Mwarnings=FATAL,all' make test
+make distmeta
+prove -lr xt
+HARNESS_PERL_SWITCHES='-MDevel::Cover=-db,/tmp/ham-rtty-cover-release,-blib,0,-coverage,statement,branch,condition,-select,lib/Ham,-ignore,^t/' prove -j2 -lr t
+perl maint/coverage.pl /tmp/ham-rtty-cover-release
+```
+
+Author checks need the development prerequisites plus codespell on PATH. A skip caused by a missing optional author tool is not a release pass. The recorded run executed all 12 files without skips.
 
 ## Reception evidence
 
-The measured corpus contains four short clips from three automated-beacon
-recordings. References, source licenses, transformations and fixture hashes are
-tracked in the [corpus](../corpus/README.md) and
-[recording licenses](../corpus/real/LICENSES.md).
+Every assigned character in both ITU and US tables round-trips through notation, bits and events. Independent S.1 numeric vectors verify the mapping instead of relying only on paired encoder/decoder agreement. The synthetic matrix uses seeded random mixed-case input with figures/punctuation at 8/16 kHz, baud 45.45/50/75, shift 170/450/850 and stop 1/1.5/2, through samples and WAV, on Perl and PDL. Text expectations agree across backends.
 
-| Clip | CER with speed hint | CER with estimated speed | Warnings, either mode |
-| --- | ---: | ---: | --- |
-| 4U1UN identification | 0% | 0% | None |
-| OH2B identification | 0% | 0% | None |
-| CS3B identification | 0% | 0% | None |
-| SK6RUD identification | 0% | 0% | None |
+Additional tests cover uniform white noise at a theoretical 16.7 dB SNR with 0% CER for the fixed test message, ±2% baud mismatch, ±20 Hz tone offset, reversed polarity, independent S.1-frame oscillators, unequal tone levels, a stronger 1100 Hz carrier, mid-stream resynchronisation, bad stops, USOS and repeated shifts. Backend waveform/chunk equality and PCM 8/16/24-bit conversions are checked separately. These cases establish synthetic behavior, not general radio accuracy.
 
-Only speed is supplied in the hinted run; tone is searched in both modes.
-CER counts character edits, including spaces and replacement characters,
-divided by reference length; it can exceed 100%. The quality target is at most
-25% CER per clip and mode. The current regression budgets are stricter: 0%
-for all eight decodes. Both measures pass for this fixed corpus.
+**Four real RTTY recordings remain missing.** The [inventory](../corpus/real.json) contains explicit placeholders; no field CER or regression budget is invented. `perl maint/reception-corpus.pl` intentionally fails until licensed, independently annotated fixtures are admitted. The ≤25% CER target is unchanged.
 
-The corpus covers automated beacons, not human-keyed QSOs. Synthetic tests
-cover two messages at 150 Hz separation with explicit 20 WPM, independent
-20/25 WPM at 250 Hz separation, unequal levels and added noise, a stronger
-continuous carrier and independently varied mark/gap lengths. These are
-specific cases; field error rates and general resolving power remain unmeasured.
+## Performance and memory
 
-Run `perl maint/reception-corpus.pl` to repeat the corpus measurement.
-For resource bounds, see [practical limits](usage.md#practical-limits) and
-the [Detector reference](../lib/Ham/RTTY/Detector.pm).
+Three-iteration CPU/wall benchmarks at 8/16 kHz and 4096-sample blocks are recorded in [benchmarks](benchmarks.md). At known tones the Perl CPU R is 0.0179 at 8 kHz and 0.0347 at 16 kHz; these are short local synthetic workloads. PDL helps some operations and is slower in others. `auto` selects availability, not speed.
 
-## Remote CI
+The requested 120-second, 48000-Hz `read_wav` workload used 20,758,528 bytes (**19.80 MiB**) peak RSS in a fresh process, excluding fixture generation. Exactly 5,760,000 samples were analyzed. The fixture intentionally cuts a frame at its end, producing an incomplete-frame warning. This measures the requested workload, not every possible option combination.
 
-[Tests run 40187441836](https://github.com/gipidevdor/ham-rtty/actions/runs/40187441836)
-completed successfully on `85eb8f3`: six ordinary Perl combinations, five PDL
-configurations and one author/distribution job. The latter measured coverage,
-validated the archive and ran isolated installation, the installed CLI and
-examples. See the [raw verification summary](current-results.json) for job
-names, outcomes and coverage counts.
+## Security and release limits
 
-[Security run 40187441825](https://github.com/gipidevdor/ham-rtty/actions/runs/40187441825)
-completed with failure on that same revision. Secret-history scanning, unsafe
-Perl construct checks and workflow checks passed; the dependency audit and
-aggregate security gate failed. The later interface working tree passed the
-local suite above; no separate remote run is recorded for that update.
+The installed audit reports 2 matches and the declared audit 38, no scanner errors; both exit 1. Each advisory has a recorded triage assessment and upstream references. The development URI minimum was raised to 5.36 to resolve one declared match. No advisory exclusion hides remaining matches. Legacy compatible interpreters must be patched; compatibility does not certify deployment safety. See [security CI](security-ci.md).
 
-## Security status
+The copied 12-job workflow structure covers Linux, macOS ARM64, macOS Intel, Windows, minimum/current Perl and five PDL configurations. **Hosted CI has not run for this repository.** Static minimum-version analysis and local 5.44 tests do not establish successful runtime behavior on all other versions/platforms.
 
-The 2026-10-25 remote audit used CPAN::Audit 20261013.002 and CPANSA::DB
-20261018.001. It reported two installed-environment matches (File::Temp and
-Perl) and 38 declared-constraint matches, with no scanner errors. Both gates
-exited nonzero. These are scanner matches, not counts of confirmed Ham::RTTY
-vulnerabilities. The declared audit covers compatibility constraints, including
-historical releases; it is distinct from auditing installed versions.
-
-The [raw verification summary](current-results.json) retains advisory IDs by
-distribution, scope metadata, artifact hashes and job outcomes. The linked
-Security run supplies the original CI artifacts subject to retention. No
-local dependency, secret or workflow scan was repeated for this record, and
-advisory applicability remains unresolved. See
-[security CI](security-ci.md#remote-results-2026-10-25).
-
-## Historical records
-
-[Verification history](verification-history.md) retains earlier suite counts,
-coverage percentages, packaging results, CI runs and security observations.
-[Benchmark history](benchmark-history.md) retains older timings. Those records
-are dated and tied to their source revisions.
+Real-recording acceptance and a clean dependency gate remain mandatory. This candidate must not be labelled a verified 1.0 or uploaded to CPAN as release-qualified until those gates and the hosted matrix pass. See the [release checklist](releasing.md) and [standards/provenance](standards.md).

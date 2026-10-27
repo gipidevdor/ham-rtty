@@ -17,6 +17,7 @@ corpus/real/LICENSES.md
 docs/README.md
 docs/architecture.md
 docs/benchmarks.md
+docs/coverage-results.json
 docs/dependency-audit.md
 docs/installing.md
 docs/performance-results.json
@@ -25,6 +26,7 @@ docs/security-audit-results.json
 docs/security-ci.md
 docs/standards.md
 docs/usage.md
+docs/verification-results.json
 docs/verification.md
 examples/README.md
 examples/midi.pl

@@ -1,11 +1,8 @@
 Revision history for Ham-RTTY
 
-0.001  2026-10-25
-    - Initial release for ITU-R M.1677-1 Morse symbols and operational signals.
-    - Control Farnsworth timing and produce timed or sample-based events.
-    - Generate tones, PCM WAV audio and standard MIDI files.
-    - Use library and command-line interfaces for files, bytes and sample streams.
-    - Audio reception is experimental, with multichannel decoding and mark SNR.
-    - Include structured errors, diagnostics, POD references and runnable examples.
-    - Require Perl 5.20 or later; PDL is an optional numerical backend.
-    - Publish complete POD and Markdown docs in a Perl-themed GitHub Pages site.
+0.01  2026-10-27
+    - Add ITU ITA2 and US tables, FIGS/LTRS state and unshift-on-space.
+    - Add start-stop events, continuous-phase AFSK and incremental reception.
+    - Add protected WAV/MIDI files, RTTY CLI and optional PDL projections.
+    - Adapt documentation site, CI and release tooling from Ham-CW.
+    - Keep unverified release gates explicit; real recordings remain missing.

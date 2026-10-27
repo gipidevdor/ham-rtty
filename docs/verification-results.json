@@ -1,0 +1,73 @@
+{
+  "date": "2026-10-27",
+  "production_revision": "fc8fbd500859a97ae9cdf7e0dfc6d0446fd5d0ce",
+  "environment": {
+    "perl": "5.44.0",
+    "pdl": "2.106",
+    "platform": "macOS ARM64 / Apple M4"
+  },
+  "ordinary_tests": {
+    "command": "HARNESS_PERL_SWITCHES='-Mwarnings=FATAL,all' make test",
+    "files": 17,
+    "assertions": 1796,
+    "exit_status": 0,
+    "wall_seconds": 38
+  },
+  "author_tests": {
+    "command": "PATH=/tmp/rtty-spelling-env/bin:$PATH prove -lr xt",
+    "files": 12,
+    "assertions": 630,
+    "exit_status": 0,
+    "wall_seconds": 16
+  },
+  "coverage": {
+    "statement": {
+      "covered": 1696,
+      "error": 1,
+      "percentage": 99.9410724808486,
+      "total": 1697
+    },
+    "branch": {
+      "covered": 582,
+      "error": 14,
+      "percentage": 97.6510067114094,
+      "total": 596,
+      "uncoverable": 0
+    },
+    "per_module_gate_exit_status": 0,
+    "raw": "coverage-results.json"
+  },
+  "security": {
+    "installed_matches": 2,
+    "declared_matches": 38,
+    "dependency_audit_exit_status": 1,
+    "actionlint": "1.7.12: pass",
+    "zizmor": "1.31.1 offline auditor persona: no findings, no suppressions",
+    "gitleaks": "8.30.1: no leaks in six pre-quality commits and source scan; final history to be scanned separately",
+    "unsafe_construct_policies": "four passed"
+  },
+  "site": {
+    "html_pages": 38,
+    "local_links_and_anchors_checked": 1735,
+    "css": "byte-identical to Ham::CW f9a1dac, including original attribution",
+    "visual_review": "local browser inspection"
+  },
+  "open_gates": [
+    "four reviewed real RTTY fixtures and CER budgets missing",
+    "dependency audit remains nonzero despite triage",
+    "hosted cross-platform and minimum-Perl runtime matrix not executed"
+  ],
+  "release_qualified": false,
+  "distribution": {
+    "distcheck_exit_status": 0,
+    "disttest": {
+      "files": 17,
+      "assertions": 1796,
+      "exit_status": 0
+    },
+    "archive_contract_exit_status": 0,
+    "isolated_installation_exit_status": 0,
+    "installed_cli_and_examples": "PASS",
+    "scope": "Candidate with identical production code; final documentation-only archive is rebuilt and checked again."
+  }
+}
