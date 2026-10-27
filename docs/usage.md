@@ -432,6 +432,18 @@ values can differ slightly, including one PCM unit near a rounding boundary.
 Use `perl maint/benchmark.pl --help` and `perl maint/benchmark-platforms.pl --help`
 to measure your own workload.
 
+## Memory-conscious operation
+
+Use the default `backend => 'perl'` with `read_wav`, `write_wav` and
+`stream_samples` to keep whole PCM arrays out of file/block workflows.
+The receiver handles large supplied blocks in bounded pieces and keeps only
+the first half second for tone acquisition. Optional PDL searches also bound
+their transient projection matrices. File reception rejects declared history
+budgets before reading PCM data. Existing byte/frame/run/sample ceilings remain
+in force; public collected-array and byte-string methods retain their documented
+behavior. See the [paired RAM measurements](benchmarks.md#bounded-reception-and-recommended-defaults)
+for the observed costs and throughput tradeoff.
+
 ## Practical limits
 
 WAV input supports mono/stereo PCM 8/16/24-bit; output is mono. Stereo `mix`

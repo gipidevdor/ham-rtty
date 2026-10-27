@@ -88,6 +88,8 @@ for my $warning (@{$result->warnings}) {
 }
 ```
 
+For long audio, use the [memory-conscious file and streaming paths](docs/usage.md#memory-conscious-operation).
+
 More recipes: [task guide](docs/usage.md#library-recipes) and
 [examples](examples/README.md).
 Read the API with `perldoc Ham::RTTY`, or `perldoc lib/Ham/RTTY.pm` from a checkout.

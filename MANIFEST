@@ -30,6 +30,7 @@ docs/benchmarks.md
 docs/coverage-results.json
 docs/dependency-audit.md
 docs/installing.md
+docs/memory-optimization-results.json
 docs/memory-results.json
 docs/performance-results.json
 docs/reception-examples-results.json

@@ -176,3 +176,29 @@ analyzes all 5,760,000 samples and both backends return identical text.
 Production modules are unchanged; the benchmark helper adds explicit backend
 selection and isolated workload modes. Earlier CPU and RAM observations
 remain historical and are not relabelled as new measurements.
+
+## Bounded reception memory, 2026-10-27
+
+Source `084dbc682b3fc29714a0b9e8c0ffcab0424bc770` keeps Perl and streamed
+WAV I/O as defaults, processes caller-sized arrays in bounded pieces, acquires
+from exactly the initial half second and bounds optional PDL projection
+matrices. Header-declared frame/run budgets are checked before PCM reads.
+Public data types, sample rates, snapshots and existing ceilings are preserved.
+
+A paired 30-process comparison reduces median peak RSS for a 960,000-sample
+feed from 85.81 to 48.19 MiB (Perl) and 92.69 to 54.98 MiB (PDL). A supported
+384-kHz/20-baud PDL search stress case falls from 365.11 to 53.52 MiB; its
+median process wall time increases from 2.42 to 3.45 seconds. Ordinary
+120-second WAV reception remains around 20.8/27.6 MiB. Complete results,
+including diagnostics and warnings, agree before/after and across repetitions.
+The [benchmark protocol](benchmarks.md#bounded-reception-and-recommended-defaults)
+and [raw comparison](memory-optimization-results.json) preserve both revisions,
+hashes, ranges and native timer output.
+
+Warnings-fatal ordinary checks pass 20 files / 2,059 assertions; author checks
+pass 12 files / 824 assertions. The original implementation fails 9 of the
+29 added regression assertions; the new implementation passes all 29. Fresh
+coverage reaches 1,750/1,751 statements (99.94%) and 607/622 branches (97.59%),
+with every production module passing its 95%/90% gate. Raw module counts are
+in the comparison report. No coverage points are excluded. Independent
+field transcripts and the dependency audit remain open release gates.
