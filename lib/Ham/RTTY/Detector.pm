@@ -65,8 +65,24 @@ sub state { my ($self) = @_; return $self->{state} }    ## no critic (Subroutine
 
 sub _powers {
     my ($self, $values, $frequencies) = @_;
-    return Ham::RTTY::_Internal::PDL::powers($values, $frequencies, $self->{sample_rate})
-        if $self->{backend} eq 'pdl';
+    if ($self->{backend} eq 'pdl') {
+        return Ham::RTTY::_Internal::PDL::powers($values, $frequencies, $self->{sample_rate})
+            if @{$values} * @{$frequencies} <= 65536;
+
+        # Bound transient projection matrices even for wide, high-rate searches.
+        my $width = int(65536 / @{$values}) || 1;
+        my @projected;
+        for (my $offset = 0; $offset < @{$frequencies}; $offset += $width) {
+            my $end = $offset + $width - 1;
+            $end = $#{$frequencies} if $end > $#{$frequencies};
+            push @projected,
+                @{
+                Ham::RTTY::_Internal::PDL::powers($values, [@{$frequencies}[$offset .. $end]],
+                    $self->{sample_rate})
+                };
+        }
+        return \@projected;
+    }
     my @powers;
     for my $frequency (@{$frequencies}) {
         my $coefficient = 2 * cos(2 * $PI * $frequency / $self->{sample_rate});
@@ -113,6 +129,18 @@ sub _acquire {
 }
 
 sub _process {
+    my ($self, $values, $offset) = @_;
+    $offset //= 0;
+    return $self->_consume($values) if !$offset && @{$values} <= 4096;
+    for (; $offset < @{$values}; $offset += 4096) {
+        my $end = $offset + 4095;
+        $end = $#{$values} if $end > $#{$values};
+        $self->_consume([@{$values}[$offset .. $end]]);
+    }
+    return;
+}
+
+sub _consume {
     my ($self, $values) = @_;
     push @{$self->{buffer}}, @{$values};
     my $n           = $self->{window_size};
@@ -145,22 +173,32 @@ sub _process {
     return;
 }
 
-sub feed {
-    my ($self, $values) = @_;
-    fail('RTTY_E_STATE', 'Detector is finalized') if $self->{state} eq 'FINISHED';
-    samples($values, 1000000);
-    my $new_total = $self->{total} + @{$values};
+sub _preflight {
+    my ($self, $new_total) = @_;
     fail('RTTY_E_RESOURCE', 'Reception exceeds max_frames')
         if int($new_total / $self->{hop}) + 1 > $self->{max_frames};
 
     # Each feature can introduce at most one run. Preflight before mutation.
     fail('RTTY_E_RESOURCE', 'Reception exceeds max_segments')
         if int($new_total / $self->{hop}) + 1 > $self->{max_segments};
+    return;
+}
+
+sub feed {
+    my ($self, $values) = @_;
+    fail('RTTY_E_STATE', 'Detector is finalized') if $self->{state} eq 'FINISHED';
+    samples($values, 1000000);
+    my $new_total = $self->{total} + @{$values};
+    $self->_preflight($new_total);
+    my $consumed = 0;
     if (!$self->{acquired}) {
-        push @{$self->{acquisition}}, @{$values};
-        $self->_acquire if @{$self->{acquisition}} >= int($self->{sample_rate} * 0.5);
+        my $target = int($self->{sample_rate} * 0.5);
+        my $needed = $target - @{$self->{acquisition}};
+        $consumed = @{$values} < $needed ? scalar @{$values} : $needed;
+        push @{$self->{acquisition}}, @{$values}[0 .. $consumed - 1] if $consumed;
+        $self->_acquire if @{$self->{acquisition}} >= $target;
     }
-    else { $self->_process($values) }
+    $self->_process($values, $consumed) if $self->{acquired};
     $self->{total} = $new_total;
     delete $self->{snapshot};
     $self->{state} = 'ACTIVE';
@@ -306,8 +344,14 @@ finish raises C<RTTY_E_STATE>. Windows span approximately 0.65 bit, advancing
 about 1/12 bit. Fixed tone powers use Goertzel in Perl or a broadcast two-tone
 projection in PDL. ATC normalizes independently decaying tone peaks with a
 shared floor. Optional search acquires once from the first half second;
-acquisition buffer is bounded by half a second plus one input block. No full
-raw-audio history is retained.
+acquisition retains only the first half second, independently of incoming
+block boundaries. No full raw-audio history is retained.
+
+Incoming arrays are processed in pieces of at most 4096 samples; the filter
+buffer additionally holds its decision window. The PDL path batches wide
+searches to bound each transient projection matrix to 65,536 cells under the
+supported rate/baud ranges. Samples are neither dropped nor resampled by
+these memory bounds.
 
 =head2 result
 

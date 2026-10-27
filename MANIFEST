@@ -108,6 +108,7 @@ t/22-cli.t
 t/28-file-contracts.t
 t/29-examples.t
 t/30-external-reception.t
+t/31-bounded-reception.t
 t/lib/CorpusMetrics.pm
 t/lib/FaultHandle.pm
 xt/corpus-licenses.t

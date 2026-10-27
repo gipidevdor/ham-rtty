@@ -232,6 +232,7 @@ sub _decode_wav {
     $audio{backend} = $args{backend};
     my $reader   = Ham::RTTY::Audio->new(%audio)->reader($fh);
     my $detector = Ham::RTTY::Detector->new(%args, sample_rate => $reader->{sample_rate});
+    $detector->_preflight($reader->{sample_count});
     while (my $block = $reader->{next}->()) { $detector->feed($block) }
     my $result = $detector->finish;
 
@@ -489,6 +490,10 @@ Detector options except C<sample_rate> apply; rate comes from the header.
 Additional Audio options are stereo (mix default, left, right), C<max_bytes>
 (64000000 default), C<block_samples> (4096 default). Ranges follow
 L<Ham::RTTY::Audio/new>. The reader preserves trailing-RIFF warnings.
+
+The WAV header's sample count is checked against the detector's frame/run
+limits before PCM data is read. Processing remains block-based; retained
+history is subject to the same documented limits as incremental reception.
 
 =head2 decode_wav_bytes
 
