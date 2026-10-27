@@ -55,7 +55,7 @@ sub reset {    ## no critic (Subroutines::ProhibitBuiltinHomonyms)
     $self->{peaks}       = [1e-12, 1e-12];
     $self->{acquisition} = [];
     $self->{acquired}    = !$self->{search};
-    delete $self->{final};
+    delete @{$self}{qw(final snapshot)};
     return $self;
 }
 sub state { my ($self) = @_; return $self->{state} }    ## no critic (Subroutines::ProhibitBuiltinHomonyms)
@@ -159,6 +159,7 @@ sub feed {
     }
     else { $self->_process($values) }
     $self->{total} = $new_total;
+    delete $self->{snapshot};
     $self->{state} = 'ACTIVE';
     return $self;
 }
@@ -191,7 +192,7 @@ sub _snapshot {
     $h->{diagnostics}{frame_samples}    = $self->{hop};
     return Ham::RTTY::Result->new(%{$h});
 }
-sub result { my ($self) = @_; return $self->{final} // $self->_snapshot(0) }
+sub result { my ($self) = @_; return $self->{final} // ($self->{snapshot} //= $self->_snapshot(0)) }
 
 sub finish {
     my ($self) = @_;

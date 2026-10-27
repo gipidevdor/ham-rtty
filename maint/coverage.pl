@@ -29,7 +29,7 @@ find(
 die "No production source modules found\n" unless keys %expected;
 my %observed;
 for my $path ($db->cover->items) {
-    next unless $path =~ m{(?:\A|[\\/])(lib[\\/]Ham[\\/]CW(?:\.pm|[\\/].*\.pm))\z}x;
+    next unless $path =~ m{(?:\A|[\\/])(lib[\\/]Ham[\\/]RTTY(?:\.pm|[\\/].*\.pm))\z}x;
     my $relative = $1;
     $relative =~ tr{\\}{/};
     die "Unexpected production coverage: $path\n" unless $expected{$relative};
@@ -40,13 +40,28 @@ for my $path ($db->cover->items) {
 my @missing = sort grep { !exists $observed{$_} } keys %expected;
 die "Missing production module coverage: @missing\n" if @missing;
 my @files = map { $observed{$_} } sort keys %expected;
-$db->calculate_summary(files => \@files, statement => 1, branch => 1, force => 1);
-my $summary = $db->summary('Total');
-print JSON::PP->new->canonical->pretty->encode($summary);
+my (%modules, @failures);
+for my $relative (sort keys %observed) {
+    $db->calculate_summary(
+        files     => [$observed{$relative}],
+        statement => 1,
+        branch    => 1,
+        force     => 1
+    );
+    my $summary = $db->summary('Total');
+    $modules{$relative} = $summary;
+    for my $gate ([statement => 95], [branch => 90]) {
+        my ($criterion, $minimum) = @{$gate};
+        my $actual = $summary->{$criterion}{percentage};
 
-for my $gate ([statement => 95], [branch => 90]) {
-    my ($criterion, $minimum) = @{$gate};
-    my $actual = $summary->{$criterion}{percentage};
-    die "Missing $criterion coverage\n" unless defined $actual;
-    die "$criterion coverage $actual is below $minimum\n" if $actual < $minimum;
+        # Modules containing no branch points have no branch percentage.
+        next if $criterion eq 'branch' && !defined($actual) && !$summary->{$criterion}{total};
+        push @failures, "$relative: missing $criterion coverage" unless defined $actual;
+        push @failures, "$relative: $criterion coverage $actual is below $minimum"
+            if defined($actual) && $actual < $minimum;
+    }
 }
+$db->calculate_summary(files => \@files, statement => 1, branch => 1, force => 1);
+print JSON::PP->new->canonical->pretty->encode(
+    {modules => \%modules, total => $db->summary('Total')});
+die join("\n", @failures) . "\n" if @failures;

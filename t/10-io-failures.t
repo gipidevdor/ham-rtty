@@ -23,8 +23,11 @@ for my $fault ({binmode => 1}, {seek => 1}, {seek => 2}, {seek => 3}, {seek => 5
     is((ref($@) ? $@->code : "$@"), 'RTTY_E_IO', 'structured failure for reader operation');
 }
 my $partial = handle(bytes => $wave, max_read => 1);
-is_deeply(Ham::RTTY::Audio->new->read($partial)->{samples}, [0, 0.5, -0.5],
-    'short reads are retried');
+is_deeply(
+    Ham::RTTY::Audio->new->read($partial)->{samples},
+    [0, 0.5, -0.5],
+    'short reads are retried'
+);
 my $read_fail = handle(bytes => $wave, fail => {read => 5});
 my $reader    = Ham::RTTY::Audio->new->reader($read_fail);
 eval { $reader->{next}->() };
@@ -38,7 +41,7 @@ my $broken = handle(fail => {print => 2});
 my $writer = Ham::RTTY::Audio->new->writer($broken, sample_count => 1);
 eval { $writer->feed([0]) };
 is((ref($@) ? $@->code : "$@"), 'RTTY_E_IO', 'PCM write failure');
-is($writer->state,              'FAILED',  'irreversible write failure state');
+is($writer->state,              'FAILED',    'irreversible write failure state');
 eval { $writer->feed([]) };
 is((ref($@) ? $@->code : "$@"), 'RTTY_E_STATE', 'cannot feed failed writer');
 eval { $writer->finish };
@@ -48,7 +51,7 @@ my $odd     = Ham::RTTY::Audio->new->writer($padding, sample_count => 1, bits =>
 $odd->feed([0]);
 eval { $odd->finish };
 is((ref($@) ? $@->code : "$@"), 'RTTY_E_IO', 'padding failure');
-is($odd->state,                 'FAILED',  'padding failure state');
+is($odd->state,                 'FAILED',    'padding failure state');
 my $midi = handle(fail => {binmode => 1});
 eval { Ham::RTTY::MIDI->new->write($midi, {unit => 'us', segments => []}) };
 is((ref($@) ? $@->code : "$@"), 'RTTY_E_IO', 'MIDI binary-mode failure');

@@ -64,8 +64,8 @@ Ham::RTTY::Result - a cumulative decoding snapshot with text and diagnostics
     use warnings;
     use Ham::RTTY;
 
-    my $cw = Ham::RTTY->new;
-    my $result = $cw->decode_events($cw->events('SOS'), baud => 20);
+    my $rtty = Ham::RTTY->new;
+    my $result = $rtty->decode_events($rtty->events('SOS'), baud => 45.45);
     print $result->text, "\n";
     for my $warning (@{$result->warnings}) {
         warn "$warning->{code}: $warning->{message}\n";
@@ -127,9 +127,8 @@ C<binmode STDOUT, ':encoding(UTF-8)'>.
 
     my $notation = $result->notation;
 
-Returns dot/dash groups with spaces between letters and C</> between words.
-An implausible event mark may appear as C<?> for diagnostic purposes;
-therefore this field is not always valid input for strict textual decoding.
+Returns five-bit numeric codes and shift markers when supplied by a producer.
+This field can be empty for audio/event decoding.
 
 =head2 events
 
@@ -151,8 +150,8 @@ measurement. Event-only decoding has no tone estimate.
 
     my $baud = $result->baud;
 
-Returns character speed, configured or estimated, or C<undef> if unavailable.
-This is not effective Farnsworth speed. See diagnostics for timing source.
+Returns baud rate, configured, or C<undef> if unavailable.
+This is not an automatic speed estimate. See diagnostics for timing source.
 
 =head2 complete
 
@@ -171,35 +170,13 @@ Returns a deep copy of an array of code/message hashes. See L</WARNINGS>.
 
     my $details = $result->diagnostics;
 
-Returns a deep copy of the diagnostics hash. Fields depend on how far
-analysis progressed and can be absent. Current producer fields are:
-
-=over 4
-
-=item * C<dot_us>: configured/estimated dot duration in microseconds.
-
-=item * C<timing_source>: C<configured> or C<estimated> for character timing.
-
-=item * C<contrast>: keyed-envelope separation, C<(peak - floor) / peak>.
-
-=item * C<purity>: projected tone energy divided by windowed energy of the filtered channel. A matched, well-resolved pure Hann-windowed tone is about 0.67; this is not a probability or a scale normalized to 1.
-
-=item * C<frame_samples>: full detector frame length in samples.
-
-=item * C<analyzed_samples>: total accepted input sample count. In a preview, a partial frame can still be pending and excluded from spectral analysis.
-
-=item * C<filter_bandwidth_hz>: configured full half-power width of one biquad section. The cascade has a narrower response; this field is not station separation or frequency accuracy.
-
-=item * C<filter_sections>: number of cascaded band-pass biquads per candidate (currently 2).
-
-=item * C<mark_snr_db>: configured minimum mean mark/local-noise power ratio in dB, before glitch removal. This is not calibrated radio SNR.
-
-=item * C<frequency_grid_step_hz>: search candidate step, or 0 for a configured tone. This is not spectral resolution or an error bound.
-
-=back
-
-Rejected input may contain only the diagnostic that explained rejection.
-Applications should check field existence rather than assuming a fixed set.
+Returns a deep copy. Fields depend on the producer: configured_bit_period
+(seconds), measured_bit_period (median observed one-bit run duration in seconds,
+undef without evidence), mark_space_level_ratio (accumulated energy ratio,
+undef without SPACE energy), framing_error_count, analyzed_samples and
+frame_samples. Ratios are not confidence probabilities. Configured baud is
+not a measured speed. Check field presence; event-only decoding has no audio
+measurements.
 
 =head2 has_text
 
@@ -226,66 +203,11 @@ with a suitable encoder such as JSON::PP.
 
 =head1 WARNINGS
 
-Warnings describe reception evidence and are separate from thrown errors:
-
-=over 4
-
-=item C<RTTY_W_NO_SIGNAL>
-
-No usable frames or insufficient energy. Check the recording, input rate,
-selected channel and tone/search band.
-
-=item C<RTTY_W_NOT_CW>
-
-Envelope contrast, spectral purity or mark count did not meet detector
-criteria. Noise, an unkeyed tone and very short messages can produce this.
-Changing thresholds does not establish that the input is Morse.
-
-=item C<RTTY_W_NO_TIMING>
-
-No usable mark timing was found. Check event units and supply WPM if known.
-
-=item C<RTTY_W_TIMING_AMBIGUOUS>
-
-One mark length cannot distinguish dots from dashes. Supply character WPM.
-The event decoder can retain a provisional interpretation; the audio
-detector suppresses text for this ambiguity.
-
-=item C<RTTY_W_UNRELIABLE>
-
-The detector suppressed text because automatic mark timing was ambiguous.
-Review the accompanying timing warning and provide a speed hint if known.
-
-=item C<RTTY_W_TIMING>
-
-A mark is outside timing tolerance. Text can contain a replacement character.
-
-=item C<RTTY_W_SYMBOL>
-
-An event-derived group has no unambiguous symbol. That group becomes U+FFFD.
-
-=item C<RTTY_W_SPACING_AMBIGUOUS>
-
-Repeated internal long gaps may indicate unknown Farnsworth spacing, or
-C<effective_baud> exceeds estimated character speed and ordinary spacing was
-used. Read the message for the applicable case; supply correct timing hints.
-Leading/trailing silence alone does not produce this warning.
-
-=item C<RTTY_W_WAV_TRAILING>
-
-Bytes after the RIFF boundary were ignored. Audio within RIFF was processed;
-check the file's source if the extra data was unexpected. Raw Audio readers
-expose this in metadata; facade reception propagates it into the Result.
-
-=item C<RTTY_W_INTERFERENCE>
-
-Carrier intervals, short implausible marks or unsupported outer activity
-were excluded during audio reception. It does not certify that every
-remaining group is CW; damaged legitimate characters may also have been
-excluded. Symbolic/event decoding does not apply these audio-specific
-exclusions.
-
-=back
+RTTY_W_NO_SIGNAL means insufficient tone energy. RTTY_W_FRAMING reports a
+SPACE stop or incomplete frame and resynchronisation. RTTY_W_SYMBOL reports
+unsupported input substitution or an unassigned received combination.
+RTTY_W_WAV_TRAILING means bytes beyond the RIFF boundary were ignored.
+No warnings is not proof of correct radio reception.
 
 =head1 SEE ALSO
 

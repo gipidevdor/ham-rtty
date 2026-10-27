@@ -36,15 +36,15 @@ integer('block',      $block_size, 1,    1000000);
 integer('repeat',     $repeat,     1,    100);
 integer('iterations', $iterations, 1,    10000);
 integer('snapshots',  $snapshots,  1,    1000000);
-my $frequency = $rate > 1300 ? 650 : $rate / 4;
-my $cw        = Ham::RTTY->new(sample_rate => $rate, frequency => $frequency);
+my $frequency = 2125;
+my $rtty      = Ham::RTTY->new(sample_rate => $rate, mark => $frequency);
 my $text      = join ' ', ('CQ CQ DE TESTCALL') x $repeat;
-my $events    = $cw->events($text);
+my $events    = $rtty->events($text);
 my $samples =
-    Ham::RTTY::Generator->new(sample_rate => $rate, frequency => $frequency)->generate($events);
+    Ham::RTTY::Generator->new(sample_rate => $rate, mark => $frequency)->generate($events);
 my $wav = '';
 open my $out, '>:raw', \$wav or croak $!;
-$cw->generate_wav($text, $out);
+$rtty->generate_wav($text, $out);
 close $out or croak $!;
 my @backends      = ('perl');
 my $pdl_available = eval { require Ham::RTTY::_Internal::PDL; 1 };
@@ -52,8 +52,8 @@ push @backends, 'pdl' if $pdl_available;
 my @results;
 
 for my $backend (@backends) {
-    my %detector_options = (sample_rate => $rate, backend => $backend);
-    $detector_options{frequency} = $frequency if $known;
+    my %detector_options = (sample_rate => $rate, backend => $backend, search => $known ? 0 : 1);
+    $detector_options{mark} = $frequency if $known;
     my $ready = Ham::RTTY::Detector->new(%detector_options);
     my $feed  = sub { feed_blocks($_[0], $samples, $block_size); };
     $feed->($ready);
@@ -62,7 +62,7 @@ for my $backend (@backends) {
         generate => sub {
             Ham::RTTY::Generator->new(
                 sample_rate => $rate,
-                frequency   => $frequency,
+                mark        => $frequency,
                 backend     => $backend
             )->generate($events);
         },
@@ -73,17 +73,17 @@ for my $backend (@backends) {
         },
         wav_generate => sub {
             open my $handle, '>:raw', \my $bytes or croak $!;
-            Ham::RTTY->new(sample_rate => $rate, frequency => $frequency, backend => $backend)
+            Ham::RTTY->new(sample_rate => $rate, mark => $frequency, backend => $backend)
                 ->generate_wav($text, $handle);
             close $handle or croak $!;
         },
         wav_decode => sub {
             open my $handle, '<:raw', \$wav or croak $!;
             Ham::RTTY->new(backend => $backend)
-                ->decode_wav($handle, $known ? (frequency => $frequency) : ());
+                ->decode_wav($handle, $known ? (mark => $frequency) : (search => 1));
             close $handle or croak $!;
         },
-        snapshot_rebuild => sub { $ready->_analyze(0); },
+        snapshot_rebuild => sub { $ready->_snapshot(0); },
         snapshots        => sub { $ready->result for 1 .. $snapshots; },
     );
     for my $operation (sort keys %cases) {

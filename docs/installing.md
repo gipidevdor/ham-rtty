@@ -32,10 +32,10 @@ repository root. The CPAN distribution is `Ham-RTTY`; the Perl package is `Ham::
 
 ```sh
 ham-rtty --version
-ham-rtty encode "SOS"
+ham-rtty encode "CQ"
 perldoc Ham::RTTY
 ```
 
-The conversion prints `... --- ...`. If the command is not found, check that
+The conversion prints `[LTRS] 01110 10111`. If the command is not found, check that
 Perl's installation `bin` directory is on `PATH`. For a checkout, use
 `perl -Ilib bin/ham-rtty --version` from the repository root.

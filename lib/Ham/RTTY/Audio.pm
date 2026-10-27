@@ -4,10 +4,10 @@ use strict;
 use warnings;
 use Ham::RTTY::_Internal::WavWriter;
 use Ham::RTTY::_Internal::IO       qw(read_exact write_bytes with_file);
-use Scalar::Util                 qw(openhandle);
+use Scalar::Util                   qw(openhandle);
 use Ham::RTTY::_Internal::Validate qw(fail integer options samples named_arguments);
 use Ham::RTTY::_Internal::Backend;
-our $VERSION = '0.001';
+our $VERSION = '0.01';
 
 sub new {
     my ($class, @pairs) = @_;
@@ -262,15 +262,15 @@ Ham::RTTY::Audio - read and write bounded PCM WAV samples
     use Ham::RTTY;
     use Ham::RTTY::Audio;
 
-    my $cw = Ham::RTTY->new(sample_rate => 8000, frequency => 650);
+    my $rtty = Ham::RTTY->new(sample_rate => 8000);
     my $audio = Ham::RTTY::Audio->new;
-    $audio->write_file('raw-demo.wav', $cw->samples('SOS'),
+    $audio->write_file('raw-demo.wav', $rtty->samples('SOS'),
         sample_rate => 8000);
     my $recording = $audio->read_file('raw-demo.wav');
     print scalar(@{$recording->{samples}}), " samples\n";
 
 The destination must be new, or use C<overwrite =E<gt> 1> explicitly.
-No Morse decoding or sound playback occurs in this class.
+No RTTY decoding or sound playback occurs in this class.
 
 =head1 FORMATS
 

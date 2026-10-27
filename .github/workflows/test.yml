@@ -109,6 +109,8 @@ jobs:
       - name: Install author tools
         run: |
           cpanm --notest --installdeps --with-develop .
+      - name: Install spelling checker
+        run: pip install codespell==2.4.1
       - name: Build and check metadata, POD and style
         run: |
           perl Makefile.PL
@@ -123,7 +125,11 @@ jobs:
           HARNESS_PERL_SWITCHES: -MDevel::Cover=-db,${{ runner.temp }}/ham-rtty-cover,-blib,0,-coverage,statement,branch,condition,-select,lib/Ham,-ignore,^t/
         run: prove -j2 -lr t
       - name: Check measured coverage
-        run: perl maint/coverage.pl '${{ runner.temp }}/ham-rtty-cover'
+        env:
+          COVERAGE_DIRECTORY: ${{ runner.temp }}/ham-rtty-cover
+        run: perl maint/coverage.pl "$COVERAGE_DIRECTORY"
+      - name: Real RTTY recording acceptance
+        run: perl maint/reception-corpus.pl
       - name: Test release archive
         run: |
           make distcheck

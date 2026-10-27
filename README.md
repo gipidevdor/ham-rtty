@@ -1,114 +1,53 @@
 # Ham::RTTY
 
-Ham::RTTY converts text to Morse, generates WAV and MIDI files, and decodes
-recorded CW. Use it through the Perl API or the `ham-rtty` command.
+RTTY, from text to signal and back.
 
-Requires Perl 5.20 or later. The default backend uses core modules; PDL is
-optional. Audio reception is experimental.
+[Usage](docs/usage.md) · [API](lib/Ham/RTTY.pm) · [Verification](docs/verification.md) · [Contributing](CONTRIBUTING.md)
 
-[Online documentation](https://gipidevdor.github.io/ham-rtty/) ·
-[Guides](docs/README.md) · [Examples](examples/README.md) ·
-[API reference](lib/Ham/RTTY.pm) · [Contributing](CONTRIBUTING.md)
+Encode ITA2 text, inspect start-stop events, generate continuous-phase AFSK,
+and receive PCM WAV. Perl 5.20 or later; core runtime dependencies only.
+PDL 2.081 or later is optional. Author: Giacomo Picchiarelli.
 
-## Start here
-
-Run from a checkout without installing:
-
-```sh
-perl -Ilib bin/ham-rtty encode "CQ TEST"
-perl -Ilib bin/ham-rtty decode -- "-.-. --.- / - . ... -"
-```
-
-These commands convert `CQ TEST` to Morse and back. Spaces separate letters;
-`/` separates words. Use `--` before Morse that starts with a dash.
-
-To install from a checkout or extracted distribution:
+This is a 0.01 development candidate. It is **not release-qualified** while
+any required gate in [verification](docs/verification.md) remains open.
 
 ```sh
 perl Makefile.PL
 make
 make test
-make install
+perl -Ilib bin/ham-rtty encode "CQ 123"
+perl -Ilib bin/ham-rtty wav --output cq.wav "CQ TEST"
+perl -Ilib bin/ham-rtty receive --baud 45.45 cq.wav
 ```
-
-Builds require ExtUtils::MakeMaker 7.22 or later and your Perl's make program.
-See [installation](docs/installing.md) for user-owned paths and upgrades.
-Once installed, run `ham-rtty` directly.
-
-## Make a practice recording
-
-```sh
-ham-rtty wav --wpm 20 --effective-wpm 12 --output practice.wav "CQ TEST"
-ham-rtty receive --frequency 700 --wpm 20 --effective-wpm 12 practice.wav
-```
-
-This creates a 20 WPM recording with 12 WPM Farnsworth spacing, then reads it
-with matching tone and speed hints. Add `--overwrite` to replace an existing file.
-
-| You want to… | Command |
-| --- | --- |
-| Convert text | `ham-rtty encode "CQ TEST"` |
-| Read Morse | `ham-rtty decode -- "... --- ..."` |
-| Inspect timing | `ham-rtty events "SOS"` |
-| Export MIDI | `ham-rtty midi --output practice.mid "CQ TEST"` |
-| Inspect a recording and its warnings | `ham-rtty receive --json recording.wav` |
-| Find options for one task | `ham-rtty help receive` |
-
-Text commands accept `--input FILE` or stdin. Use `--output FILE` to save
-text or JSON. WAV and MIDI require an explicit output; `--output -` selects
-binary stdout. Prefer named binary files in Windows shells.
-
-Use `ham-rtty help COMMAND` for options and examples, or the
-[recovery guide](docs/usage.md#when-you-need-help) for errors and reception warnings.
-
-## Use it in Perl
-
-Save as `demo.pl` and run `perl -Ilib demo.pl` from this checkout,
-or `perl demo.pl` after installation:
 
 ```perl
-use 5.020;
 use strict;
 use warnings;
 use Ham::RTTY;
-
-my $cw = Ham::RTTY->new(wpm => 20, frequency => 700);
-print $cw->encode('SOS'), "\n";
-print $cw->decode('... --- ...'), "\n";
-
-my $result = $cw->decode_wav_bytes(
-    $cw->wav_bytes('SOS'), frequency => 700, wpm => 20);
+my $rtty = Ham::RTTY->new(baud => 50);
+my $bytes = $rtty->wav_bytes('CQ 123');
+my $result = $rtty->decode_wav_bytes($bytes, baud => 50);
 print $result->text, "\n";
-for my $warning (@{$result->warnings}) {
-    warn "$warning->{code}: $warning->{message}\n";
-}
+warn "$_->{code}: $_->{message}\n" for @{$result->warnings};
 ```
 
-More recipes: [task guide](docs/usage.md#library-recipes) and
-[examples](examples/README.md). Read the API with `perldoc Ham::RTTY`, or
-`perldoc lib/Ham/RTTY.pm` from a checkout.
+| Operation | Entry point |
+| --- | --- |
+| Text and shift codes | `encode`, `decode` |
+| Framed bits and exact timing | `bits`, `events`, `decode_events` |
+| AFSK samples | `samples`, `stream_samples`, `decode_samples` |
+| PCM WAV | `wav_bytes`, `write_wav`, `read_wav` |
+| Debug MIDI | `midi_bytes`, `write_midi` |
 
-## Know what to expect
+Defaults: 45.45 baud, 2125 Hz MARK, +170 Hz SPACE, 1.5 stop bits, ITU ITA2,
+USOS enabled, 16 kHz mono, amplitude 0.8. Reception uses configured baud;
+measured timing is diagnostic only. Stop bits, tones and polarity are explicit.
+No simultaneous stations, automatic baud/shift identification, equalisation,
+diversity or frequency-transition shaping. No playback or radio control.
 
-Morse symbols follow ITU-R M.1677-1. Write prosigns as tokens such as `<AR>`
-and quote them in the shell. The [symbol table](docs/usage.md#symbol-policy)
-lists the accepted characters and tokens.
+Output paths are protected unless `overwrite => 1` or `--overwrite` explicitly
+requests replacement. Replacement uses a temporary sibling and rename.
 
-The receiver can separate CW signals on distinct tones. Interference, fading
-and uncertain timing can still produce partial or incorrect text. Check its
-warnings; `--strict` returns a nonzero status when warnings occur. See
-[reception limits](docs/usage.md#practical-limits) and [test results](docs/verification.md).
-
-Playback, microphone capture and radio or MIDI device control are left to the
-calling application.
-
-## Explore the project
-
-[Documentation](docs/README.md) · [Contributing](CONTRIBUTING.md) ·
-[Release procedure](docs/releasing.md) · [Security reports](SECURITY.md)
-
-[Security audit](docs/security-ci.md): Perl/File::Temp advisories and older dependency versions remain under review.
-
-Copyright © 2026 Giacomo Picchiarelli. Project code and original material use
-[Artistic License 2.0](LICENSE). Third-party audio retains its CC0 or CC BY-SA
-3.0 terms; see [NOTICE](NOTICE) and [recording licenses](corpus/real/LICENSES.md).
+See [architecture](docs/architecture.md), [benchmarks](docs/benchmarks.md),
+[standards and provenance](docs/standards.md), [security CI](docs/security-ci.md) and [recording provenance](corpus/real/LICENSES.md).
+Code and documentation use [Artistic 2.0](LICENSE); see [NOTICE](NOTICE).

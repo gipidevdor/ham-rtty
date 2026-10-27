@@ -4,9 +4,9 @@ use strict;
 use warnings;
 use Carp qw(croak);
 use Exporter 'import';
-use File::Basename               qw(dirname);
-use File::Temp                   qw(tempfile);
-use Fcntl                        qw(O_RDONLY O_WRONLY O_CREAT O_EXCL);
+use File::Basename                 qw(dirname);
+use File::Temp                     qw(tempfile);
+use Fcntl                          qw(O_RDONLY O_WRONLY O_CREAT O_EXCL);
 use Ham::RTTY::_Internal::Validate qw(fail);
 our @EXPORT_OK = qw(read_exact write_bytes with_file);
 
@@ -62,7 +62,8 @@ sub with_file {
     if ($writing && $overwrite) {
         _replacement_mode($path);
         my $opened = eval {
-            ($handle, $temporary) = tempfile('.ham-rtty-XXXXXX', DIR => dirname($path), UNLINK => 0);
+            ($handle, $temporary) =
+                tempfile('.ham-rtty-XXXXXX', DIR => dirname($path), UNLINK => 0);
             1;
         };
         _file_error($path, 'open temporary output for', "$@") unless $opened;

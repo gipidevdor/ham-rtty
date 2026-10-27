@@ -1,0 +1,2368 @@
+{
+  "date": "2026-10-27",
+  "reports": [
+    {
+      "mode": "installed",
+      "metadata": {
+        "args": [],
+        "command": "installed",
+        "cpan_audit": {
+          "db": "20261018.001",
+          "version": "20261013.002"
+        },
+        "total_advisories": 2
+      },
+      "errors": [],
+      "exit_status": 1,
+      "artifact_sha256": "5473a59ad23f40d86ab82e29c47979a27d48d8ed9623235bda8f0384384d01df",
+      "advisories": [
+        {
+          "affected_versions": [
+            ">0"
+          ],
+          "cves": [
+            "CVE-2011-4116"
+          ],
+          "description": "_is_safe in the File::Temp module for Perl does not properly handle symlinks.\n",
+          "distribution": "File-Temp",
+          "fixed_versions": [],
+          "id": "CPANSA-File-Temp-2011-4116",
+          "references": [
+            "http://www.openwall.com/lists/oss-security/2011/11/04/2",
+            "https://rt.cpan.org/Public/Bug/Display.html?id=69106",
+            "https://github.com/Perl-Toolchain-Gang/File-Temp/issues/14",
+            "http://www.openwall.com/lists/oss-security/2011/11/04/4",
+            "https://seclists.org/oss-sec/2011/q4/238"
+          ],
+          "reported": "2020-01-31",
+          "severity": "high",
+          "queried_version": "==0.2312",
+          "scopes": [],
+          "triage_status": "conditional dependency applicability; no exclusion",
+          "static_evidence": "Source uses tempfile with exclusive creation; it never changes File::Temp safe_level. Installed File::Temp invokes _is_safe under MEDIUM/HIGH; caller-global configuration may select those modes. The upstream symlink issue remains open; no fixed release is listed in this database."
+        },
+        {
+          "affected_versions": [
+            ">0"
+          ],
+          "cves": [
+            "CVE-2026-15534"
+          ],
+          "description": "Perl versions through 5.45.1 have out-of-bounds heap reads and writes during regular expression matching via an undersized superlinear cache in S_regmatch.\n\nThe regex engine's superlinear cache holds one bit per subject position for each participating WHILEM node, so the bit count is the subject length plus one times the number of nodes. Nothing checks that product for positive overflow of the signed 32-bit count: a 286331153 byte subject matched against a pattern with 15 participating nodes stores the count as 14, leaving a two byte cache. The cache is then indexed from the real match position and node number, so reads go past the end of the allocation, and on failure CACHEsayNO sets a bit past it.\n\nA caller that matches an attacker controlled subject of this size against a pattern of this shape can crash the process or corrupt heap memory.",
+          "distribution": "perl",
+          "fixed_versions": [],
+          "id": "CPANSA-perl-2026-15534",
+          "references": [
+            "https://github.com/Perl/perl5/commit/54cf3d44cbbedd17d774e9a37921963e8fd5d0cb.patch",
+            "https://github.com/Perl/perl5/commit/568e6fd238867bb9e99fa3f47cba3169009239e0.patch",
+            "http://www.openwall.com/lists/oss-security/2026/08/09/12",
+            "http://www.openwall.com/lists/oss-security/2026/08/09/13"
+          ],
+          "reported": "2026-08-09",
+          "severity": "medium",
+          "queried_version": "==5.044000",
+          "scopes": [],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        }
+      ]
+    },
+    {
+      "mode": "declared",
+      "metadata": {
+        "args": [
+          "MYMETA.json"
+        ],
+        "command": "declared",
+        "cpan_audit": {
+          "db": "20261018.001",
+          "version": "20261013.002"
+        },
+        "scopes": [
+          {
+            "phase": "build",
+            "ranges": {
+              "ExtUtils-MakeMaker": "7.22",
+              "perl": "5.020"
+            },
+            "relation": "requires",
+            "unmapped_modules": []
+          },
+          {
+            "phase": "configure",
+            "ranges": {
+              "ExtUtils-MakeMaker": "7.22",
+              "perl": "5.020"
+            },
+            "relation": "requires",
+            "unmapped_modules": []
+          },
+          {
+            "phase": "develop",
+            "ranges": {
+              "Archive-Tar": "3.10",
+              "Perl-Tidy": "20260826",
+              "URI": "5.36",
+              "perl": "5.020",
+              "podlators": "v6.1.1"
+            },
+            "relation": "requires",
+            "unmapped_modules": [
+              "CPAN::Audit",
+              "CPAN::Meta",
+              "Devel::Cover",
+              "ExtUtils::Manifest",
+              "HTML::Tree",
+              "Markdown::Perl",
+              "Module::CPANTS::Analyse",
+              "PPI",
+              "Perl::Critic",
+              "Perl::MinimumVersion",
+              "Pod::Simple",
+              "Test::CPAN::Changes",
+              "Test::CPAN::Meta",
+              "Test::Kwalitee",
+              "Test::Pod"
+            ]
+          },
+          {
+            "phase": "runtime",
+            "ranges": {
+              "perl": "5.020"
+            },
+            "relation": "recommends",
+            "unmapped_modules": [
+              "PDL"
+            ]
+          },
+          {
+            "phase": "runtime",
+            "ranges": {
+              "Encode": "0",
+              "File-Temp": "0",
+              "Storable": "0",
+              "perl": "5.020"
+            },
+            "relation": "requires",
+            "unmapped_modules": [
+              "Carp",
+              "Exporter",
+              "Getopt::Long",
+              "IO::Handle",
+              "JSON::PP",
+              "Scalar::Util",
+              "Text::Wrap"
+            ]
+          },
+          {
+            "phase": "test",
+            "ranges": {
+              "Digest-SHA": "5.96",
+              "File-Temp": "0",
+              "PathTools": "0",
+              "perl": "5.020"
+            },
+            "relation": "requires",
+            "unmapped_modules": [
+              "Config",
+              "JSON::PP",
+              "Test::More"
+            ]
+          }
+        ],
+        "total_advisories": 38
+      },
+      "errors": [],
+      "exit_status": 1,
+      "artifact_sha256": "1844d7c43339602ff07d9a86b604cffe24b3840a7ac98d1e9a8c3948a2db3426",
+      "advisories": [
+        {
+          "affected_versions": [
+            ">=3.05,<=3.11"
+          ],
+          "cves": [
+            "CVE-2021-36770"
+          ],
+          "description": "Encode.pm, as distributed in Perl through 5.34.0, allows local users to gain privileges via a Trojan horse Encode::ConfigLocal library (in the current working directory) that preempts dynamic module loading. Exploitation requires an unusual configuration, and certain 2021 versions of Encode.pm (3.05 through 3.11). This issue occurs because the || operator evaluates @INC in a scalar context, and thus @INC has only an integer value.\n",
+          "distribution": "Encode",
+          "fixed_versions": [
+            ">3.11"
+          ],
+          "id": "CPANSA-Encode-2021-01",
+          "references": [
+            "https://github.com/Perl/perl5/commit/c1a937fef07c061600a0078f4cb53fe9c2136bb9",
+            "https://github.com/dankogai/p5-encode/commit/527e482dc70b035d0df4f8c77a00d81f8d775c74",
+            "https://metacpan.org/dist/Encode/changes",
+            "https://news.cpanel.com/unscheduled-tsr-10-august-2021/",
+            "https://security.netapp.com/advisory/ntap-20210909-0003/",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/5NDGQSGMEZ75FJGBKNYC75OTO7TF7XHB/",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/6KOZYD7BH2DNIAEZ2ZL4PJ4QUVQI6Y33/",
+            "https://security-tracker.debian.org/tracker/CVE-2021-36770"
+          ],
+          "reported": "2021-07-17",
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "0"
+            }
+          ],
+          "triage_status": "legacy supported-core risk; needs patched deployment",
+          "static_evidence": "CLI calls strict UTF-8 Encode::decode on external bytes. Core-only Perl 5.20 support permits older Encode releases; installed-current results and declared ranges are different claims. No arbitrary module name is accepted by the CLI, but that does not clear all decoder advisories."
+        },
+        {
+          "affected_versions": [
+            "<2.44"
+          ],
+          "cves": [
+            "CVE-2011-2939"
+          ],
+          "description": "Off-by-one error in the decode_xs function in Unicode/Unicode.xs in the Encode module before 2.44, as used in Perl before 5.15.6, might allow context-dependent attackers to cause a denial of service (memory corruption) via a crafted Unicode string, which triggers a heap-based buffer overflow.\n",
+          "distribution": "Encode",
+          "fixed_versions": [
+            ">=2.44"
+          ],
+          "id": "CPANSA-Encode-2011-2939",
+          "references": [
+            "http://perl5.git.perl.org/perl.git/commitdiff/e46d973584785af1f445c4dedbee4243419cb860#patch5",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=731246",
+            "http://www.openwall.com/lists/oss-security/2011/08/19/17",
+            "http://www.redhat.com/support/errata/RHSA-2011-1424.html",
+            "http://www.openwall.com/lists/oss-security/2011/08/18/8",
+            "http://secunia.com/advisories/46989",
+            "http://www.mandriva.com/security/advisories?name=MDVSA-2012:008",
+            "http://secunia.com/advisories/51457",
+            "http://www.ubuntu.com/usn/USN-1643-1",
+            "http://www.securityfocus.com/bid/49858",
+            "http://secunia.com/advisories/46172",
+            "http://cpansearch.perl.org/src/FLORA/perl-5.14.2/pod/perldelta.pod",
+            "http://secunia.com/advisories/55314",
+            "http://search.cpan.org/~flora/perl-5.14.2/pod/perldelta.pod#Encode_decode_xs_n-byte_heap-overflow_(CVE-2011-2939)"
+          ],
+          "reported": "2012-01-13",
+          "severity": null,
+          "x-commit": "Encode CVE-2011-2939 GitHub #13",
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "0"
+            }
+          ],
+          "triage_status": "legacy supported-core risk; needs patched deployment",
+          "static_evidence": "CLI calls strict UTF-8 Encode::decode on external bytes. Core-only Perl 5.20 support permits older Encode releases; installed-current results and declared ranges are different claims. No arbitrary module name is accepted by the CLI, but that does not clear all decoder advisories."
+        },
+        {
+          "affected_versions": [
+            "<2.85"
+          ],
+          "cves": [
+            "CVE-2016-1238"
+          ],
+          "description": "Loading optional modules from . (current directory).\n",
+          "distribution": "Encode",
+          "fixed_versions": [
+            ">=2.85"
+          ],
+          "id": "CPANSA-Encode-2016-01",
+          "references": [
+            "https://metacpan.org/changes/distribution/Encode",
+            "https://github.com/dankogai/p5-encode/pull/58/commits/12be15d64ce089154c4367dc1842cd0dc0993ec6"
+          ],
+          "reported": "2016-07-27",
+          "severity": "high",
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "0"
+            }
+          ],
+          "triage_status": "legacy supported-core risk; needs patched deployment",
+          "static_evidence": "CLI calls strict UTF-8 Encode::decode on external bytes. Core-only Perl 5.20 support permits older Encode releases; installed-current results and declared ranges are different claims. No arbitrary module name is accepted by the CLI, but that does not clear all decoder advisories."
+        },
+        {
+          "affected_versions": [
+            ">0"
+          ],
+          "cves": [
+            "CVE-2011-4116"
+          ],
+          "description": "_is_safe in the File::Temp module for Perl does not properly handle symlinks.\n",
+          "distribution": "File-Temp",
+          "fixed_versions": [],
+          "id": "CPANSA-File-Temp-2011-4116",
+          "references": [
+            "http://www.openwall.com/lists/oss-security/2011/11/04/2",
+            "https://rt.cpan.org/Public/Bug/Display.html?id=69106",
+            "https://github.com/Perl-Toolchain-Gang/File-Temp/issues/14",
+            "http://www.openwall.com/lists/oss-security/2011/11/04/4",
+            "https://seclists.org/oss-sec/2011/q4/238"
+          ],
+          "reported": "2020-01-31",
+          "severity": "high",
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "0"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "0"
+            }
+          ],
+          "triage_status": "conditional dependency applicability; no exclusion",
+          "static_evidence": "Source uses tempfile with exclusive creation; it never changes File::Temp safe_level. Installed File::Temp invokes _is_safe under MEDIUM/HIGH; caller-global configuration may select those modes. The upstream symlink issue remains open; no fixed release is listed in this database."
+        },
+        {
+          "affected_versions": [
+            "<3.62"
+          ],
+          "cves": [
+            "CVE-2015-8607"
+          ],
+          "description": "Does not properly preserve the taint attribute of data, which might allow context-dependent attackers to bypass the taint protection mechanism via a crafted string.\n",
+          "distribution": "PathTools",
+          "fixed_versions": [
+            ">=3.62"
+          ],
+          "id": "CPANSA-PathTools-2016-01",
+          "references": [
+            "https://metacpan.org/changes/distribution/PathTools"
+          ],
+          "reported": "2016-01-11",
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "0"
+            }
+          ],
+          "triage_status": "legacy test/build environment risk; needs patched deployment",
+          "static_evidence": "Cwd and File::Spec are test/maintenance dependencies. The broad declared lower bound permits historical vulnerable releases. No waiver follows from the dependency being test-only."
+        },
+        {
+          "affected_versions": [
+            "<3.65"
+          ],
+          "cves": [
+            "CVE-2016-1238"
+          ],
+          "description": "Does not properly remove . (period) characters from the end of the includes directory array, which might allow local users to gain privileges via a Trojan horse module under the current working directory.\n",
+          "distribution": "PathTools",
+          "fixed_versions": [
+            ">=3.65"
+          ],
+          "id": "CPANSA-PathTools-2016-02",
+          "references": [
+            "https://metacpan.org/changes/distribution/PathTools"
+          ],
+          "reported": "2016-02-08",
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "0"
+            }
+          ],
+          "triage_status": "legacy test/build environment risk; needs patched deployment",
+          "static_evidence": "Cwd and File::Spec are test/maintenance dependencies. The broad declared lower bound permits historical vulnerable releases. No waiver follows from the dependency being test-only."
+        },
+        {
+          "affected_versions": [
+            "<3.05"
+          ],
+          "cves": [
+            "CVE-2017-20230"
+          ],
+          "description": "Storable versions before 3.05 for Perl has a stack overflow.  The retrieve_hook function stored the length of the class name into a signed integer but in read operations treated the length as unsigned. This allowed an attacker to craft data that could trigger the overflow.",
+          "distribution": "Storable",
+          "fixed_versions": [
+            ">=3.05"
+          ],
+          "id": "CPANSA-Storable-2017-20230",
+          "references": [
+            "https://github.com/Perl/perl5/commit/a258c17c6937f79529c8319a829310e09cdbd216.patch",
+            "https://github.com/Perl/perl5/issues/15831",
+            "https://metacpan.org/release/RURBAN/Storable-3.05/changes",
+            "https://www.nntp.perl.org/group/perl.perl5.porters/2017/01/msg242533.html",
+            "https://www.nntp.perl.org/group/perl.perl5.porters/2017/01/msg242703.html",
+            "http://www.openwall.com/lists/oss-security/2026/04/21/5"
+          ],
+          "reported": "2026-04-21",
+          "severity": null,
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "0"
+            }
+          ],
+          "triage_status": "not exercised by exposed serialized-input API; dependency gate remains failing",
+          "static_evidence": "Result and Error validate unblessed acyclic scalar/array/hash data before dclone. There is no retrieve, thaw or external serialized Storable-input API in lib."
+        },
+        {
+          "affected_versions": [
+            "<3.05"
+          ],
+          "cves": [],
+          "description": "Malcrafted storable files or buffers.\n",
+          "distribution": "Storable",
+          "fixed_versions": [
+            ">=3.05"
+          ],
+          "id": "CPANSA-Storable-2017-01",
+          "references": [
+            "https://metacpan.org/release/RURBAN/Storable-3.05/changes"
+          ],
+          "reported": "2017-01-29",
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "0"
+            }
+          ],
+          "triage_status": "not exercised by exposed serialized-input API; dependency gate remains failing",
+          "static_evidence": "Result and Error validate unblessed acyclic scalar/array/hash data before dclone. There is no retrieve, thaw or external serialized Storable-input API in lib."
+        },
+        {
+          "affected_versions": [
+            "<3.41"
+          ],
+          "cves": [
+            "CVE-2026-57433"
+          ],
+          "description": "Storable versions before 3.41 for Perl have a signed integer overflow when deserializing a crafted SX_HOOK record.  retrieve_hook_common reads a signed 32-bit item count from an SX_HOOK record and calls av_extend with that count plus one. A count of I32_MAX wraps the addition to a negative value.  A crafted blob passed to thaw or retrieve triggers the overflow; av_extend receives the negative count and dies with a panic, terminating the deserialization.",
+          "distribution": "Storable",
+          "fixed_versions": [
+            ">=3.41"
+          ],
+          "id": "CPANSA-Storable-2026-57433",
+          "references": [
+            "https://github.com/Perl/perl5/commit/e4f681784bcdeaa91ff02a2fa4cdcae5c46779d7.patch",
+            "http://www.openwall.com/lists/oss-security/2026/07/13/7"
+          ],
+          "reported": "2026-07-13",
+          "severity": null,
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "0"
+            }
+          ],
+          "triage_status": "not exercised by exposed serialized-input API; dependency gate remains failing",
+          "static_evidence": "Result and Error validate unblessed acyclic scalar/array/hash data before dclone. There is no retrieve, thaw or external serialized Storable-input API in lib."
+        },
+        {
+          "affected_versions": [
+            "<5.34.3",
+            ">=5.36.0,<5.36.3",
+            ">=5.38.0,<5.38.2"
+          ],
+          "cves": [
+            "CVE-2023-47100"
+          ],
+          "description": "In Perl before 5.38.2, S_parse_uniprop_string in regcomp.c can write to unallocated space because a property name associated with a \\p{...} regular expression construct is mishandled. The earliest affected version is 5.30.0.\n",
+          "distribution": "perl",
+          "fixed_versions": [
+            ">=5.38.2"
+          ],
+          "id": "CPANSA-perl-2023-47100",
+          "references": [
+            "https://github.com/Perl/perl5/commit/ff1f9f59360afeebd6f75ca1502f5c3ebf077da3",
+            "https://github.com/Perl/perl5/commit/12c313ce49b36160a7ca2e9b07ad5bd92ee4a010",
+            "https://github.com/Perl/perl5/commit/7047915eef37fccd93e7cd985c29fe6be54650b6"
+          ],
+          "reported": null,
+          "severity": null,
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "build",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "configure",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "develop",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "recommends",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "5.020"
+            }
+          ],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        },
+        {
+          "affected_versions": [
+            "<5.26.3",
+            "==5.28.0"
+          ],
+          "cves": [
+            "CVE-2018-18311"
+          ],
+          "description": "Perl before 5.26.3 and 5.28.x before 5.28.1 has a buffer overflow via a crafted regular expression that triggers invalid write operations.\n",
+          "distribution": "perl",
+          "fixed_versions": [
+            ">=5.28.1"
+          ],
+          "id": "CPANSA-perl-2018-18311",
+          "references": [
+            "https://www.debian.org/security/2018/dsa-4347",
+            "https://usn.ubuntu.com/3834-2/",
+            "https://rt.perl.org/Ticket/Display.html?id=133204",
+            "https://metacpan.org/changes/release/SHAY/perl-5.28.1",
+            "https://metacpan.org/changes/release/SHAY/perl-5.26.3",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/RWQGEB543QN7SSBRKYJM6PSOC3RLYGSM/",
+            "https://lists.debian.org/debian-lts-announce/2018/11/msg00039.html",
+            "https://github.com/Perl/perl5/commit/34716e2a6ee2af96078d62b065b7785c001194be",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=1646730",
+            "http://www.securitytracker.com/id/1042181",
+            "https://usn.ubuntu.com/3834-1/",
+            "http://www.securityfocus.com/bid/106145",
+            "https://access.redhat.com/errata/RHSA-2019:0010",
+            "https://access.redhat.com/errata/RHSA-2019:0001",
+            "https://access.redhat.com/errata/RHSA-2019:0109",
+            "https://security.netapp.com/advisory/ntap-20190221-0003/",
+            "https://support.apple.com/kb/HT209600",
+            "https://seclists.org/bugtraq/2019/Mar/42",
+            "http://seclists.org/fulldisclosure/2019/Mar/49",
+            "https://kc.mcafee.com/corporate/index?page=content&id=SB10278",
+            "https://access.redhat.com/errata/RHBA-2019:0327",
+            "https://access.redhat.com/errata/RHSA-2019:1790",
+            "https://www.oracle.com/technetwork/security-advisory/cpujul2019-5072835.html",
+            "https://access.redhat.com/errata/RHSA-2019:1942",
+            "https://access.redhat.com/errata/RHSA-2019:2400",
+            "https://security.gentoo.org/glsa/201909-01",
+            "https://www.oracle.com/security-alerts/cpuapr2020.html",
+            "https://www.oracle.com/security-alerts/cpujul2020.html",
+            "https://perldoc.perl.org/perl5281delta",
+            "https://perldoc.perl.org/perl5263delta"
+          ],
+          "reported": "2018-12-07",
+          "severity": "critical",
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "build",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "configure",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "develop",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "recommends",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "5.020"
+            }
+          ],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        },
+        {
+          "affected_versions": [
+            ">=5.9.4,<5.41.9"
+          ],
+          "cves": [
+            "CVE-2026-19487"
+          ],
+          "description": "Perl versions from 5.9.4 before 5.41.9 produce incorrect regular expression match results when a stale failure flag ends the Aho-Corasick prescan early in S_find_byclass.\n\nThe prescan walks the subject for positions where the full pattern could match, and the engine tries it from the leftmost one recorded. A failing transition sets the failed flag, and a later successful transition does not clear it, so the prescan reads the stale flag as a failure and stops before it can record a candidate that starts earlier. It takes a subject where one candidate is recorded and a later character then forces a fallback through a fail link that succeeds.\n\nExample:\n\n  \"ABCDE\" =~ m/ABCF|BCDE|C/;    # matches C at offset 2, not BCDE\n  \"ABCDE\" =~ m/ABCF|BCDE|C(G)/; # no match, BCDE missed\n\nAn alternation like this can miss input it should match, or match it on the wrong branch, so an access or filtering decision made from the result can be wrong.",
+          "distribution": "perl",
+          "fixed_versions": [],
+          "id": "CPANSA-perl-2026-19487",
+          "references": [
+            "https://github.com/Perl/perl5/commit/1a21abacaf6f684928bae8baaa153733c8c238eb.patch",
+            "https://github.com/Perl/perl5/issues/22892",
+            "http://www.openwall.com/lists/oss-security/2026/08/13/8",
+            "https://github.com/Perl/perl5/issues/22892"
+          ],
+          "reported": "2026-08-13",
+          "severity": "medium",
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "build",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "configure",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "develop",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "recommends",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "5.020"
+            }
+          ],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        },
+        {
+          "affected_versions": [
+            ">=5.18.0,<5.24.4",
+            ">=5.26.0,<5.26.2"
+          ],
+          "cves": [
+            "CVE-2018-6797"
+          ],
+          "description": "An issue was discovered in Perl 5.18 through 5.26. A crafted regular expression can cause a heap-based buffer overflow, with control over the bytes written.\n",
+          "distribution": "perl",
+          "fixed_versions": [
+            ">=5.28.0"
+          ],
+          "id": "CPANSA-perl-2018-6797",
+          "references": [
+            "https://www.debian.org/security/2018/dsa-4172",
+            "https://rt.perl.org/Public/Bug/Display.html?id=132227",
+            "http://www.securitytracker.com/id/1040681",
+            "https://access.redhat.com/errata/RHSA-2018:1192",
+            "https://usn.ubuntu.com/3625-1/",
+            "http://www.securitytracker.com/id/1042004",
+            "https://security.gentoo.org/glsa/201909-01",
+            "https://www.oracle.com/security-alerts/cpujul2020.html",
+            "https://perldoc.perl.org/perl5244delta",
+            "https://perldoc.perl.org/perl5262delta"
+          ],
+          "reported": "2018-04-17",
+          "severity": "critical",
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "build",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "configure",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "develop",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "recommends",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "5.020"
+            }
+          ],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        },
+        {
+          "affected_versions": [
+            ">=5.18.0,<5.24.3",
+            "==5.26.0"
+          ],
+          "cves": [
+            "CVE-2017-12837"
+          ],
+          "description": "Heap-based buffer overflow in the S_regatom function in regcomp.c in Perl 5 before 5.24.3-RC1 and 5.26.x before 5.26.1-RC1 allows remote attackers to cause a denial of service (out-of-bounds write) via a regular expression with a '\\\\N{}' escape and the case-insensitive modifier.\n",
+          "distribution": "perl",
+          "fixed_versions": [
+            ">=5.26.1"
+          ],
+          "id": "CPANSA-perl-2017-12837",
+          "references": [
+            "https://perl5.git.perl.org/perl.git/log/refs/tags/v5.26.1-RC1",
+            "https://perl5.git.perl.org/perl.git/log/refs/tags/v5.24.3-RC1",
+            "https://perl5.git.perl.org/perl.git/commitdiff/96c83ed78aeea1a0496dd2b2d935869a822dc8a5",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=1492091",
+            "http://www.securityfocus.com/bid/100860",
+            "https://rt.perl.org/Public/Bug/Display.html?id=131582",
+            "http://www.debian.org/security/2017/dsa-3982",
+            "https://security.netapp.com/advisory/ntap-20180426-0001/",
+            "https://www.oracle.com/security-alerts/cpujul2020.html",
+            "https://github.com/Perl/perl5/issues/16021",
+            "https://perldoc.perl.org/perl5243delta",
+            "https://perldoc.perl.org/perl5261delta",
+            "https://perldoc.perl.org/perl5280delta"
+          ],
+          "reported": "2017-09-19",
+          "severity": "high",
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "build",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "configure",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "develop",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "recommends",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "5.020"
+            }
+          ],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        },
+        {
+          "affected_versions": [
+            "<5.24.0"
+          ],
+          "cves": [
+            "CVE-2015-8853"
+          ],
+          "description": "The (1) S_reghop3, (2) S_reghop4, and (3) S_reghopmaybe3 functions in regexec.c in Perl before 5.24.0 allow context-dependent attackers to cause a denial of service (infinite loop) via crafted utf-8 data, as demonstrated by \"a\\x80.\"\n",
+          "distribution": "perl",
+          "fixed_versions": [
+            ">=5.24.0"
+          ],
+          "id": "CPANSA-perl-2015-8853",
+          "references": [
+            "http://lists.fedoraproject.org/pipermail/package-announce/2016-May/183592.html",
+            "http://www.openwall.com/lists/oss-security/2016/04/20/7",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=1329106",
+            "https://rt.perl.org/Public/Bug/Display.html?id=123562",
+            "http://www.openwall.com/lists/oss-security/2016/04/20/5",
+            "http://perl5.git.perl.org/perl.git/commitdiff/22b433eff9a1ffa2454e18405a56650f07b385b5",
+            "https://h20566.www2.hpe.com/portal/site/hpsc/public/kb/docDisplay?docId=emr_na-c05240731",
+            "http://www.oracle.com/technetwork/topics/security/bulletinjul2016-3090568.html",
+            "http://www.oracle.com/technetwork/topics/security/bulletinapr2016-2952098.html",
+            "http://www.securityfocus.com/bid/86707",
+            "https://security.gentoo.org/glsa/201701-75",
+            "https://usn.ubuntu.com/3625-2/",
+            "https://usn.ubuntu.com/3625-1/"
+          ],
+          "reported": "2016-05-25",
+          "severity": "high",
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "build",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "configure",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "develop",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "recommends",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "5.020"
+            }
+          ],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        },
+        {
+          "affected_versions": [
+            "<5.22.1"
+          ],
+          "cves": [
+            "CVE-2016-2381"
+          ],
+          "description": "Perl might allow context-dependent attackers to bypass the taint protection mechanism in a child process via duplicate environment variables in envp.\n",
+          "distribution": "perl",
+          "fixed_versions": [
+            ">=5.22.1"
+          ],
+          "id": "CPANSA-perl-2016-2381",
+          "references": [
+            "http://www.gossamer-threads.com/lists/perl/porters/326387",
+            "http://www.debian.org/security/2016/dsa-3501",
+            "http://perl5.git.perl.org/perl.git/commitdiff/ae37b791a73a9e78dedb89fb2429d2628cf58076",
+            "https://h20566.www2.hpe.com/portal/site/hpsc/public/kb/docDisplay?docId=emr_na-c05240731",
+            "http://www.oracle.com/technetwork/topics/security/bulletinjul2016-3090568.html",
+            "http://www.securityfocus.com/bid/83802",
+            "http://www.ubuntu.com/usn/USN-2916-1",
+            "http://lists.opensuse.org/opensuse-updates/2016-03/msg00112.html",
+            "https://security.gentoo.org/glsa/201701-75",
+            "http://www.oracle.com/technetwork/security-advisory/cpujul2017-3236622.html",
+            "http://www.oracle.com/technetwork/security-advisory/cpuoct2017-3236626.html",
+            "https://www.oracle.com/security-alerts/cpuapr2020.html",
+            "https://www.oracle.com/security-alerts/cpujul2020.html"
+          ],
+          "reported": "2016-04-08",
+          "severity": "high",
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "build",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "configure",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "develop",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "recommends",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "5.020"
+            }
+          ],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        },
+        {
+          "affected_versions": [
+            ">=5.005,<5.22.2",
+            ">=5.23.0,<5.23.7"
+          ],
+          "cves": [
+            "CVE-2015-8608"
+          ],
+          "description": "The VDir::MapPathA and VDir::MapPathW functions in Perl 5.22 allow remote attackers to cause a denial of service (out-of-bounds read) and possibly execute arbitrary code via a crafted (1) drive letter or (2) pInName argument.\n",
+          "distribution": "perl",
+          "fixed_versions": [
+            ">=5.22.2"
+          ],
+          "id": "CPANSA-perl-2015-8608",
+          "references": [
+            "https://rt.perl.org/Public/Bug/Display.html?id=126755",
+            "https://github.com/Perl/perl5/issues/15067",
+            "https://packetstormsecurity.com/files/136649/Perl-5.22-VDir-MapPathA-W-Out-Of-Bounds-Reads-Buffer-Over-Reads.html",
+            "http://www.oracle.com/technetwork/security-advisory/cpujul2017-3236622.html",
+            "https://www.oracle.com/security-alerts/cpujul2020.html"
+          ],
+          "reported": "2017-02-07",
+          "severity": "critical",
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "build",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "configure",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "develop",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "recommends",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "5.020"
+            }
+          ],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        },
+        {
+          "affected_versions": [
+            "<5.24.4",
+            ">=5.26.0,<5.26.2"
+          ],
+          "cves": [
+            "CVE-2018-6913"
+          ],
+          "description": "Heap-based buffer overflow in the pack function in Perl before 5.26.2 allows context-dependent attackers to execute arbitrary code via a large item count.\n",
+          "distribution": "perl",
+          "fixed_versions": [
+            ">=5.26.2"
+          ],
+          "id": "CPANSA-perl-2018-6913",
+          "references": [
+            "https://www.debian.org/security/2018/dsa-4172",
+            "https://rt.perl.org/Public/Bug/Display.html?id=131844",
+            "https://lists.debian.org/debian-lts-announce/2018/04/msg00009.html",
+            "http://www.securitytracker.com/id/1040681",
+            "https://usn.ubuntu.com/3625-2/",
+            "https://usn.ubuntu.com/3625-1/",
+            "http://www.securityfocus.com/bid/103953",
+            "https://security.gentoo.org/glsa/201909-01",
+            "https://www.oracle.com/security-alerts/cpujul2020.html",
+            "https://perldoc.perl.org/perl5244delta",
+            "https://perldoc.perl.org/perl5262delta",
+            "https://github.com/Perl/perl5/issues/16098"
+          ],
+          "reported": "2018-04-17",
+          "severity": "critical",
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "build",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "configure",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "develop",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "recommends",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "5.020"
+            }
+          ],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        },
+        {
+          "affected_versions": [
+            ">0,<5.38.4",
+            ">=5.40.0,<5.40.2"
+          ],
+          "cves": [
+            "CVE-2024-56406"
+          ],
+          "description": "A heap buffer overflow vulnerability was discovered in Perl.   When there are non-ASCII bytes in the left-hand-side of the `tr` operator, `S_do_trans_invmap` can overflow the destination pointer `d`.  $ perl -e '$_ = \"\\x{FF}\" x 1000000; tr/\\xFF/\\x{100}/;' Segmentation fault (core dumped)  It is believed that this vulnerability can enable Denial of Service and possibly Code Execution attacks on platforms that lack sufficient defenses.",
+          "distribution": "perl",
+          "fixed_versions": [
+            ">=5.40.1",
+            ">=5.38.4,<5.40.0"
+          ],
+          "id": "CPANSA-perl-2024-56406",
+          "references": [
+            "https://github.com/Perl/perl5/commit/87f42aa0e0096e9a346c9672aa3a0bd3bef8c1dd.patch",
+            "https://metacpan.org/release/SHAY/perl-5.38.4/changes",
+            "https://metacpan.org/release/SHAY/perl-5.40.2/changes",
+            "http://www.openwall.com/lists/oss-security/2025/04/13/3",
+            "http://www.openwall.com/lists/oss-security/2025/04/13/4"
+          ],
+          "reported": "2025-04-13",
+          "severity": null,
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "build",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "configure",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "develop",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "recommends",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "5.020"
+            }
+          ],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        },
+        {
+          "affected_versions": [
+            ">=5.22.0,<5.24.4",
+            ">=5.26.0,<5.28.2"
+          ],
+          "cves": [
+            "CVE-2018-6798"
+          ],
+          "description": "An issue was discovered in Perl 5.22 through 5.26. Matching a crafted locale dependent regular expression can cause a heap-based buffer over-read and potentially information disclosure.\n",
+          "distribution": "perl",
+          "fixed_versions": [
+            ">=5.28.0"
+          ],
+          "id": "CPANSA-perl-2018-6798",
+          "references": [
+            "https://www.debian.org/security/2018/dsa-4172",
+            "https://rt.perl.org/Public/Bug/Display.html?id=132063",
+            "http://www.securitytracker.com/id/1040681",
+            "https://access.redhat.com/errata/RHSA-2018:1192",
+            "https://usn.ubuntu.com/3625-1/",
+            "https://security.gentoo.org/glsa/201909-01",
+            "https://www.oracle.com/security-alerts/cpujul2020.html",
+            "https://perldoc.perl.org/perl5244delta",
+            "https://perldoc.perl.org/perl5262delta",
+            "https://github.com/Perl/perl5/issues/16143"
+          ],
+          "reported": "2018-04-17",
+          "severity": "high",
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "build",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "configure",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "develop",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "recommends",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "5.020"
+            }
+          ],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        },
+        {
+          "affected_versions": [
+            ">0,<5.40.5",
+            ">=5.41.0,<5.42.3",
+            ">=5.43.0,<5.43.10"
+          ],
+          "cves": [
+            "CVE-2026-13221"
+          ],
+          "description": "Perl versions through 5.43.9 produce silently incorrect regular expression matches when an alternation of more than 65535 fixed string branches is compiled into a trie in Perl_study_chunk.  When such branches are combined into a trie, the delta between the first branch and the shared tail is stored in a 16-bit field. A branch count above 65535 overflows the field, and the trie's match decision table is truncated with no warning or error.  A pattern of this shape produces false positive matches (matching strings it should not) and false negative matches (failing to match strings it should). When such a pattern gates an access or filtering decision, the result is wrong.",
+          "distribution": "perl",
+          "fixed_versions": [
+            ">=5.40.5,<5.43.10",
+            ">=5.42.3,<5.43.0",
+            ">=5.43.10"
+          ],
+          "id": "CPANSA-perl-2026-13221",
+          "references": [
+            "https://github.com/Perl/perl5/commit/03f74bbbd3a68350d926ee93d56ee4808c28c4c7.patch",
+            "https://github.com/Perl/perl5/issues/23388",
+            "http://www.openwall.com/lists/oss-security/2026/07/13/5"
+          ],
+          "reported": "2026-07-13",
+          "severity": null,
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "build",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "configure",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "develop",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "recommends",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "5.020"
+            }
+          ],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        },
+        {
+          "affected_versions": [
+            "<5.28.3",
+            ">=5.30.0,<5.30.3"
+          ],
+          "cves": [
+            "CVE-2020-10878"
+          ],
+          "description": "Perl before 5.30.3 has an integer overflow related to mishandling of a \"PL_regkind[OP(n)] == NOTHING\" situation. A crafted regular expression could lead to malformed bytecode with a possibility of instruction injection.\n",
+          "distribution": "perl",
+          "fixed_versions": [
+            ">=5.30.3"
+          ],
+          "id": "CPANSA-perl-2020-10878",
+          "references": [
+            "https://github.com/Perl/perl5/compare/v5.30.2...v5.30.3",
+            "https://github.com/perl/perl5/commit/3295b48defa0f8570114877b063fe546dd348b3c",
+            "https://github.com/perl/perl5/commit/0a320d753fe7fca03df259a4dfd8e641e51edaa8",
+            "https://github.com/Perl/perl5/blob/blead/pod/perl5303delta.pod",
+            "https://security.netapp.com/advisory/ntap-20200611-0001/",
+            "https://security.gentoo.org/glsa/202006-03",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/IN3TTBO5KSGWE5IRIKDJ5JSQRH7ANNXE/",
+            "http://lists.opensuse.org/opensuse-security-announce/2020-06/msg00044.html",
+            "https://www.oracle.com/security-alerts/cpuoct2020.html",
+            "https://www.oracle.com/security-alerts/cpujan2021.html",
+            "https://www.oracle.com/security-alerts/cpuApr2021.html",
+            "https://www.oracle.com//security-alerts/cpujul2021.html",
+            "https://www.oracle.com/security-alerts/cpuoct2021.html",
+            "https://www.oracle.com/security-alerts/cpujan2022.html",
+            "https://www.oracle.com/security-alerts/cpuapr2022.html",
+            "https://perldoc.perl.org/perl5283delta",
+            "https://perldoc.perl.org/perl5303delta",
+            "https://perldoc.perl.org/perl5320delta"
+          ],
+          "reported": "2020-06-05",
+          "severity": "high",
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "build",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "configure",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "develop",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "recommends",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "5.020"
+            }
+          ],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        },
+        {
+          "affected_versions": [
+            ">=5.30.0,<5.34.3",
+            ">=5.36.0,<5.36.3",
+            "==5.38.0"
+          ],
+          "cves": [
+            "CVE-2023-47038"
+          ],
+          "description": "A crafted regular expression when compiled by perl 5.30.0 through 5.38.0 can cause a one attacker controlled byte buffer overflow in a heap allocated buffer\n",
+          "distribution": "perl",
+          "fixed_versions": [
+            "==5.34.3",
+            "==5.36.3",
+            "==5.38.1"
+          ],
+          "id": "CPANSA-perl-2023-47038",
+          "references": [
+            "https://perldoc.perl.org/perl5342delta",
+            "https://perldoc.perl.org/perl5363delta",
+            "https://perldoc.perl.org/perl5381delta",
+            "https://perldoc.perl.org/perl5382delta",
+            "https://perldoc.perl.org/perl5400delta"
+          ],
+          "reported": "2023-10-30",
+          "severity": null,
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "build",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "configure",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "develop",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "recommends",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "5.020"
+            }
+          ],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        },
+        {
+          "affected_versions": [
+            "<5.24.1"
+          ],
+          "cves": [
+            "CVE-2016-1238"
+          ],
+          "description": "(1) cpan/Archive-Tar/bin/ptar, (2) cpan/Archive-Tar/bin/ptardiff, (3) cpan/Archive-Tar/bin/ptargrep, (4) cpan/CPAN/scripts/cpan, (5) cpan/Digest-SHA/shasum, (6) cpan/Encode/bin/enc2xs, (7) cpan/Encode/bin/encguess, (8) cpan/Encode/bin/piconv, (9) cpan/Encode/bin/ucmlint, (10) cpan/Encode/bin/unidump, (11) cpan/ExtUtils-MakeMaker/bin/instmodsh, (12) cpan/IO-Compress/bin/zipdetails, (13) cpan/JSON-PP/bin/json_pp, (14) cpan/Test-Harness/bin/prove, (15) dist/ExtUtils-ParseXS/lib/ExtUtils/xsubpp, (16) dist/Module-CoreList/corelist, (17) ext/Pod-Html/bin/pod2html, (18) utils/c2ph.PL, (19) utils/h2ph.PL, (20) utils/h2xs.PL, (21) utils/libnetcfg.PL, (22) utils/perlbug.PL, (23) utils/perldoc.PL, (24) utils/perlivp.PL, and (25) utils/splain.PL in Perl 5.x before 5.22.3-RC2 and 5.24 before 5.24.1-RC2 do not properly remove . (period) characters from the end of the includes directory array, which might allow local users to gain privileges via a Trojan horse module under the current working directory.\n",
+          "distribution": "perl",
+          "fixed_versions": [
+            ">=5.24.1"
+          ],
+          "id": "CPANSA-ExtUtils-ParseXS-2016-1238",
+          "references": [
+            "https://perldoc.perl.org/5.24.1/perldelta",
+            "http://lists.opensuse.org/opensuse-security-announce/2019-08/msg00002.html",
+            "http://perl5.git.perl.org/perl.git/commit/cee96d52c39b1e7b36e1c62d38bcd8d86e9a41ab",
+            "http://www.debian.org/security/2016/dsa-3628",
+            "http://www.nntp.perl.org/group/perl.perl5.porters/2016/07/msg238271.html",
+            "http://www.securityfocus.com/bid/92136",
+            "http://www.securitytracker.com/id/1036440",
+            "https://h20566.www2.hpe.com/portal/site/hpsc/public/kb/docDisplay?docId=emr_na-c05240731",
+            "https://lists.apache.org/thread.html/7f6a16bc0fd0fd5e67c7fd95bd655069a2ac7d1f88e42d3c853e601c%40%3Cannounce.apache.org%3E",
+            "https://lists.debian.org/debian-lts-announce/2018/11/msg00016.html",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/2FBQOCV3GBAN2EYZUM3CFDJ4ECA3GZOK/",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/DOFRQWJRP2NQJEYEWOMECVW3HAMD5SYN/",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/TZBNQH3DMI7HDELJAZ4TFJJANHXOEDWH/",
+            "https://rt.perl.org/Public/Bug/Display.html?id=127834",
+            "https://security.gentoo.org/glsa/201701-75",
+            "https://security.gentoo.org/glsa/201812-07",
+            "http://lists.opensuse.org/opensuse-security-announce/2019-08/msg00002.html",
+            "http://perl5.git.perl.org/perl.git/commit/cee96d52c39b1e7b36e1c62d38bcd8d86e9a41ab",
+            "http://www.debian.org/security/2016/dsa-3628",
+            "http://www.nntp.perl.org/group/perl.perl5.porters/2016/07/msg238271.html",
+            "http://www.securityfocus.com/bid/92136",
+            "http://www.securitytracker.com/id/1036440",
+            "https://h20566.www2.hpe.com/portal/site/hpsc/public/kb/docDisplay?docId=emr_na-c05240731",
+            "https://lists.apache.org/thread.html/7f6a16bc0fd0fd5e67c7fd95bd655069a2ac7d1f88e42d3c853e601c%40%3Cannounce.apache.org%3E",
+            "https://lists.debian.org/debian-lts-announce/2018/11/msg00016.html",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/2FBQOCV3GBAN2EYZUM3CFDJ4ECA3GZOK/",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/DOFRQWJRP2NQJEYEWOMECVW3HAMD5SYN/",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/TZBNQH3DMI7HDELJAZ4TFJJANHXOEDWH/",
+            "https://rt.perl.org/Public/Bug/Display.html?id=127834",
+            "https://security.gentoo.org/glsa/201701-75",
+            "https://security.gentoo.org/glsa/201812-07"
+          ],
+          "reported": "2016-08-02",
+          "severity": "high",
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "build",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "configure",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "develop",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "recommends",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "5.020"
+            }
+          ],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        },
+        {
+          "affected_versions": [
+            "<5.28.3",
+            ">=5.30.0,<5.30.3"
+          ],
+          "cves": [
+            "CVE-2020-10543"
+          ],
+          "description": "Perl before 5.30.3 on 32-bit platforms allows a heap-based buffer overflow because nested regular expression quantifiers have an integer overflow.\n",
+          "distribution": "perl",
+          "fixed_versions": [
+            ">=5.30.3"
+          ],
+          "id": "CPANSA-perl-2020-10543",
+          "references": [
+            "https://github.com/Perl/perl5/compare/v5.30.2...v5.30.3",
+            "https://github.com/perl/perl5/commit/897d1f7fd515b828e4b198d8b8bef76c6faf03ed",
+            "https://github.com/Perl/perl5/blob/blead/pod/perl5303delta.pod",
+            "https://security.netapp.com/advisory/ntap-20200611-0001/",
+            "https://security.gentoo.org/glsa/202006-03",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/IN3TTBO5KSGWE5IRIKDJ5JSQRH7ANNXE/",
+            "http://lists.opensuse.org/opensuse-security-announce/2020-06/msg00044.html",
+            "https://www.oracle.com/security-alerts/cpuoct2020.html",
+            "https://www.oracle.com/security-alerts/cpujan2021.html",
+            "https://www.oracle.com/security-alerts/cpuApr2021.html",
+            "https://www.oracle.com//security-alerts/cpujul2021.html",
+            "https://www.oracle.com/security-alerts/cpuoct2021.html",
+            "https://www.oracle.com/security-alerts/cpujan2022.html",
+            "https://www.oracle.com/security-alerts/cpuapr2022.html",
+            "https://perldoc.perl.org/perl5283delta",
+            "https://perldoc.perl.org/perl5303delta",
+            "https://perldoc.perl.org/perl5320delta"
+          ],
+          "reported": "2020-06-05",
+          "severity": "high",
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "build",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "configure",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "develop",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "recommends",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "5.020"
+            }
+          ],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        },
+        {
+          "affected_versions": [
+            ">=5.22.0,<5.24.0"
+          ],
+          "cves": [
+            "CVE-2016-6185"
+          ],
+          "description": "The XSLoader::load method in XSLoader in Perl does not properly locate .so files when called in a string eval, which might allow local users to execute arbitrary code via a Trojan horse library under the current working directory.\n",
+          "distribution": "perl",
+          "fixed_versions": [
+            ">=5.24.0"
+          ],
+          "id": "CPANSA-perl-2016-6185",
+          "references": [
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/5RFDMASVZLFZYBB2GNTZXU6I76E4NA4V/",
+            "https://github.com/Perl/perl5/commit/08e3451d7b3b714ad63a27f1b9c2a23ee75d15ee",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/PRIPTDA6XINBVEJXI2NGLKVEINBREHTN/",
+            "http://www.openwall.com/lists/oss-security/2016/07/07/1",
+            "http://www.openwall.com/lists/oss-security/2016/07/08/5",
+            "https://rt.cpan.org/Public/Bug/Display.html?id=115808",
+            "http://www.debian.org/security/2016/dsa-3628",
+            "http://www.securitytracker.com/id/1036260",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/ITYZJXQH24X2F2LAOQEQAC5KXLYJTJ76/",
+            "http://www.oracle.com/technetwork/topics/security/bulletinjul2016-3090568.html",
+            "http://www.securityfocus.com/bid/91685",
+            "https://security.gentoo.org/glsa/201701-75",
+            "https://usn.ubuntu.com/3625-2/",
+            "https://usn.ubuntu.com/3625-1/",
+            "https://github.com/Perl/perl5/blob/blead/pod/perl5260delta.pod"
+          ],
+          "reported": "2016-08-02",
+          "severity": "high",
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "build",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "configure",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "develop",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "recommends",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "5.020"
+            }
+          ],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        },
+        {
+          "affected_versions": [
+            "==5.34.0"
+          ],
+          "cves": [
+            "CVE-2022-48522"
+          ],
+          "description": "In Perl 5.34.0, function S_find_uninit_var in sv.c has a stack-based crash that can lead to remote code execution or local privilege escalation.\n",
+          "distribution": "perl",
+          "fixed_versions": [
+            ">=5.34.1"
+          ],
+          "id": "CPANSA-perl-2022-48522",
+          "references": [
+            "https://github.com/Perl/perl5/blob/79a7b254d85a10b65126ad99bf10e70480569d68/sv.c#L16336-L16345",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-48522",
+            "https://security.netapp.com/advisory/ntap-20230915-0008/",
+            "https://ubuntu.com/security/CVE-2022-48522"
+          ],
+          "reported": "2023-08-22",
+          "severity": null,
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "build",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "configure",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "develop",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "recommends",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "5.020"
+            }
+          ],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        },
+        {
+          "affected_versions": [
+            ">0,<5.40.5",
+            ">=5.41.0,<5.42.3",
+            ">=5.43.0,<5.43.11"
+          ],
+          "cves": [
+            "CVE-2026-57432"
+          ],
+          "description": "Perl versions through 5.43.10 have an integer overflow in S_measure_struct leading to an out-of-bounds heap read in pack and unpack.  S_measure_struct adds each item's size times its repeat count to a running total with no overflow check, so a large repeat count in a pack or unpack template wraps the signed SSize_t total negative. The @, X, and x position codes then guard their moves with a signed length comparison that passes when the length is negative, advancing the buffer pointer out of bounds.  A template derived from untrusted input can read heap memory past the buffer and return it to the caller.",
+          "distribution": "perl",
+          "fixed_versions": [
+            ">=5.40.5,<5.42.0",
+            ">=5.42.3,<5.43.0",
+            ">=5.43.11"
+          ],
+          "id": "CPANSA-perl-2026-57432",
+          "references": [
+            "https://github.com/Perl/perl5/commit/40754edc72dd3e513d758153c0e2f0215897740e.patch",
+            "https://github.com/Perl/perl5/commit/5f7eb6bbbe0510964e3fb1d6bb691e5445913e55.patch",
+            "http://www.openwall.com/lists/oss-security/2026/07/13/6"
+          ],
+          "reported": "2026-07-13",
+          "severity": null,
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "build",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "configure",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "develop",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "recommends",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "5.020"
+            }
+          ],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        },
+        {
+          "affected_versions": [
+            ">0"
+          ],
+          "cves": [
+            "CVE-2026-15534"
+          ],
+          "description": "Perl versions through 5.45.1 have out-of-bounds heap reads and writes during regular expression matching via an undersized superlinear cache in S_regmatch.\n\nThe regex engine's superlinear cache holds one bit per subject position for each participating WHILEM node, so the bit count is the subject length plus one times the number of nodes. Nothing checks that product for positive overflow of the signed 32-bit count: a 286331153 byte subject matched against a pattern with 15 participating nodes stores the count as 14, leaving a two byte cache. The cache is then indexed from the real match position and node number, so reads go past the end of the allocation, and on failure CACHEsayNO sets a bit past it.\n\nA caller that matches an attacker controlled subject of this size against a pattern of this shape can crash the process or corrupt heap memory.",
+          "distribution": "perl",
+          "fixed_versions": [],
+          "id": "CPANSA-perl-2026-15534",
+          "references": [
+            "https://github.com/Perl/perl5/commit/54cf3d44cbbedd17d774e9a37921963e8fd5d0cb.patch",
+            "https://github.com/Perl/perl5/commit/568e6fd238867bb9e99fa3f47cba3169009239e0.patch",
+            "http://www.openwall.com/lists/oss-security/2026/08/09/12",
+            "http://www.openwall.com/lists/oss-security/2026/08/09/13"
+          ],
+          "reported": "2026-08-09",
+          "severity": "medium",
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "build",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "configure",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "develop",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "recommends",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "5.020"
+            }
+          ],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        },
+        {
+          "affected_versions": [
+            "<5.28.3",
+            ">=5.30.0,<5.30.3"
+          ],
+          "cves": [
+            "CVE-2020-12723"
+          ],
+          "description": "regcomp.c in Perl before 5.30.3 allows a buffer overflow via a crafted regular expression because of recursive S_study_chunk calls.\n",
+          "distribution": "perl",
+          "fixed_versions": [
+            ">=5.30.3"
+          ],
+          "id": "CPANSA-perl-2020-12723",
+          "references": [
+            "https://github.com/Perl/perl5/compare/v5.30.2...v5.30.3",
+            "https://github.com/Perl/perl5/blob/blead/pod/perl5303delta.pod",
+            "https://github.com/Perl/perl5/issues/16947",
+            "https://github.com/perl/perl5/commit/66bbb51b93253a3f87d11c2695cfb7bdb782184a",
+            "https://github.com/Perl/perl5/issues/17743",
+            "https://security.netapp.com/advisory/ntap-20200611-0001/",
+            "https://security.gentoo.org/glsa/202006-03",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/IN3TTBO5KSGWE5IRIKDJ5JSQRH7ANNXE/",
+            "http://lists.opensuse.org/opensuse-security-announce/2020-06/msg00044.html",
+            "https://www.oracle.com/security-alerts/cpuoct2020.html",
+            "https://www.oracle.com/security-alerts/cpujan2021.html",
+            "https://www.oracle.com/security-alerts/cpuApr2021.html",
+            "https://www.oracle.com//security-alerts/cpujul2021.html",
+            "https://www.oracle.com/security-alerts/cpuoct2021.html",
+            "https://www.oracle.com/security-alerts/cpujan2022.html",
+            "https://www.oracle.com/security-alerts/cpuapr2022.html",
+            "https://perldoc.perl.org/perl5283delta",
+            "https://perldoc.perl.org/perl5303delta",
+            "https://perldoc.perl.org/perl5320delta"
+          ],
+          "reported": "2020-06-05",
+          "severity": "high",
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "build",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "configure",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "develop",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "recommends",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "5.020"
+            }
+          ],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        },
+        {
+          "affected_versions": [
+            "<5.26.3"
+          ],
+          "cves": [
+            "CVE-2018-18313"
+          ],
+          "description": "Perl before 5.26.3 has a buffer over-read via a crafted regular expression that triggers disclosure of sensitive information from process memory.\n",
+          "distribution": "perl",
+          "fixed_versions": [
+            ">=5.26.3"
+          ],
+          "id": "CPANSA-perl-2018-18313",
+          "references": [
+            "https://www.debian.org/security/2018/dsa-4347",
+            "https://usn.ubuntu.com/3834-2/",
+            "https://rt.perl.org/Ticket/Display.html?id=133192",
+            "https://metacpan.org/changes/release/SHAY/perl-5.26.3",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/RWQGEB543QN7SSBRKYJM6PSOC3RLYGSM/",
+            "https://github.com/Perl/perl5/commit/43b2f4ef399e2fd7240b4eeb0658686ad95f8e62",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=1646738",
+            "http://www.securitytracker.com/id/1042181",
+            "https://usn.ubuntu.com/3834-1/",
+            "https://access.redhat.com/errata/RHSA-2019:0010",
+            "https://access.redhat.com/errata/RHSA-2019:0001",
+            "https://security.netapp.com/advisory/ntap-20190221-0003/",
+            "https://support.apple.com/kb/HT209600",
+            "https://seclists.org/bugtraq/2019/Mar/42",
+            "http://seclists.org/fulldisclosure/2019/Mar/49",
+            "https://security.gentoo.org/glsa/201909-01",
+            "https://www.oracle.com/security-alerts/cpujul2020.html"
+          ],
+          "reported": "2018-12-07",
+          "severity": "critical",
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "build",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "configure",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "develop",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "recommends",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "5.020"
+            }
+          ],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        },
+        {
+          "affected_versions": [
+            "<5.26.3"
+          ],
+          "cves": [
+            "CVE-2018-18314"
+          ],
+          "description": "Perl before 5.26.3 has a buffer overflow via a crafted regular expression that triggers invalid write operations.\n",
+          "distribution": "perl",
+          "fixed_versions": [
+            ">=5.26.3"
+          ],
+          "id": "CPANSA-perl-2018-18314",
+          "references": [
+            "https://www.debian.org/security/2018/dsa-4347",
+            "https://rt.perl.org/Ticket/Display.html?id=131649",
+            "https://metacpan.org/changes/release/SHAY/perl-5.26.3",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/RWQGEB543QN7SSBRKYJM6PSOC3RLYGSM/",
+            "https://github.com/Perl/perl5/commit/19a498a461d7c81ae3507c450953d1148efecf4f",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=1646751",
+            "http://www.securitytracker.com/id/1042181",
+            "https://usn.ubuntu.com/3834-1/",
+            "http://www.securityfocus.com/bid/106145",
+            "https://access.redhat.com/errata/RHSA-2019:0010",
+            "https://access.redhat.com/errata/RHSA-2019:0001",
+            "https://security.netapp.com/advisory/ntap-20190221-0003/",
+            "https://security.gentoo.org/glsa/201909-01",
+            "https://www.oracle.com/security-alerts/cpujul2020.html"
+          ],
+          "reported": "2018-12-07",
+          "severity": "critical",
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "build",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "configure",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "develop",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "recommends",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "5.020"
+            }
+          ],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        },
+        {
+          "affected_versions": [
+            ">=5.24.0,<5.24.3",
+            "==5.26.0"
+          ],
+          "cves": [
+            "CVE-2017-12814"
+          ],
+          "description": "Stack-based buffer overflow in the CPerlHost::Add method in win32/perlhost.h in Perl before 5.24.3-RC1 and 5.26.x before 5.26.1-RC1 on Windows allows attackers to execute arbitrary code via a long environment variable.\n",
+          "distribution": "perl",
+          "fixed_versions": [
+            ">=5.26.1"
+          ],
+          "id": "CPANSA-perl-2017-12814",
+          "references": [
+            "https://rt.perl.org/Public/Bug/Display.html?id=131665",
+            "https://perl5.git.perl.org/perl.git/log/refs/tags/v5.26.1-RC1",
+            "https://perl5.git.perl.org/perl.git/log/refs/tags/v5.24.3-RC1",
+            "http://www.securityfocus.com/bid/101051",
+            "https://security.netapp.com/advisory/ntap-20180426-0001/",
+            "https://www.oracle.com/security-alerts/cpujul2020.html",
+            "https://perldoc.perl.org/perl5243delta",
+            "https://github.com/Perl/perl5/issues/16051",
+            "https://perldoc.perl.org/perl5261delta",
+            "https://perldoc.perl.org/perl5280delta"
+          ],
+          "reported": "2017-09-28",
+          "severity": "critical",
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "build",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "configure",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "develop",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "recommends",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "5.020"
+            }
+          ],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        },
+        {
+          "affected_versions": [
+            "<5.34.2",
+            ">=5.36.0,<5.36.3",
+            "==5.38.0"
+          ],
+          "cves": [
+            "CVE-2023-47039"
+          ],
+          "description": "Perl for Windows relies on the system path environment variable to find the shell (cmd.exe). When running an executable which uses Windows Perl interpreter, Perl attempts to find and execute cmd.exe within the operating system. However, due to path search order issues, Perl initially looks for cmd.exe in the current working directory.\n\nAn attacker with limited privileges can exploit this behavior by placing cmd.exe in locations with weak permissions, such as C:\\ProgramData. By doing so, when an administrator attempts to use this executable from these compromised locations, arbitrary code can be executed.\n",
+          "distribution": "perl",
+          "fixed_versions": [
+            ">=5.38.1"
+          ],
+          "id": "CPANSA-perl-2023-47039",
+          "references": [
+            "https://github.com/ycdxsb/WindowsPrivilegeEscalation",
+            "https://perldoc.perl.org/perl5342delta",
+            "https://perldoc.perl.org/perl5363delta",
+            "https://perldoc.perl.org/perl5381delta",
+            "https://perldoc.perl.org/perl5382delta",
+            "https://perldoc.perl.org/perl5400delta"
+          ],
+          "reported": "2023-10-30",
+          "severity": null,
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "build",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "configure",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "develop",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "recommends",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "5.020"
+            }
+          ],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        },
+        {
+          "affected_versions": [
+            "==5.28.0",
+            "<5.26.3"
+          ],
+          "cves": [
+            "CVE-2018-18312"
+          ],
+          "description": "Perl before 5.26.3 and 5.28.0 before 5.28.1 has a buffer overflow via a crafted regular expression that triggers invalid write operations.\n",
+          "distribution": "perl",
+          "fixed_versions": [
+            ">=5.28.1"
+          ],
+          "id": "CPANSA-perl-2018-18312",
+          "references": [
+            "https://www.debian.org/security/2018/dsa-4347",
+            "https://rt.perl.org/Public/Bug/Display.html?id=133423",
+            "https://metacpan.org/changes/release/SHAY/perl-5.28.1",
+            "https://metacpan.org/changes/release/SHAY/perl-5.26.3",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/RWQGEB543QN7SSBRKYJM6PSOC3RLYGSM/",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=1646734",
+            "http://www.securitytracker.com/id/1042181",
+            "https://usn.ubuntu.com/3834-1/",
+            "http://www.securityfocus.com/bid/106179",
+            "https://access.redhat.com/errata/RHSA-2019:0010",
+            "https://access.redhat.com/errata/RHSA-2019:0001",
+            "https://security.netapp.com/advisory/ntap-20190221-0003/",
+            "https://security.gentoo.org/glsa/201909-01",
+            "https://www.oracle.com/security-alerts/cpujul2020.html",
+            "https://perldoc.perl.org/perl5281delta",
+            "https://perldoc.perl.org/perl5263delta"
+          ],
+          "reported": "2018-12-05",
+          "severity": "critical",
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "build",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "configure",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "develop",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "recommends",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "5.020"
+            }
+          ],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        },
+        {
+          "affected_versions": [
+            ">=5.16.3,<5.38.5",
+            ">=5.40.0,<5.40.3",
+            ">=5.41.0,<5.41.13"
+          ],
+          "cves": [
+            "CVE-2025-40909"
+          ],
+          "description": "Perl threads have a working directory race condition where file operations may target unintended paths.  If a directory handle is open at thread creation, the process-wide current working directory is temporarily changed in order to clone\u00a0that handle for the new thread, which is visible from any third (or\u00a0more) thread already running. This may lead to unintended operations\u00a0such as loading code or accessing files from unexpected locations,\u00a0which a local attacker may be able to exploit. The bug was introduced in commit\u00a011a11ecf4bea72b17d250cfb43c897be1341861e and released in Perl version 5.13.6",
+          "distribution": "perl",
+          "fixed_versions": [
+            ">=5.41.13",
+            ">=5.38.5,<5.40.0",
+            ">=5.40.3"
+          ],
+          "id": "CPANSA-perl-2025-40909",
+          "references": [
+            "https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1098226",
+            "https://github.com/Perl/perl5/commit/11a11ecf4bea72b17d250cfb43c897be1341861e",
+            "https://github.com/Perl/perl5/commit/918bfff86ca8d6d4e4ec5b30994451e0bd74aba9.patch",
+            "https://github.com/Perl/perl5/issues/10387",
+            "https://github.com/Perl/perl5/issues/23010",
+            "https://perldoc.perl.org/5.14.0/perl5136delta#Directory-handles-not-copied-to-threads",
+            "https://www.openwall.com/lists/oss-security/2025/05/22/2",
+            "http://www.openwall.com/lists/oss-security/2025/05/23/1",
+            "http://www.openwall.com/lists/oss-security/2025/05/30/4"
+          ],
+          "reported": "2025-05-30",
+          "severity": null,
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "build",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "configure",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "develop",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "recommends",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "5.020"
+            }
+          ],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        },
+        {
+          "affected_versions": [
+            ">0,<5.40.5",
+            ">=5.41.0,<5.42.3",
+            ">=5.43.0,<5.43.11"
+          ],
+          "cves": [
+            "CVE-2026-8376"
+          ],
+          "description": "Perl versions through 5.43.10 have a heap buffer overflow when compiling regular expressions with a repeated fixed string on 32-bit builds.  Perl_study_chunk in regcomp_study.c checked the size of the joined substring buffer in characters rather than bytes. For a quantified fixed substring with a large minimum count, the byte length mincount * l could overflow SSize_t, producing an undersized SvGROW allocation; the subsequent copy writes past the end of the buffer.  A caller that compiles an attacker-controlled regular expression on a 32-bit perl build triggers a heap buffer overflow at compile time.",
+          "distribution": "perl",
+          "fixed_versions": [
+            ">=5.40.5,<5.42.0",
+            ">=5.42.3,<5.43.0",
+            ">=5.43.11"
+          ],
+          "id": "CPANSA-perl-2026-8376",
+          "references": [
+            "https://github.com/Perl/perl5/commit/5e7f119eb2bb1181be908701f22bf7068e722f1c.patch",
+            "http://www.openwall.com/lists/oss-security/2026/05/26/1"
+          ],
+          "reported": "2026-05-26",
+          "severity": null,
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "build",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "configure",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "develop",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "recommends",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "5.020"
+            }
+          ],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        },
+        {
+          "affected_versions": [
+            "==5.26.0",
+            ">=5.20.0,<5.24.3"
+          ],
+          "cves": [
+            "CVE-2017-12883"
+          ],
+          "description": "Buffer overflow in the S_grok_bslash_N function in regcomp.c in Perl 5 before 5.24.3-RC1 and 5.26.x before 5.26.1-RC1 allows remote attackers to disclose sensitive information or cause a denial of service (application crash) via a crafted regular expression with an invalid '\\\\N{U+...}' escape.\n",
+          "distribution": "perl",
+          "fixed_versions": [
+            ">=5.26.1"
+          ],
+          "id": "CPANSA-perl-2017-12883",
+          "references": [
+            "https://perl5.git.perl.org/perl.git/log/refs/tags/v5.26.1-RC1",
+            "https://perl5.git.perl.org/perl.git/log/refs/tags/v5.24.3-RC1",
+            "https://perl5.git.perl.org/perl.git/commitdiff/2be4edede4ae226e2eebd4eff28cedd2041f300f#patch1",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=1492093",
+            "http://www.securityfocus.com/bid/100852",
+            "http://mirror.cucumberlinux.com/cucumber/cucumber-1.0/source/lang-base/perl/patches/CVE-2017-12883.patch",
+            "https://rt.perl.org/Public/Bug/Display.html?id=131598",
+            "http://www.debian.org/security/2017/dsa-3982",
+            "https://security.netapp.com/advisory/ntap-20180426-0001/",
+            "https://www.oracle.com/security-alerts/cpujul2020.html",
+            "https://github.com/Perl/perl5/issues/16025",
+            "https://perldoc.perl.org/perl5243delta",
+            "https://perldoc.perl.org/perl5280delta",
+            "https://perldoc.perl.org/perl5261delta"
+          ],
+          "reported": "2017-09-19",
+          "severity": "critical",
+          "queried_version": null,
+          "scopes": [
+            {
+              "phase": "build",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "configure",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "develop",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "recommends",
+              "version": "5.020"
+            },
+            {
+              "phase": "runtime",
+              "relation": "requires",
+              "version": "5.020"
+            },
+            {
+              "phase": "test",
+              "relation": "requires",
+              "version": "5.020"
+            }
+          ],
+          "triage_status": "interpreter/deployment risk; no project-level exemption",
+          "static_evidence": "The supported >=5.20 constraint includes historical affected interpreters. Library regexes are fixed rather than caller-supplied patterns; text and PCM are external inputs. A version string or local interpreter directory name does not establish that every engine patch is present. Require patched interpreters; do not treat local tests as remediation."
+        }
+      ]
+    }
+  ]
+}

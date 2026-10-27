@@ -3,7 +3,7 @@ use 5.020;
 use strict;
 use warnings;
 use Ham::RTTY::_Internal::IO       qw(write_bytes);
-use Carp                         qw(croak);
+use Carp                           qw(croak);
 use Ham::RTTY::_Internal::Validate qw(fail samples);
 sub state { my ($self) = @_; return $self->{state} }    ## no critic (Subroutines::ProhibitBuiltinHomonyms)
 
@@ -16,7 +16,8 @@ sub _quantize {
 
 sub feed {
     my ($self, $values) = @_;
-    fail('RTTY_E_STATE', 'WAV writer is finalized or failed') if $self->{state} =~ /FINISHED|FAILED/x;
+    fail('RTTY_E_STATE', 'WAV writer is finalized or failed')
+        if $self->{state} =~ /FINISHED|FAILED/x;
     samples($values, 1000000);
     fail('RTTY_E_ARGUMENT', 'More samples than declared')
         if $self->{written} + @{$values} > $self->{count};
@@ -43,8 +44,9 @@ sub result { my ($self) = @_; return {state => $self->{state}, samples => $self-
 sub finish {
     my ($self) = @_;
     fail('RTTY_E_STATE', 'WAV writer failed') if $self->{state} eq 'FAILED';
-    return $self->result                    if $self->{state} eq 'FINISHED';
-    fail('RTTY_E_ARGUMENT', 'Fewer samples than declared') unless $self->{written} == $self->{count};
+    return $self->result                      if $self->{state} eq 'FINISHED';
+    fail('RTTY_E_ARGUMENT', 'Fewer samples than declared')
+        unless $self->{written} == $self->{count};
     eval { write_bytes($self->{fh}, "\0") if $self->{bytes} % 2; 1 }
         or do { $self->{state} = 'FAILED'; croak $@ };
     $self->{state} = 'FINISHED';

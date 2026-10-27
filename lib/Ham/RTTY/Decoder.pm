@@ -121,12 +121,16 @@ sub feed {
     my $timed = to_timed($events);
     fail('RTTY_E_RESOURCE', 'Event history exceeds max_segments')
         if @{$self->{segments}} + @{$timed->{segments}} > $self->{max_segments};
+    my $total = $self->{time};
+    $total += $_->{duration} for @{$timed->{segments}};
+    fail('RTTY_E_RESOURCE', 'Cumulative duration exceeds exact integer range') if $total > 2**52;
+
     for my $s (@{$timed->{segments}}) {
         $self->_run($s->{state}, $s->{duration});
         if (@{$self->{segments}} && $self->{segments}[-1]{state} eq $s->{state}) {
             $self->{segments}[-1]{duration} += $s->{duration};
         }
-        else { push @{$self->{segments}}, {%{$s}} }
+        else { push @{$self->{segments}}, {state => $s->{state}, duration => $s->{duration}} }
     }
     $self->{state} = 'ACTIVE';
     return $self;

@@ -40,8 +40,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
-      pages: write
-      id-token: write
+      pages: write # Publish the verified documentation artifact to Pages.
+      id-token: write # Authenticate the deploy job with short-lived OIDC.
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

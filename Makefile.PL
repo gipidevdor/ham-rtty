@@ -4,7 +4,7 @@ use warnings;
 use ExtUtils::MakeMaker 7.22;
 my %provides;
 for my $module (
-    qw(Ham::RTTY Ham::RTTY::Encoder Ham::RTTY::Decoder Ham::RTTY::Events
+    qw(Ham::RTTY Ham::RTTY::Baudot Ham::RTTY::Encoder Ham::RTTY::Decoder Ham::RTTY::Events
     Ham::RTTY::Generator Ham::RTTY::Detector Ham::RTTY::Audio Ham::RTTY::MIDI
     Ham::RTTY::Result Ham::RTTY::Error)
     )
@@ -54,7 +54,7 @@ WriteMakefile(
     META_MERGE => {
         provides       => \%provides,
         dynamic_config => 0,
-        keywords       => [qw(morse cw amateur-radio wav midi)],
+        keywords       => [qw(rtty ita2 baudot afsk amateur-radio wav midi)],
         'meta-spec'    => {version => 2},
         resources      => {
             repository => {
@@ -75,6 +75,7 @@ WriteMakefile(
                 requires => {
                     'Perl::Tidy'              => '20260826',
                     'Perl::Critic'            => 0,
+                    'Perl::MinimumVersion'    => '1.44',
                     'Devel::Cover'            => 0,
                     'Test::Pod'               => '1.48',
                     'Test::CPAN::Meta'        => 0,
@@ -90,7 +91,7 @@ WriteMakefile(
                     'Pod::Simple'             => '3.48',
                     'Markdown::Perl'          => '1.14',
                     'HTML::Tree'              => '5.07',
-                    'URI'                     => '5.00',
+                    'URI'                     => '5.36',
                 }
             }
         },

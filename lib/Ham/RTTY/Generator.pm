@@ -5,7 +5,7 @@ use warnings;
 use Ham::RTTY::Events              qw(validate_events to_samples);
 use Ham::RTTY::_Internal::Validate qw(fail number integer options named_arguments);
 use Ham::RTTY::_Internal::Backend;
-our $VERSION = '0.001';
+our $VERSION = '0.01';
 my $PI = 4 * atan2(1, 1);
 
 sub new {
@@ -81,21 +81,24 @@ sub stream {
                 2 * $PI * ($self->{mark} + ($high ? $self->{shift} : 0)) / $self->{sample_rate};
             if ($self->{backend} eq 'pdl') {
                 push @out,
-                    @{Ham::RTTY::_Internal::PDL::fsk_tone($phase, $step, $count, $self->{amplitude})
+                    @{
+                    Ham::RTTY::_Internal::PDL::fsk_tone($phase, $step, $count, $self->{amplitude},
+                        $offset)
                     };
-                $phase += $step * $count;
-                $phase -= 2 * $PI * int($phase / (2 * $PI));
             }
             else {
-                for (1 .. $count) {
-                    push @out, $self->{amplitude} * sin($phase);
-                    $phase += $step;
-                    $phase -= 2 * $PI if $phase >= 2 * $PI;
+                for my $i (0 .. $count - 1) {
+                    push @out, $self->{amplitude} * sin($phase + $step * ($offset + $i));
                 }
             }
             $absolute += $count;
             $offset   += $count;
-            if ($offset == $seg->{samples}) { ++$si; $offset = 0 }
+            if ($offset == $seg->{samples}) {
+                $phase += $step * $seg->{samples};
+                $phase -= 2 * $PI * int($phase / (2 * $PI));
+                ++$si;
+                $offset = 0;
+            }
         }
         $self->{produced} = $absolute;
         $self->{state}    = 'FINISHED' if $si > $#segments;

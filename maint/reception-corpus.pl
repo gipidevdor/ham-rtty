@@ -2,48 +2,54 @@
 use 5.020;
 use strict;
 use warnings;
-use FindBin;
-use lib "$FindBin::Bin/../lib", "$FindBin::Bin/../t/lib";
-use JSON::PP;
-use Ham::RTTY;
-use CorpusMetrics qw(character_error_rate);
-use File::Spec;
+use lib 'lib';
 use Carp qw(croak);
-my $root = "$FindBin::Bin/..";
-open my $input, '<:raw', "$root/corpus/real.json" or croak $!;
-my $cases = JSON::PP->new->decode(do { local $/ = undef; <$input> });
-close $input or croak $!;
+use JSON::PP;
+use Digest::SHA qw(sha256_hex);
+use Ham::RTTY;
+open my $in, '<:raw', 'corpus/real.json' or croak $!;
+my $cases = JSON::PP->new->decode(do { local $/ = undef; <$in> });
+close $in or croak $!;
+my @missing = map { $_->{file} } grep { $_->{status} ne 'reviewed' || !-f $_->{file} } @{$cases};
+croak "Missing reviewed real RTTY fixtures: @missing\n" if @missing;
 my @results;
 
 for my $case (@{$cases}) {
-    my $result =
-        Ham::RTTY->new->read_wav(File::Spec->catfile($root, $case->{file}), wpm => $case->{wpm});
-    my $cer           = character_error_rate($case->{reference}, $result->text);
-    my $estimated     = Ham::RTTY->new->read_wav(File::Spec->catfile($root, $case->{file}));
-    my $cer_estimated = character_error_rate($case->{reference}, $estimated->text);
+    for my $key (qw(source_url license sha256 reference max_regression_cer)) {
+        croak "Missing provenance/budget: $case->{file} $key\n" unless defined $case->{$key};
+    }
+    open my $audio, '<:raw', $case->{file} or croak $!;
+    my $hash = Digest::SHA->new(256)->addfile($audio)->hexdigest;
+    close $audio or croak $!;
+    croak "Fixture hash mismatch: $case->{file}\n" unless $hash eq $case->{sha256};
+    my $result = Ham::RTTY->new->read_wav(
+        $case->{file},
+        baud  => $case->{baud},
+        shift => $case->{shift},
+        mark  => $case->{mark} // 2125
+    );
+    my $cer = distance($result->text, $case->{reference}) / (length($case->{reference}) || 1);
     push @results,
-        {
-        name                         => $case->{name},
-        reference                    => $case->{reference},
-        text                         => $result->text,
-        cer                          => $cer,
-        cer_hinted                   => $cer,
-        cer_estimated                => $cer_estimated,
-        text_estimated               => $estimated->text,
-        estimated_wpm                => $estimated->wpm,
-        max_regression_cer_hinted    => $case->{max_regression_cer_hinted},
-        max_regression_cer_estimated => $case->{max_regression_cer_estimated},
-        quality_target_cer           => $case->{quality_target_cer},
-        meets_quality_target         => $cer <= $case->{quality_target_cer} ? JSON::PP::true
-        : JSON::PP::false,
-        meets_quality_target_estimated => $cer_estimated <= $case->{quality_target_cer}
-        ? JSON::PP::true
-        : JSON::PP::false,
-        max_regression_cer  => $case->{max_regression_cer},
-        warnings            => $result->warnings,
-        warnings_estimated  => $estimated->warnings,
-        frequency           => $result->frequency,
-        frequency_estimated => $estimated->frequency
-        };
+        {file => $case->{file}, cer => $cer, text => $result->text, warnings => $result->warnings};
+    croak "CER exceeds quality target or regression budget: $case->{file}: $cer\n"
+        if $cer > 0.25 || $cer > $case->{max_regression_cer};
 }
-print JSON::PP->new->utf8->canonical->pretty->encode(\@results);
+print JSON::PP->new->canonical->pretty->encode(\@results);
+
+sub distance {
+    my ($actual, $expected) = @_;
+    my @previous = (0 .. length $expected);
+    for my $i (1 .. length $actual) {
+        my @next = ($i);
+        for my $j (1 .. length $expected) {
+            my @choices = (
+                $previous[$j] + 1,
+                $next[$j - 1] + 1,
+                $previous[$j - 1] + (substr($actual, $i - 1, 1) ne substr($expected, $j - 1, 1))
+            );
+            $next[$j] = (sort { $a <=> $b } @choices)[0];
+        }
+        @previous = @next;
+    }
+    return $previous[-1];
+}

@@ -92,10 +92,10 @@ sub detector {
     return Ham::RTTY::Detector->new(%args);
 }
 
-sub decode_samples { my ($self, @args) = @_; return $self->_decode_samples(0, @args) }
+sub decode_samples { my ($self, @args) = @_; return $self->_decode_samples(@args) }
 
 sub _decode_samples {
-    my ($self, $all, $values, @pairs) = @_;
+    my ($self, $values, @pairs) = @_;
     Ham::RTTY::_Internal::Validate::samples($values, 100000000);
     my $detector = $self->detector(@pairs);
     for (my $offset = 0; $offset < @{$values}; $offset += 4096) {
@@ -218,10 +218,10 @@ sub generate_midi {
     return Ham::RTTY::MIDI->new(%args)->write($fh, $encoder->events($text));
 }
 
-sub decode_wav { my ($self, @args) = @_; return $self->_decode_wav(0, @args) }
+sub decode_wav { my ($self, @args) = @_; return $self->_decode_wav(@args) }
 
 sub _decode_wav {
-    my ($self, $all, $fh, @pairs) = @_;
+    my ($self, $fh, @pairs) = @_;
     my %args = named_arguments(@pairs);
     options(\%args,
         qw(mark shift reverse baud variant usos atc search min_frequency max_frequency frequency_step max_frames max_segments stereo max_bytes backend block_samples)
@@ -233,17 +233,14 @@ sub _decode_wav {
     my $reader   = Ham::RTTY::Audio->new(%audio)->reader($fh);
     my $detector = Ham::RTTY::Detector->new(%args, sample_rate => $reader->{sample_rate});
     while (my $block = $reader->{next}->()) { $detector->feed($block) }
-    my $result  = $detector->finish;
-    my @results = ($result);
+    my $result = $detector->finish;
 
     if (@{$reader->{warnings}}) {
-        for my $index (0 .. $#results) {
-            my $snapshot = $results[$index]->as_hash;
-            push @{$snapshot->{warnings}}, @{$reader->{warnings}};
-            $results[$index] = Ham::RTTY::Result->new(%{$snapshot});
-        }
+        my $snapshot = $result->as_hash;
+        push @{$snapshot->{warnings}}, @{$reader->{warnings}};
+        $result = Ham::RTTY::Result->new(%{$snapshot});
     }
-    return $all ? \@results : $results[0];
+    return $result;
 }
 1;
 

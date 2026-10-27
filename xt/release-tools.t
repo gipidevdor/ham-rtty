@@ -66,7 +66,7 @@ use warnings;
 sub new { return bless {}, shift }
 sub merge_runs { return $_[0] }
 sub cover { return $_[0] }
-sub items { return split /\n/, $ENV{HAM_CW_TEST_COVER_ITEMS} }
+sub items { return split /\n/, $ENV{HAM_RTTY_TEST_COVER_ITEMS} }
 sub calculate_summary { return }
 sub summary { return {statement => {percentage => 100}, branch => {percentage => 100}} }
 1;
@@ -87,19 +87,19 @@ for my $case (
     ['unknown',   [@files, 'lib/Ham/RTTY/Unshipped.pm'],  qr/Unexpected production coverage/]
     )
 {
-    local $ENV{HAM_CW_TEST_COVER_ITEMS} = join "\n", @{$case->[1]};
+    local $ENV{HAM_RTTY_TEST_COVER_ITEMS} = join "\n", @{$case->[1]};
     ($status, $output) = run("-I$temporary", 'maint/coverage.pl', 'test-db');
     isnt($status, 0, "$case->[0] coverage cannot pass with a 100% subset");
     like($output, $case->[2], "$case->[0] coverage explains failure");
 }
 {
-    local $ENV{HAM_CW_TEST_COVER_ITEMS} = join "\n", @files;
+    local $ENV{HAM_RTTY_TEST_COVER_ITEMS} = join "\n", @files;
     ($status, $output) = run("-I$temporary", 'maint/coverage.pl', 'test-db');
     is($status, 0, 'complete source coverage passes') or diag($output);
     like($output, qr/"percentage"\s*:\s*100/x, 'complete coverage summary is reported');
 }
 {
-    local $ENV{HAM_CW_TEST_COVER_ITEMS} = join "\n",
+    local $ENV{HAM_RTTY_TEST_COVER_ITEMS} = join "\n",
         map { "C:\\checkout\\blib\\$_" =~ tr{/}{\\}r } @files;
     ($status, $output) = run("-I$temporary", 'maint/coverage.pl', 'test-db');
     is($status, 0, 'absolute Windows blib paths map to the production inventory') or diag($output);

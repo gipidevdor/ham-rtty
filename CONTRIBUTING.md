@@ -26,7 +26,7 @@ make test
 Use your Perl's make program (`gmake` on some Windows installations). `prove -lr t`
 is an alternative that reads `lib` directly and needs no installation.
 
-Author checks additionally need PDL, Perl::Critic, the pinned Perl::Tidy release,
+Author checks additionally need codespell 2.4.1 (on PATH), Perl::MinimumVersion, PDL, Perl::Critic, the pinned Perl::Tidy release,
 Devel::Cover and the POD/metadata tools declared under development prerequisites.
 These commands use `cpanm` from App::cpanminus. Install it through your Perl
 package manager or with `cpan App::cpanminus` if needed.
@@ -137,12 +137,12 @@ that another platform passes.
 
 ## Recording measurements
 
-Keep local results in `docs/current-results.json` and CI platform artifacts in
+Keep local results in `docs/performance-results.json` and CI platform artifacts in
 `docs/platform-results.json`, with the source revision,
 measurement date, environment, exact commands and hashes of the measured inputs.
 Run timing workloads sequentially without concurrent tests or coverage collection.
 Report the timer (CPU or wall), repetitions, message, sample rate, block size,
-tone-search mode and excluded work. Keep generation, reception and WAV conversion
+tone-search mode and configured baud and excluded work. Keep generation, reception and WAV conversion
 separate. `auto` selects availability, so never describe it as a speed selector.
 
 Update `docs/benchmarks.md`, `docs/verification.md` and corpus claims together.

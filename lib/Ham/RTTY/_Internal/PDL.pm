@@ -7,9 +7,9 @@ use PDL::LiteF;
 my $PI = 4 * atan2(1, 1);
 
 sub fsk_tone {
-    my ($phase, $step, $count, $amplitude) = @_;
+    my ($phase, $step, $count, $amplitude, $offset) = @_;
     my $indices = PDL->sequence(PDL::double(), $count);
-    return [(($indices * $step + $phase)->sin * $amplitude)->list];
+    return [((($indices + $offset) * $step + $phase)->sin * $amplitude)->list];
 }
 
 # One broadcast projects both tones; first dimension is time, second is tone.

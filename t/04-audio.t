@@ -83,7 +83,7 @@ open my $out, '>', \$empty or die $!;
 my $writer = Ham::RTTY::Audio->new->writer($out, sample_count => 2, bits => 16);
 eval { $writer->feed([0, 2]) };
 is((ref($@) ? $@->code : "$@"), 'RTTY_E_ARGUMENT', 'reject invalid block');
-is($writer->state,              'READY',         'invalid block is atomic');
+is($writer->state,              'READY',           'invalid block is atomic');
 eval { $writer->finish };
 is((ref($@) ? $@->code : "$@"), 'RTTY_E_ARGUMENT', 'reject premature finish');
 $writer->feed([0, 0]);

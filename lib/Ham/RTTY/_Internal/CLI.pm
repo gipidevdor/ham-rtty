@@ -112,7 +112,6 @@ sub _help_options {
         my ($title, @names) = @{$group};
         @names = grep { $available{$_} } @names;
         next unless @names;
-        $title = $headings->{$title} // $title;
         $text .= "\n$title:\n";
         for my $name (@names) {
             local $Text::Wrap::columns  = 78;
@@ -324,21 +323,13 @@ sub _output {
 
 sub _receive_output {
     my ($result, $json, $strict, $stderr) = @_;
-    my ($bytes, $status);
-    my $all     = ref($result) eq 'ARRAY';
-    my @results = $all ? @{$result} : ($result);
-    $status = !(grep { $_->has_text } @results)
-        || ($strict && (grep { $_->has_warnings } @results)) ? 1 : 0;
-    $bytes =
+    my $status = !$result->has_text || ($strict && $result->has_warnings) ? 1 : 0;
+    my $bytes =
         $json
-        ? JSON::PP->new->utf8->canonical->pretty->encode(
-        $all ? [map { $_->as_hash } @results] : $result->as_hash)
-        : _bytes(
-        join('', map { ($all ? $_->frequency . " Hz: " : '') . $_->text . "\n" } @results));
+        ? JSON::PP->new->utf8->canonical->pretty->encode($result->as_hash)
+        : _bytes($result->text . "\n");
     if (!$json) {
-        for my $station (@results) {
-            _write($stderr, _bytes("$_->{code}: $_->{message}\n")) for @{$station->warnings};
-        }
+        _write($stderr, _bytes("$_->{code}: $_->{message}\n")) for @{$result->warnings};
     }
     return ($bytes, $status);
 }

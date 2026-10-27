@@ -73,11 +73,11 @@ like($home, qr{<table\b}, 'Markdown tables are real HTML tables');
 like($home, qr{<pre\b[^>]*><code class="language-(?:sh|perl)"}, 'fenced code retains its language');
 like($home, qr{href="api/Ham/RTTY.html"}, 'Markdown source links lead to rendered POD');
 my $pod = read_file("$site/api/Ham/RTTY.html");
-like($pod, qr{id="generate_wav"},     'public method headings have linkable anchors');
-like($pod, qr{href="CW/Encoder.html}, 'links between project modules stay on the site');
+like($pod, qr{id="generate_wav"},       'public method headings have linkable anchors');
+like($pod, qr{href="RTTY/Encoder.html}, 'links between project modules stay on the site');
 like(
     read_file("$site/docs/dependency-audit.html"),
-    qr{href="https://metacpan.org/pod/Text::Morse"},
+    qr{href="https://metacpan.org/pod/PDL"},
     'external Perl references retain MetaCPAN links'
 );
 like($pod, qr{href="../../assets/site.css"}, 'nested pages resolve CSS below a project subpath');
@@ -106,8 +106,8 @@ like(
     qr{download="download" href="text-events.pl"|href="text-events.pl" download="download"},
     'runnable examples provide the original source download'
 );
-ok(-f "$site/corpus/real/4u1un.wav",     'licensed corpus audio is available');
-ok(-f "$site/docs/current-results.json", 'raw measurement evidence is available');
+ok(-f "$site/corpus/real.json",              'recording inventory is available');
+ok(-f "$site/docs/performance-results.json", 'raw measurement evidence is available');
 ok(
     -f "$site/license.html" && -f "$site/notice.html",
     'project license and attribution are published'

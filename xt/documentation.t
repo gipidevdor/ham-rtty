@@ -25,12 +25,12 @@ sub run_example {
     my $log       = File::Spec->catfile($directory, 'output.log');
     open my $out, '>:encoding(UTF-8)', $script or die $!;
     print {$out} q{BEGIN {
-        open STDOUT, '>', $ENV{HAM_CW_DOC_LOG} or die $!;
+        open STDOUT, '>', $ENV{HAM_RTTY_DOC_LOG} or die $!;
         open STDERR, '>&', \*STDOUT or die $!;
     }} . "\n" . $source or die $!;
     close $out       or die $!;
     chdir $directory or die $!;
-    local $ENV{HAM_CW_DOC_LOG} = $log;
+    local $ENV{HAM_RTTY_DOC_LOG} = $log;
     my $status = system $^X, '-Mwarnings=FATAL,all', '-I' . $library, $script;
     chdir $original        or die $!;
     is($status, 0, $label) or diag(read_text($log));

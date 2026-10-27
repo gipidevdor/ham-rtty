@@ -29,7 +29,7 @@ my $cli = File::Spec->catfile($prefix, 'bin', $^O eq 'MSWin32' ? 'ham-rtty.bat' 
 croak "Installed command is missing: $cli" unless -f $cli;
 run_command($cli, '--version');
 run_command($cli, 'encode', 'CQ DE TESTCALL');
-run_command($cli, 'decode', '--', '... --- ...');
+run_command($cli, 'decode', '--', '[LTRS] 00011');
 run_command($cli, 'events', '--sample-rate', '8000', 'E');
 my $temporary = tempdir('ham-rtty-installed-cli-XXXXXX', TMPDIR => 1, CLEANUP => 1);
 my $wave      = File::Spec->catfile($temporary, 'test message.wav');

@@ -3,10 +3,10 @@ use 5.020;
 use strict;
 use warnings;
 use overload q{""} => 'as_string', fallback => 1;
-use Carp                     qw(croak);
-use Storable                 qw(dclone);
+use Carp                       qw(croak);
+use Storable                   qw(dclone);
 use Ham::RTTY::_Internal::Data qw(plain_data);
-our $VERSION = '0.001';
+our $VERSION = '0.01';
 
 sub _argument_error {
     my ($message) = @_;
@@ -58,8 +58,8 @@ Ham::RTTY::Error - structured exceptions for argument, timing and I/O failures
     use warnings;
     use Ham::RTTY;
 
-    my $cw = Ham::RTTY->new;
-    my $ok = eval { $cw->encode('CQ!'); 1 };
+    my $rtty = Ham::RTTY->new;
+    my $ok = eval { $rtty->encode('CQ!'); 1 };
     if (!$ok) {
         my $error = $@;
         if (ref($error) && $error->isa('Ham::RTTY::Error')) {

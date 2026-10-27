@@ -6,7 +6,9 @@ use Ham::RTTY;
 use Ham::RTTY::_Internal::Backend;
 my @backends = ('perl');
 push @backends, 'pdl' if Ham::RTTY::_Internal::Backend::resolve('auto') eq 'pdl';
-my $message = 'CQ TEST 123 73?';
+srand 170;
+my @alphabet = split //, "ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789-?:'()/.,=+";
+my $message  = 'CQ ' . join('', map { $alphabet[int rand @alphabet] } 1 .. 14);
 
 for my $backend (@backends) {
     for my $rate (8000, 16000) {

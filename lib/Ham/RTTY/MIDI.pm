@@ -3,7 +3,7 @@ use 5.020;
 use strict;
 use warnings;
 use Scalar::Util                   qw(openhandle);
-use Ham::RTTY::Events              qw(validate_events);
+use Ham::RTTY::Events              qw(validate_events to_timed);
 use Ham::RTTY::_Internal::IO       qw(write_bytes with_file);
 use Ham::RTTY::_Internal::Validate qw(fail integer number options named_arguments);
 our $VERSION = '0.01';
@@ -35,6 +35,7 @@ sub _vlq {
 sub encode {
     my ($self, $events) = @_;
     my $field = validate_events($events);
+    $events = to_timed($events) if $field eq 'duration' && $events->{unit} ne 'us';
     my $tempo = int(60_000_000 / $self->{bpm} + 0.5);
 
     # Keep the original event units until the final tick boundary.
