@@ -280,3 +280,19 @@ coverage reaches 1,750/1,751 statements (99.94%) and 607/622 branches (97.59%),
 with every production module passing its 95%/90% gate. Raw module counts are
 in the comparison report. No coverage points are excluded. Independent
 field transcripts and the dependency audit remain open release gates.
+
+## CI dependency remediation, 2026-10-30
+
+[Dependency minima and CI diagnosis](security-ci.md#dependency-minima-and-ci-diagnosis-2026-10-30)
+record eight eliminated advisory ranges: the same-database declared comparison
+falls from 38 to 30 matches. Encode, Storable and Cwd minima are enforced in
+modern/legacy metadata; compatibility jobs install declared dependencies.
+Local warnings-fatal tests pass 21 files / 2,099 assertions and author checks
+pass 12 files / 840 assertions, including twelve new metadata boundary checks.
+Perl 5.20 compatibility and package version 0.001 are retained.
+
+[Raw evidence](ci-remediation-results.json) keeps remaining blockers explicit.
+The installed interpreter/File::Temp audit and independently annotated reception
+fixtures still prevent an all-green CI/release-qualified claim. The four off-air
+examples visible on Pages already run in the ordinary suite; their references
+retain their stated independent-decoder limitations.

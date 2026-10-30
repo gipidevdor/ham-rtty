@@ -1,0 +1,107 @@
+{
+  "date": "2026-10-30",
+  "baseline_revision": "adc425014ad1cb9d782937b87bce048f9f8a7f17",
+  "source_revision": "a5598fcb987e969612d3f12cd84d87891121a6f9",
+  "makefile_sha256": "dce2ccd536edfb60f11fded53a45d406a7044bef25551070f8aa3d07dbb32628",
+  "scanner": {
+    "db": "20261018.001",
+    "version": "20261013.002"
+  },
+  "comparison": "Same local database before/after; unique distribution/advisory matches, no exclusions or scope changes.",
+  "minimum_versions": {
+    "Encode": "3.12",
+    "Storable": "3.41",
+    "Cwd": "3.65",
+    "perl": "5.020"
+  },
+  "declared_before": 38,
+  "declared_after": 30,
+  "scanner_errors_before": [],
+  "scanner_errors_after": [],
+  "removed_advisories": [
+    "CPANSA-Encode-2011-2939",
+    "CPANSA-Encode-2016-01",
+    "CPANSA-Encode-2021-01",
+    "CPANSA-PathTools-2016-01",
+    "CPANSA-PathTools-2016-02",
+    "CPANSA-Storable-2017-01",
+    "CPANSA-Storable-2017-20230",
+    "CPANSA-Storable-2026-57433"
+  ],
+  "remaining_advisories": {
+    "File-Temp": [
+      "CPANSA-File-Temp-2011-4116"
+    ],
+    "perl": [
+      "CPANSA-perl-2018-6913",
+      "CPANSA-perl-2018-6798",
+      "CPANSA-perl-2026-19487",
+      "CPANSA-perl-2025-40909",
+      "CPANSA-perl-2015-8608",
+      "CPANSA-perl-2018-18314",
+      "CPANSA-perl-2023-47038",
+      "CPANSA-perl-2026-57432",
+      "CPANSA-perl-2020-10543",
+      "CPANSA-perl-2016-6185",
+      "CPANSA-perl-2022-48522",
+      "CPANSA-perl-2023-47100",
+      "CPANSA-perl-2026-8376",
+      "CPANSA-perl-2026-15534",
+      "CPANSA-perl-2017-12883",
+      "CPANSA-perl-2018-6797",
+      "CPANSA-perl-2016-2381",
+      "CPANSA-perl-2018-18312",
+      "CPANSA-perl-2018-18311",
+      "CPANSA-perl-2020-10878",
+      "CPANSA-perl-2018-18313",
+      "CPANSA-perl-2020-12723",
+      "CPANSA-ExtUtils-ParseXS-2016-1238",
+      "CPANSA-perl-2017-12837",
+      "CPANSA-perl-2024-56406",
+      "CPANSA-perl-2023-47039",
+      "CPANSA-perl-2026-13221",
+      "CPANSA-perl-2015-8853",
+      "CPANSA-perl-2017-12814"
+    ]
+  },
+  "installed_hosted_baseline": {
+    "run_url": "https://github.com/gipidevdor/ham-rtty/actions/runs/41116933237",
+    "artifact_name": "cpan-security-audit",
+    "matches": 2,
+    "errors": [],
+    "advisories": {
+      "File-Temp": [
+        "CPANSA-File-Temp-2011-4116"
+      ],
+      "perl": [
+        "CPANSA-perl-2026-15534"
+      ]
+    }
+  },
+  "pages_corpus_review": {
+    "strict_inventory": "https://gipidevdor.github.io/ham-rtty/corpus/real.json",
+    "missing_entries": 4,
+    "available_examples": "https://gipidevdor.github.io/ham-rtty/corpus/free.json",
+    "off_air_examples": 4,
+    "generated_examples": 1,
+    "reference_status": "Independent minimodem output, explicitly not authoritative/human-verified; already tested in t/30-external-reception.t."
+  },
+  "validation": {
+    "ordinary_files": 21,
+    "ordinary_assertions": 2099,
+    "ordinary_exit_status": 0,
+    "author_files": 12,
+    "author_assertions": 840,
+    "author_exit_status": 0,
+    "new_metadata_assertions": 12,
+    "actionlint": "pass",
+    "zizmor": "pass; no new suppressions"
+  },
+  "overall_ci_green": false,
+  "remaining_blockers": [
+    "Four independently annotated off-air acceptance fixtures remain missing",
+    "Installed Perl/File::Temp advisories have no fixed release listed in the database",
+    "Perl >=5.20 still overlaps 29 interpreter advisories"
+  ],
+  "gates_removed": false
+}

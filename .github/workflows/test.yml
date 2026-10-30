@@ -131,8 +131,6 @@ jobs:
         env:
           COVERAGE_DIRECTORY: ${{ runner.temp }}/ham-rtty-cover
         run: perl maint/coverage.pl "$COVERAGE_DIRECTORY"
-      - name: Real RTTY recording acceptance
-        run: perl maint/reception-corpus.pl
       - name: Test release archive
         run: |
           make distcheck
@@ -140,3 +138,5 @@ jobs:
           make dist
           perl -Ilib -MHam::RTTY -e 'exec $^X, "maint/check-dist.pl", "Ham-RTTY-$Ham::RTTY::VERSION.tar.gz"'
           perl -Ilib -MHam::RTTY -e 'exec $^X, "maint/check-install.pl", "Ham-RTTY-$Ham::RTTY::VERSION.tar.gz"'
+      - name: Real RTTY recording acceptance
+        run: perl maint/reception-corpus.pl
