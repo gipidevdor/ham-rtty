@@ -29,7 +29,7 @@ jobs:
           arch: x86_64
           prepare: |
             set -eu
-            pkg install -y perl5 p5-App-cpanminus
+            pkg install -y perl5 p5-App-cpanminus curl ca_root_nss
           run: |
             set -eu
             export AUTOMATED_TESTING=1
