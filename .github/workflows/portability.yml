@@ -1,0 +1,97 @@
+name: Portability
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: portability-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  freebsd:
+    name: FreeBSD ${{ matrix.release }} / Perl
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        release: ['14.5', '15.1']
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Build, test and verify installed command in FreeBSD
+        uses: vmactions/freebsd-vm@c46abacb49f09938ca4e1702d15d836285d694cc # v1.5.9
+        with:
+          release: ${{ matrix.release }}
+          arch: x86_64
+          prepare: |
+            set -eu
+            pkg install -y perl5 p5-App-cpanminus
+          run: |
+            set -eu
+            export AUTOMATED_TESTING=1
+            export HARNESS_PERL_SWITCHES='-Mwarnings=FATAL,all'
+            uname -a > portability-environment.txt
+            perl -V >> portability-environment.txt
+            cat portability-environment.txt
+            perl -e 'require 5.020;'
+            cpanm --mirror https://cpan.metacpan.org --mirror-only --notest ExtUtils::MakeMaker
+            cpanm --mirror https://cpan.metacpan.org --mirror-only --notest --installdeps .
+            perl Makefile.PL
+            make
+            make test
+            perl -Ilib examples/workflows.pl
+            perl maint/check-cli-install.pl 'portability install' --build
+      - name: Save FreeBSD environment
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: portability-freebsd-${{ matrix.release }}
+          path: portability-environment.txt
+          if-no-files-found: error
+  cygwin:
+    name: Cygwin x86_64 / Perl
+    runs-on: windows-latest
+    timeout-minutes: 30
+    env:
+      CYGWIN: winsymlinks:native
+    steps:
+      - name: Keep source line endings
+        run: git config --global core.autocrlf input
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Install Cygwin and build tools
+        uses: cygwin/cygwin-install-action@5a1b0cd107181fa6bb6bf3f90d500f4fb3132f18 # v7
+        with:
+          install-dir: 'C:\cygwin'
+          packages: perl perl-ExtUtils-MakeMaker make gcc-core gcc-g++ curl
+      - name: Build, test and verify installed command in Cygwin
+        shell: C:\cygwin\bin\bash.exe --login -o igncr -eo pipefail '{0}'
+        run: |
+          cd "$(cygpath -u "$GITHUB_WORKSPACE")"
+          export AUTOMATED_TESTING=1
+          export HARNESS_PERL_SWITCHES='-Mwarnings=FATAL,all'
+          uname -a > portability-environment.txt
+          perl -V >> portability-environment.txt
+          cat portability-environment.txt
+          perl -e 'require 5.020;'
+          curl --fail --location --retry 3 --output /tmp/ham-rtty-cpanm https://raw.githubusercontent.com/miyagawa/cpanminus/99cef089c7fc3188a19822f594515dbd5295b855/cpanm
+          echo '137e8c5856e09867f6d7631d6d67a5e7778166962e29830c573cbbbab6ed2e21  /tmp/ham-rtty-cpanm' | sha256sum --check --status
+          perl /tmp/ham-rtty-cpanm --mirror https://cpan.metacpan.org --mirror-only --notest ExtUtils::MakeMaker
+          perl /tmp/ham-rtty-cpanm --mirror https://cpan.metacpan.org --mirror-only --notest --installdeps .
+          perl Makefile.PL
+          make
+          make test
+          perl -Ilib examples/workflows.pl
+          perl maint/check-cli-install.pl 'portability install' --build
+      - name: Save Cygwin environment
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: portability-cygwin-x86_64
+          path: portability-environment.txt
+          if-no-files-found: error
