@@ -30,3 +30,19 @@ corpus/real.json separately contains missing release-quality transcript
 entries. Independent decoder comparisons are not verified field CER.
 Attribution does not imply endorsement. Files without documented provenance
 are not part of the distribution.
+
+CI and external tooling
+
+The supplementary portability workflow is original project configuration.
+It invokes vmactions/freebsd-vm (MIT), cygwin/cygwin-install-action (GNU GPL
+version 3) and cpanminus (the upstream Perl 5 terms: GNU GPL version 1 or
+later, or the Artistic License). These are separately executed CI tools,
+not code relicensed under this project's Artistic License 2.0. Exact pinned
+revisions and upstream licence links are documented in docs/portability.md.
+
+No source from nicomen/perl-matrix is copied or invoked. Downloaded tooling,
+VM images, operating-system packages and optional native dependencies are
+not bundled in the Ham::RTTY archive. Their own licences remain applicable;
+redistributing those components would require reviewing their respective
+terms and bundled dependencies. The same separation applies to externally
+installed SoX and minimodem used when preparing the reception fixtures.

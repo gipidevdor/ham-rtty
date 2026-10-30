@@ -45,6 +45,26 @@ FreeBSD versions were selected from the project's
 [supported releases](https://www.freebsd.org/security/#sup) on 2026-10-30.
 Existing dependency-audit and real-recording release gates remain mandatory.
 
+## Tool licences
+
+The following primary upstream licence files were checked at the exact revisions
+used by this workflow on 2026-10-30. This is an inventory of the added CI tools,
+not a relicensing of their code or an inventory of every runner OS package.
+
+| Tool | Upstream terms | Source evidence |
+| --- | --- | --- |
+| FreeBSD VM action | MIT | [Pinned LICENSE](https://github.com/vmactions/freebsd-vm/blob/c46abacb49f09938ca4e1702d15d836285d694cc/LICENSE) |
+| Cygwin install action | GNU GPL version 3 | [Pinned LICENSE](https://github.com/cygwin/cygwin-install-action/blob/5a1b0cd107181fa6bb6bf3f90d500f4fb3132f18/LICENSE) |
+| Standalone cpanminus | Perl 5 terms: GPL version 1 or later, or the Artistic License | [Pinned LICENSE](https://github.com/miyagawa/cpanminus/blob/99cef089c7fc3188a19822f594515dbd5295b855/LICENSE) |
+
+These programs execute separately during CI. Their source, installers, VM images
+and bundled dependencies are not shipped in the Ham::RTTY archive. The workflow
+written here does not embed their implementation. Using a GPL tool to build or
+test independent code does not by itself apply the GPL to that code; copied
+program material in an output needs separate consideration, as explained by the
+[GNU licence FAQ](https://www.gnu.org/licenses/gpl-faq.en.html#CanIUseGPLToolsForNF).
+Retain and follow upstream terms if any of these tools or images are redistributed.
+
 ## Observed hosted results, 2026-10-30
 
 [Run 41114581033](https://github.com/gipidevdor/ham-rtty/actions/runs/41114581033)
