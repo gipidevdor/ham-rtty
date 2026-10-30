@@ -20,6 +20,8 @@
 | Change or release the project | [Contributing](../CONTRIBUTING.md) and [release procedure](releasing.md) |
 | Review dependencies or security | [Dependency decisions](dependency-audit.md), [security CI](security-ci.md) and [reporting](../SECURITY.md) |
 
+For supplementary FreeBSD and Cygwin builds, see [portability](portability.md).
+
 ## Installed reference
 
 Use `perldoc Ham::RTTY` for the library and `perldoc ham-rtty` for the command.
