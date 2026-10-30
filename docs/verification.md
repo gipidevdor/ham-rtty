@@ -301,3 +301,8 @@ The Windows compatibility job uses Strawberry Perl, as the PDL job already does,
 to keep the interpreter, compiler and XS modules in one distribution. The default
 Windows setup compiled Storable 3.41 successfully but failed to load it with a
 Perl binary handshake mismatch. Failed compatibility runs retain their test output.
+
+[Hosted compatibility run, 30 October 2026](https://github.com/gipidevdor/ham-rtty/actions/runs/41123120030)
+passes all 11 ordinary and PDL compatibility jobs, including Windows, Perl 5.20
+and PDL 2.081. This verifies the dependency minima and Windows toolchain change;
+the separate security and real-recording acceptance limitations above still apply.
