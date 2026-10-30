@@ -44,9 +44,34 @@ the unchanged documentation style and adapted WAV/I/O machinery. Optional
 PDL and development tools remain separately licensed dependencies, not
 vendored source. Runtime uses Perl core modules; no Ham::CW runtime dependency.
 
-No third-party radio recording is currently distributed. Admission requires
+Five external examples are distributed in [the free corpus](../corpus/free/README.md):
+three CC BY 4.0 DWD recording excerpts, one CC0 1.0 amateur excerpt and one
+externally generated signal with its source's public-domain dedication.
+[Per-file credits and terms](../corpus/free/LICENSES.md) retain authors, source
+links, modifications and licence texts; [the inventory](../corpus/free.json)
+retains original/derivative hashes and reproduction commands. The project's
+Artistic 2.0 licence does not replace those terms or grant rights to third-party
+transmissions. Credits do not imply endorsement.
+
+The four independently annotated release-quality recordings remain missing.
+Admission to that separate [release corpus](../corpus/real/LICENSES.md) requires
 explicit redistribution/adaptation rights, source/author, legal evidence,
 original and derivative hashes, transformations and an independent transcript.
-See [recording licences](../corpus/real/LICENSES.md). Public access to a stream
-alone is insufficient evidence of permission. Missing fixtures block release;
-synthetic oscillator output is never labelled off-air evidence.
+Public access to a stream alone is insufficient evidence of permission.
+Synthetic oscillator output is never labelled off-air evidence.
+
+## Build tools and distribution boundary
+
+CI actions, operating-system packages, cpanminus and optional PDL retain their
+upstream licences. They are separate tools/dependencies, not copied into the
+Ham::RTTY runtime or relicensed under Artistic 2.0. The supplementary CI tool
+licences and exact upstream revisions are listed in
+[portability](portability.md#tool-licences). The standalone cpanminus script and
+VM images are fetched only on CI runners; `.github` workflows are excluded
+from the CPAN archive by `MANIFEST.SKIP`. No source from `nicomen/perl-matrix`
+is copied or called.
+
+This distinction depends on the actual files shipped. Bundling an action,
+installer, interpreter, native library or container image would need a fresh
+licence review of that material and its dependencies. The CI setup is not a
+permission to redistribute those components under the project's licence.
