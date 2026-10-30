@@ -31,6 +31,7 @@ jobs:
       - uses: shogo82148/actions-setup-perl@84c44b5a14f12b311f1bf3d2a70c8807f30b7ab2 # v1
         with:
           perl-version: ${{ matrix.perl }}
+          distribution: ${{ startsWith(matrix.os, 'windows-') && 'strawberry' || 'default' }}
       - name: Install declared build and test prerequisites
         run: |
           cpanm --notest ExtUtils::MakeMaker 'Digest::SHA~5.96'

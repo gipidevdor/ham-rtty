@@ -296,3 +296,8 @@ The installed interpreter/File::Temp audit and independently annotated reception
 fixtures still prevent an all-green CI/release-qualified claim. The four off-air
 examples visible on Pages already run in the ordinary suite; their references
 retain their stated independent-decoder limitations.
+
+The Windows compatibility job uses Strawberry Perl, as the PDL job already does,
+to keep the interpreter, compiler and XS modules in one distribution. The default
+Windows setup compiled Storable 3.41 successfully but failed to load it with a
+Perl binary handshake mismatch. Failed compatibility runs retain their test output.
