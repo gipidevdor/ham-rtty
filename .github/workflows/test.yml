@@ -31,14 +31,27 @@ jobs:
       - uses: shogo82148/actions-setup-perl@84c44b5a14f12b311f1bf3d2a70c8807f30b7ab2 # v1
         with:
           perl-version: ${{ matrix.perl }}
-      - name: Install build prerequisite
-        run: cpanm --notest ExtUtils::MakeMaker 'Digest::SHA~5.96'
+          distribution: ${{ startsWith(matrix.os, 'windows-') && 'strawberry' || 'default' }}
+      - name: Install declared build and test prerequisites
+        run: |
+          cpanm --notest ExtUtils::MakeMaker 'Digest::SHA~5.96'
+          cpanm --notest --installdeps .
       - name: Configure and test
         env:
           HARNESS_PERL_SWITCHES: -Mwarnings=FATAL,all
         run: |
           perl Makefile.PL
-          prove -lr t
+          prove -lr t > test-output.txt 2>&1
+      - name: Show test output
+        if: ${{ !cancelled() && hashFiles('test-output.txt') != '' }}
+        run: cat test-output.txt
+      - name: Save test output on failure
+        if: ${{ failure() && hashFiles('test-output.txt') != '' }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: test-failure-${{ matrix.os }}-perl-${{ matrix.perl }}
+          path: test-output.txt
+          if-no-files-found: error
       - name: Examples
         run: |
           perl -Ilib examples/send.pl example.wav CQ DE TESTCALL
@@ -78,6 +91,7 @@ jobs:
         env:
           HARNESS_PERL_SWITCHES: -Mwarnings=FATAL,all
         run: |
+          cpanm --notest --installdeps .
           perl -Ilib -MHam::RTTY::_Internal::PDL -e 1
           perl Makefile.PL
           prove -lr t
@@ -128,8 +142,6 @@ jobs:
         env:
           COVERAGE_DIRECTORY: ${{ runner.temp }}/ham-rtty-cover
         run: perl maint/coverage.pl "$COVERAGE_DIRECTORY"
-      - name: Real RTTY recording acceptance
-        run: perl maint/reception-corpus.pl
       - name: Test release archive
         run: |
           make distcheck
@@ -137,3 +149,5 @@ jobs:
           make dist
           perl -Ilib -MHam::RTTY -e 'exec $^X, "maint/check-dist.pl", "Ham-RTTY-$Ham::RTTY::VERSION.tar.gz"'
           perl -Ilib -MHam::RTTY -e 'exec $^X, "maint/check-install.pl", "Ham-RTTY-$Ham::RTTY::VERSION.tar.gz"'
+      - name: Real RTTY recording acceptance
+        run: perl maint/reception-corpus.pl

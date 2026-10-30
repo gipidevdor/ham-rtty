@@ -8,10 +8,10 @@ CPAN::Audit for installed dependencies/interpreter and declared constraints.
 All actions are pinned to immutable revisions and permissions are job-scoped.
 The aggregate security job requires every check to succeed.
 
-No RTTY security audit result has yet been recorded. The copied CW audit data
-was removed: its matches and outcomes are not evidence for this distribution.
-Advisory triage remains an open release gate until the installed and declared
-reports exist for this candidate. Do not whitelist or suppress unknown matches.
+Local and hosted audit results are recorded for this distribution in the dated
+sections below. Open advisory matches remain a release gate. Results from
+Ham::CW are not substituted for Ham::RTTY evidence; no unknown advisory is
+whitelisted or suppressed.
 
 For each match record advisory ID, affected installed/declared version, runtime
 reachability, remediation and residual risk. Keep scanner/database versions and
@@ -55,3 +55,36 @@ coverage-directory expression moved from shell text into an environment variable
 The ordinary persona's two low findings were fixed rather than suppressed.
 All four unsafe-Perl-construct policies pass. Dependency advisories still keep
 the overall security gate failing; local scans are not hosted CI results.
+
+## Dependency minima and CI diagnosis, 2026-10-30
+
+The declared requirements now exclude Encode versions below 3.12, Storable
+versions below 3.41 and test-tool Cwd/PathTools versions below 3.65. Both JSON
+and legacy YAML metadata are checked against vulnerable/fixed boundaries.
+Ordinary and PDL jobs install declared dependencies before testing, including
+on Perl 5.20. The package version remains 0.001.
+
+With the same CPANSA::DB 20261018.001 snapshot before and after, declared
+matches fall from **38 to 30**, with no scanner errors. Eight advisory ranges
+for Encode, Storable and PathTools are excluded by the new minima. No advisory
+exclusion, phase suppression or changed gate is used. The
+[raw remediation record](ci-remediation-results.json) retains source revisions,
+removed/remaining IDs, metadata checks and the hosted baseline.
+
+The installed audit in [run 41116933237](https://github.com/gipidevdor/ham-rtty/actions/runs/41116933237)
+reports File::Temp 0.2312 and Perl 5.44.0 matches. Those database entries list no
+fixed version. Remaining declared matches include interpreter advisories
+overlapping the supported Perl range. The
+[File::Temp upstream issue](https://github.com/Perl-Toolchain-Gang/File-Temp/issues/14)
+remains open. A locally named patched interpreter does not establish that the
+GitHub runner has that patch. The audit therefore remains failing.
+
+Pages already publishes four licensed off-air clips and a generated example in
+[the free corpus](../corpus/free/README.md); ordinary tests exercise them.
+Their minimodem references are explicitly labelled non-authoritative. The
+separate [release inventory](../corpus/real.json) still contains four missing
+independently annotated entries, so the author job fails at
+`maint/reception-corpus.pl`. Archive/install checks now run before that gate,
+so its missing data no longer skips package verification. Available examples are retained with their stated
+reference limitations. These remaining failures cannot be reported as passing
+CI on the evidence currently recorded.

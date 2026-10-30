@@ -76,6 +76,21 @@ is_deeply(
     consumer_requirements($metas[1]),
     'JSON and legacy YAML preserve consumer constraints despite merged build/test phases'
 );
+for my $metadata (@metas) {
+    my $requirements = CPAN::Meta::Requirements->new;
+    my $combined     = consumer_requirements($metadata);
+    $requirements->add_string_requirement($_, $combined->{$_}) for keys %{$combined};
+    for my $case (['Encode', '3.11', '3.12'], ['Storable', '3.40', '3.41'], ['Cwd', '3.64', '3.65'])
+    {
+        my ($module, $vulnerable, $fixed) = @{$case};
+        ok(!$requirements->accepts_module($module, $vulnerable),
+            "$module vulnerable version is excluded from consumer requirements");
+        ok(
+            $requirements->accepts_module($module, $fixed),
+            "$module first accepted fixed version remains installable"
+        );
+    }
+}
 ok(
     exists($metas[0]->prereqs->{develop}{requires}{'Perl::Tidy'}),
     'JSON additionally retains author prerequisites unsupported by legacy YAML'

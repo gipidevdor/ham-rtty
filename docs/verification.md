@@ -280,3 +280,29 @@ coverage reaches 1,750/1,751 statements (99.94%) and 607/622 branches (97.59%),
 with every production module passing its 95%/90% gate. Raw module counts are
 in the comparison report. No coverage points are excluded. Independent
 field transcripts and the dependency audit remain open release gates.
+
+## CI dependency remediation, 2026-10-30
+
+[Dependency minima and CI diagnosis](security-ci.md#dependency-minima-and-ci-diagnosis-2026-10-30)
+record eight eliminated advisory ranges: the same-database declared comparison
+falls from 38 to 30 matches. Encode, Storable and Cwd minima are enforced in
+modern/legacy metadata; compatibility jobs install declared dependencies.
+Local warnings-fatal tests pass 21 files / 2,099 assertions and author checks
+pass 12 files / 840 assertions, including twelve new metadata boundary checks.
+Perl 5.20 compatibility and package version 0.001 are retained.
+
+[Raw evidence](ci-remediation-results.json) keeps remaining blockers explicit.
+The installed interpreter/File::Temp audit and independently annotated reception
+fixtures still prevent an all-green CI/release-qualified claim. The four off-air
+examples visible on Pages already run in the ordinary suite; their references
+retain their stated independent-decoder limitations.
+
+The Windows compatibility job uses Strawberry Perl, as the PDL job already does,
+to keep the interpreter, compiler and XS modules in one distribution. The default
+Windows setup compiled Storable 3.41 successfully but failed to load it with a
+Perl binary handshake mismatch. Failed compatibility runs retain their test output.
+
+[Hosted compatibility run, 30 October 2026](https://github.com/gipidevdor/ham-rtty/actions/runs/41123120030)
+passes all 11 ordinary and PDL compatibility jobs, including Windows, Perl 5.20
+and PDL 2.081. This verifies the dependency minima and Windows toolchain change;
+the separate security and real-recording acceptance limitations above still apply.
