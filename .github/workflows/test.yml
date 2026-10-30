@@ -40,7 +40,17 @@ jobs:
           HARNESS_PERL_SWITCHES: -Mwarnings=FATAL,all
         run: |
           perl Makefile.PL
-          prove -lr t
+          prove -lr t > test-output.txt 2>&1
+      - name: Show test output
+        if: ${{ !cancelled() && hashFiles('test-output.txt') != '' }}
+        run: cat test-output.txt
+      - name: Save test output on failure
+        if: ${{ failure() && hashFiles('test-output.txt') != '' }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: test-failure-${{ matrix.os }}-perl-${{ matrix.perl }}
+          path: test-output.txt
+          if-no-files-found: error
       - name: Examples
         run: |
           perl -Ilib examples/send.pl example.wav CQ DE TESTCALL
