@@ -1,0 +1,100 @@
+{
+  "date": "2026-10-30",
+  "source_revision": "5c7c28f455925be82d72dffd52c75c3dedbefc03",
+  "core_source_revision": "42a39a4b6f65aa8ee0f4f27f0aa2f4952f061759",
+  "run_url": "https://github.com/gipidevdor/ham-rtty/actions/runs/41114581033",
+  "conclusion": "success",
+  "workflow_sha256": "f9fb5e1b9594c37140fc14548df33ce017ec3799d08114a833905436a2805e37",
+  "production_hashes": {
+    "lib/Ham/RTTY/Audio.pm": "a6c427d6932134e1a9c314c553c5935aaada0d95d9c917a2ab0663e6ab575798",
+    "lib/Ham/RTTY/Baudot.pm": "203a3972cab5c592898c66376f639beff7498596b5523b49f130aee0eb589032",
+    "lib/Ham/RTTY/Decoder.pm": "d876aebccbf889556f38546009624f11c7983fc59f4753cfef2922384a8710fa",
+    "lib/Ham/RTTY/Detector.pm": "6c87cfee16c1dea0bfad59675e1ec49740f0fdaef231c5d3b7c58131477c7124",
+    "lib/Ham/RTTY/Encoder.pm": "cfb9c725197aa111148b46378d14f4c967e98f7c57a0a96216c69318f5efad24",
+    "lib/Ham/RTTY/Error.pm": "691583d0f4b5c64061bc103ab2a2b9f00c5926fe047c58ba6e91f917c933e37f",
+    "lib/Ham/RTTY/Events.pm": "8f2047a06af6f281423dc126166fc9e1a4838a08f21e67c383831edc63aff563",
+    "lib/Ham/RTTY/Generator.pm": "d03671f1a8379c9f4095caf81b89f54d58decffbc8c67a2318dc4986505a7a17",
+    "lib/Ham/RTTY/MIDI.pm": "39968672d5bb314b1307d5a88f626e926455bdc2c7279e84fcd8851f39d97fa4",
+    "lib/Ham/RTTY/Result.pm": "8d55fbcae0d2dcf65e3844970537e8f0f0c63acf036359f2377b8406871fbd96",
+    "lib/Ham/RTTY/_Internal/Backend.pm": "f2d6cde05da6fa1338d37728d654d8327eb8d35f720eb035468bae91d9c57051",
+    "lib/Ham/RTTY/_Internal/CLI.pm": "b03d72cc45ee02e4f7b784c0967ea30ff24e52610df404ad8dfe127a22b4c2b2",
+    "lib/Ham/RTTY/_Internal/Data.pm": "2eb97d379660230eb4c2b25f11460b517f79a05f2dc2ac2ee8967c57335c9a5e",
+    "lib/Ham/RTTY/_Internal/IO.pm": "40f002ee9e8387683b37bfd6495e65af055bcffacbcdef8f3b5c85e804139c4b",
+    "lib/Ham/RTTY/_Internal/PDL.pm": "64776c39c7d4543b7d83c44c5fb4eddb4fcab92f238becc520f839b63d74405f",
+    "lib/Ham/RTTY/_Internal/Result.pm": "2c766a8d55e308c8c5f18a78c419b995c9668b23050edac81157bb9e0e00663a",
+    "lib/Ham/RTTY/_Internal/Validate.pm": "ae7c1b11263306ee24977e75a7203e6cb6f56d8d55e8e97581c5b4ad4d8505ae",
+    "lib/Ham/RTTY/_Internal/WavWriter.pm": "dda8c056d84c1e328e63f902854cd9f30c28f0dcbff6ab9a1b43d3520ab8c114",
+    "lib/Ham/RTTY.pm": "fa9e3249ed0834b83fa55b23e141e45d6a574b00be1cb9a658492adf5fe2738f"
+  },
+  "protocol": "Pure-Perl supplementary build/test/install jobs; PDL is not explicitly installed. Dependencies use HTTPS; Perl >=5.20 is enforced; warnings are fatal. make test excludes the author suite. Existing PDL jobs remain separate.",
+  "local_checks": {
+    "actionlint": "1.7.12 pass",
+    "zizmor": "1.31.1 pass; no new suppressions",
+    "author_suite": {
+      "files": 12,
+      "assertions": 828,
+      "exit_status": 0
+    }
+  },
+  "jobs": [
+    {
+      "name": "FreeBSD 14.5 / Perl",
+      "conclusion": "success",
+      "job_url": "https://github.com/gipidevdor/ham-rtty/actions/runs/41114581033/job/124265343897",
+      "perl": "5.42.3",
+      "test_files": 21,
+      "assertions": 1905,
+      "test_wall_seconds": 39,
+      "example_catalog": "pass",
+      "installed_cli": "pass",
+      "artifact": {
+        "name": "portability-freebsd-14.5",
+        "id": 13004682815,
+        "digest": "sha256:ee666f2d3a5fd33ca120e8dae92986fdb7ae9e50d0989f291727ad629a92dfcd",
+        "environment_sha256": "552f795e4d86cfdd9048e0e9dc434332d919925c311e82409585dfb3af9f69b6"
+      },
+      "environment_text": "FreeBSD freebsd 14.5-RELEASE FreeBSD 14.5-RELEASE releng/14.5-n274872-4099b5c82880 GENERIC amd64\nSummary of my perl5 (revision 5 version 42 subversion 3) configuration:\n   \n  Platform:\n    osname=freebsd\n    osvers=14.4-release-p12\n    archname=amd64-freebsd-thread-multi\n    uname='freebsd 144amd64-default-job-04 14.4-release-p12 freebsd 14.4-release-p12 amd64 '\n    config_args='-Darchlib=/usr/local/lib/perl5/5.42/mach -Dcc=cc -Dcf_by=mat -Dcf_email=mat@FreeBSD.org -Dcf_time=Sun Aug 02 13:17:21 UTC 2026 -Dinc_version_list=none -Dlibperl=libperl.so.5.42.3 -Dman1dir=/usr/local/lib/perl5/5.42/perl/man/man1 -Dman3dir=/usr/local/lib/perl5/5.42/perl/man/man3 -Dprefix=/usr/local -Dprivlib=/usr/local/lib/perl5/5.42 -Dscriptdir=/usr/local/bin -Dsitearch=/usr/local/lib/perl5/site_perl/mach/5.42 -Dsitelib=/usr/local/lib/perl5/site_perl -Dsiteman1dir=/usr/local/lib/perl5/site_perl/man/man1 -Dsiteman3dir=/usr/local/lib/perl5/site_perl/man/man3 -Dusenm=n -Duseshrplib -Dusethreads=y -sde -Ui_iconv -Ui_malloc -Uinstallusrbinperl -Alddlflags=-L/wrkdirs/usr/ports/lang/perl5.42/work/perl-5.42.3 -L/usr/local/lib/perl5/5.42/mach/CORE -lperl -Dshrpldflags=$(LDDLFLAGS:N-L/wrkdirs/usr/ports/lang/perl5.42/work/perl-5.42.3:N-L/usr/local/lib/perl5/5.42/mach/CORE:N-lperl) -Wl,-soname,$(LIBPERL:R) -Doptimize=-O2 -pipe  -fstack-protector-strong -fno-strict-aliasing  -Dusedtrace -Ui_gdbm -Dusemultiplicity=y -Duse64bitint -Dusemymalloc=n'\n    hint=recommended\n    useposix=true\n    d_sigaction=define\n    useithreads=define\n    usemultiplicity=define\n    use64bitint=define\n    use64bitall=define\n    uselongdouble=undef\n    usemymalloc=n\n    default_inc_excludes_dot=define\n  Compiler:\n    cc='cc'\n    ccflags ='-DHAS_FPSETMASK -DHAS_FLOATINGPOINT_H -DNO_POSIX_2008_LOCALE -fno-strict-aliasing -pipe -fstack-protector-strong -I/usr/local/include'\n    optimize='-O2 -pipe -fstack-protector-strong -fno-strict-aliasing '\n    cppflags='-DHAS_FPSETMASK -DHAS_FLOATINGPOINT_H -DNO_POSIX_2008_LOCALE -fno-strict-aliasing -pipe -fstack-protector-strong -I/usr/local/include'\n    ccversion=''\n    gccversion='FreeBSD Clang 19.1.7 (https://github.com/llvm/llvm-project.git llvmorg-19.1.7-0-gcd708029e0b2)'\n    gccosandvers=''\n    intsize=4\n    longsize=8\n    ptrsize=8\n    doublesize=8\n    byteorder=12345678\n    doublekind=3\n    d_longlong=define\n    longlongsize=8\n    d_longdbl=define\n    longdblsize=16\n    longdblkind=3\n    ivtype='long'\n    ivsize=8\n    nvtype='double'\n    nvsize=8\n    Off_t='off_t'\n    lseeksize=8\n    alignbytes=8\n    prototype=define\n  Linker and Libraries:\n    ld='cc'\n    ldflags ='-pthread -Wl,-E  -fstack-protector-strong -L/usr/local/lib'\n    libpth=/usr/lib /usr/local/lib /usr/lib/clang/19/lib\n    libs=-ldl -lm -lcrypt -lutil\n    perllibs=-ldl -lm -lcrypt -lutil\n    libc=\n    so=so\n    useshrplib=true\n    libperl=libperl.so.5.42.3\n    gnulibc_version=''\n  Dynamic Linking:\n    dlsrc=dl_dlopen.xs\n    dlext=so\n    d_dlsymun=undef\n    ccdlflags='  -Wl,-R/usr/local/lib/perl5/5.42/mach/CORE'\n    cccdlflags='-DPIC -fPIC'\n    lddlflags='-shared  -L/usr/local/lib/perl5/5.42/mach/CORE -lperl -L/usr/local/lib -fstack-protector-strong'\n\n\nCharacteristics of this binary (from libperl): \n  Compile-time options:\n    HAS_LONG_DOUBLE\n    HAS_STRTOLD\n    HAS_TIMES\n    MULTIPLICITY\n    PERLIO_LAYERS\n    PERL_COPY_ON_WRITE\n    PERL_DONT_CREATE_GVSV\n    PERL_HASH_FUNC_SIPHASH13\n    PERL_HASH_USE_SBOX32\n    PERL_MALLOC_WRAP\n    PERL_OP_PARENT\n    PERL_PRESERVE_IVUV\n    PERL_USE_SAFE_PUTENV\n    USE_64_BIT_ALL\n    USE_64_BIT_INT\n    USE_ITHREADS\n    USE_LARGE_FILES\n    USE_LOCALE\n    USE_LOCALE_COLLATE\n    USE_LOCALE_CTYPE\n    USE_LOCALE_NUMERIC\n    USE_LOCALE_TIME\n    USE_PERLIO\n    USE_PERL_ATOF\n    USE_REENTRANT_API\n  Locally applied patches:\n    FreeBSD:patch-Configure\n    FreeBSD:patch-Makefile.SH\n    FreeBSD:patch-cpan_ExtUtils-Install_lib_ExtUtils_Install.pm\n    FreeBSD:patch-cpan_ExtUtils-Install_t_Install.t\n    FreeBSD:patch-cpan_ExtUtils-MakeMaker_lib_ExtUtils_MM__Any.pm\n    FreeBSD:patch-cpan_ExtUtils-MakeMaker_t_INST__PREFIX.t\n    FreeBSD:patch-cpan_JSON-PP_bin_json__pp\n    FreeBSD:patch-cpan_Pod-Perldoc_lib_Pod_Perldoc.pm\n    FreeBSD:patch-cpan_Pod-Perldoc_lib_Pod_Perldoc_ToMan.pm\n    FreeBSD:patch-cpan_Pod-Perldoc_lib_Pod_Perldoc_ToTerm.pm\n    FreeBSD:patch-hints_freebsd.sh\n    FreeBSD:patch-perl.c\n    FreeBSD:patch-t_porting_customized.dat\n  Built under freebsd\n  @INC:\n    /usr/local/lib/perl5/site_perl/mach/5.42\n    /usr/local/lib/perl5/site_perl\n    /usr/local/lib/perl5/5.42/mach\n    /usr/local/lib/perl5/5.42\n"
+    },
+    {
+      "name": "FreeBSD 15.1 / Perl",
+      "conclusion": "success",
+      "job_url": "https://github.com/gipidevdor/ham-rtty/actions/runs/41114581033/job/124265343279",
+      "perl": "5.42.3",
+      "test_files": 21,
+      "assertions": 1905,
+      "test_wall_seconds": 38,
+      "example_catalog": "pass",
+      "installed_cli": "pass",
+      "artifact": {
+        "name": "portability-freebsd-15.1",
+        "id": 13003854450,
+        "digest": "sha256:aeeac9a4dbfbe67ac634052b50cfb20691e8e14348d441f56e7a608e27769897",
+        "environment_sha256": "dbb3faf6e98ada31df58c2c1173935832a14fadaed029ddb28cec20dc488337d"
+      },
+      "environment_text": "FreeBSD freebsd 15.1-RELEASE-p3 FreeBSD 15.1-RELEASE-p3 releng/15.1-n283611-88e7371d9dc2 GENERIC amd64\nSummary of my perl5 (revision 5 version 42 subversion 3) configuration:\n   \n  Platform:\n    osname=freebsd\n    osvers=15.1-release-p6\n    archname=amd64-freebsd-thread-multi\n    uname='freebsd 151amd64-default-job-04 15.1-release-p6 freebsd 15.1-release-p6 amd64 '\n    config_args='-Darchlib=/usr/local/lib/perl5/5.42/mach -Dcc=cc -Dcf_by=mat -Dcf_email=mat@FreeBSD.org -Dcf_time=Sun Aug 02 13:17:21 UTC 2026 -Dinc_version_list=none -Dlibperl=libperl.so.5.42.3 -Dman1dir=/usr/local/lib/perl5/5.42/perl/man/man1 -Dman3dir=/usr/local/lib/perl5/5.42/perl/man/man3 -Dprefix=/usr/local -Dprivlib=/usr/local/lib/perl5/5.42 -Dscriptdir=/usr/local/bin -Dsitearch=/usr/local/lib/perl5/site_perl/mach/5.42 -Dsitelib=/usr/local/lib/perl5/site_perl -Dsiteman1dir=/usr/local/lib/perl5/site_perl/man/man1 -Dsiteman3dir=/usr/local/lib/perl5/site_perl/man/man3 -Dusenm=n -Duseshrplib -Dusethreads=y -sde -Ui_iconv -Ui_malloc -Uinstallusrbinperl -Alddlflags=-L/wrkdirs/usr/ports/lang/perl5.42/work/perl-5.42.3 -L/usr/local/lib/perl5/5.42/mach/CORE -lperl -Dshrpldflags=$(LDDLFLAGS:N-L/wrkdirs/usr/ports/lang/perl5.42/work/perl-5.42.3:N-L/usr/local/lib/perl5/5.42/mach/CORE:N-lperl) -Wl,-soname,$(LIBPERL:R) -Doptimize=-O2 -pipe  -fstack-protector-strong -fno-strict-aliasing  -Dusedtrace -Ui_gdbm -Dusemultiplicity=y -Duse64bitint -Dusemymalloc=n'\n    hint=recommended\n    useposix=true\n    d_sigaction=define\n    useithreads=define\n    usemultiplicity=define\n    use64bitint=define\n    use64bitall=define\n    uselongdouble=undef\n    usemymalloc=n\n    default_inc_excludes_dot=define\n  Compiler:\n    cc='cc'\n    ccflags ='-DHAS_FPSETMASK -DHAS_FLOATINGPOINT_H -DNO_POSIX_2008_LOCALE -fno-strict-aliasing -pipe -fstack-protector-strong -I/usr/local/include'\n    optimize='-O2 -pipe -fstack-protector-strong -fno-strict-aliasing '\n    cppflags='-DHAS_FPSETMASK -DHAS_FLOATINGPOINT_H -DNO_POSIX_2008_LOCALE -fno-strict-aliasing -pipe -fstack-protector-strong -I/usr/local/include'\n    ccversion=''\n    gccversion='FreeBSD Clang 19.1.7 (https://github.com/llvm/llvm-project.git llvmorg-19.1.7-0-gcd708029e0b2)'\n    gccosandvers=''\n    intsize=4\n    longsize=8\n    ptrsize=8\n    doublesize=8\n    byteorder=12345678\n    doublekind=3\n    d_longlong=define\n    longlongsize=8\n    d_longdbl=define\n    longdblsize=16\n    longdblkind=3\n    ivtype='long'\n    ivsize=8\n    nvtype='double'\n    nvsize=8\n    Off_t='off_t'\n    lseeksize=8\n    alignbytes=8\n    prototype=define\n  Linker and Libraries:\n    ld='cc'\n    ldflags ='-pthread -Wl,-E  -fstack-protector-strong -L/usr/local/lib'\n    libpth=/usr/lib /usr/local/lib /usr/lib/clang/19/lib\n    libs=-ldl -lm -lcrypt -lutil\n    perllibs=-ldl -lm -lcrypt -lutil\n    libc=\n    so=so\n    useshrplib=true\n    libperl=libperl.so.5.42.3\n    gnulibc_version=''\n  Dynamic Linking:\n    dlsrc=dl_dlopen.xs\n    dlext=so\n    d_dlsymun=undef\n    ccdlflags='  -Wl,-R/usr/local/lib/perl5/5.42/mach/CORE'\n    cccdlflags='-DPIC -fPIC'\n    lddlflags='-shared  -L/usr/local/lib/perl5/5.42/mach/CORE -lperl -L/usr/local/lib -fstack-protector-strong'\n\n\nCharacteristics of this binary (from libperl): \n  Compile-time options:\n    HAS_LONG_DOUBLE\n    HAS_STRTOLD\n    HAS_TIMES\n    MULTIPLICITY\n    PERLIO_LAYERS\n    PERL_COPY_ON_WRITE\n    PERL_DONT_CREATE_GVSV\n    PERL_HASH_FUNC_SIPHASH13\n    PERL_HASH_USE_SBOX32\n    PERL_MALLOC_WRAP\n    PERL_OP_PARENT\n    PERL_PRESERVE_IVUV\n    PERL_USE_SAFE_PUTENV\n    USE_64_BIT_ALL\n    USE_64_BIT_INT\n    USE_ITHREADS\n    USE_LARGE_FILES\n    USE_LOCALE\n    USE_LOCALE_COLLATE\n    USE_LOCALE_CTYPE\n    USE_LOCALE_NUMERIC\n    USE_LOCALE_TIME\n    USE_PERLIO\n    USE_PERL_ATOF\n    USE_REENTRANT_API\n  Locally applied patches:\n    FreeBSD:patch-Configure\n    FreeBSD:patch-Makefile.SH\n    FreeBSD:patch-cpan_ExtUtils-Install_lib_ExtUtils_Install.pm\n    FreeBSD:patch-cpan_ExtUtils-Install_t_Install.t\n    FreeBSD:patch-cpan_ExtUtils-MakeMaker_lib_ExtUtils_MM__Any.pm\n    FreeBSD:patch-cpan_ExtUtils-MakeMaker_t_INST__PREFIX.t\n    FreeBSD:patch-cpan_JSON-PP_bin_json__pp\n    FreeBSD:patch-cpan_Pod-Perldoc_lib_Pod_Perldoc.pm\n    FreeBSD:patch-cpan_Pod-Perldoc_lib_Pod_Perldoc_ToMan.pm\n    FreeBSD:patch-cpan_Pod-Perldoc_lib_Pod_Perldoc_ToTerm.pm\n    FreeBSD:patch-hints_freebsd.sh\n    FreeBSD:patch-perl.c\n    FreeBSD:patch-t_porting_customized.dat\n  Built under freebsd\n  @INC:\n    /usr/local/lib/perl5/site_perl/mach/5.42\n    /usr/local/lib/perl5/site_perl\n    /usr/local/lib/perl5/5.42/mach\n    /usr/local/lib/perl5/5.42\n"
+    },
+    {
+      "name": "Cygwin x86_64 / Perl",
+      "conclusion": "success",
+      "job_url": "https://github.com/gipidevdor/ham-rtty/actions/runs/41114581033/job/124265343874",
+      "perl": "5.44.0",
+      "test_files": 21,
+      "assertions": 1905,
+      "test_wall_seconds": 37,
+      "example_catalog": "pass",
+      "installed_cli": "pass",
+      "artifact": {
+        "name": "portability-cygwin-x86_64",
+        "id": 13004653137,
+        "digest": "sha256:b4238d08ce7ae223b4685e8c2eea2cf5529182e32d223644aa7d169740682f43",
+        "environment_sha256": "4e272feb1ac3c0b334a56fed6b5f38fdc003cf91cf96345dfd5e9c731ee3029e"
+      },
+      "environment_text": "CYGWIN_NT-10.0-26100 runnervmdaln5 3.6.12-1.x86_64 2026-10-26 00:32 UTC x86_64 Cygwin\nSummary of my perl5 (revision 5 version 44 subversion 0) configuration:\n   \n  Platform:\n    osname=cygwin\n    osvers=3.6.10-1.x86_64\n    archname=x86_64-cygwin-threads-multi\n    uname='cygwin_nt-10.0-26200 walter 3.6.10-1.x86_64 2026-07-13 20:20 utc x86_64 cygwin '\n    config_args='-des -Dprefix=/usr -Dmksymlinks -Darchname=x86_64-cygwin-threads -Dlibperl=cygperl5_44.dll -Dcc=gcc -Dld=g++ -Accflags=-ggdb -O2 -pipe -Wall -Werror=format-security -D_FORTIFY_SOURCE=3 -fstack-protector-strong --param=ssp-buffer-size=4 -ffile-prefix-map=/mnt/share/cygpkgs/perl/perl.x86_64/build=/usr/src/debug/perl-5.44.0-1 -ffile-prefix-map=/mnt/share/cygpkgs/perl/perl.x86_64/src/perl-5.44.0=/usr/src/debug/perl-5.44.0-1 -fwrapv'\n    hint=recommended\n    useposix=true\n    d_sigaction=define\n    useithreads=define\n    usemultiplicity=define\n    use64bitint=define\n    use64bitall=define\n    uselongdouble=undef\n    usemymalloc=n\n    default_inc_excludes_dot=define\n  Compiler:\n    cc='gcc'\n    ccflags ='-D_GNU_SOURCE -ggdb -O2 -pipe -Wall -Werror=format-security -D_FORTIFY_SOURCE=3 -fstack-protector-strong --param=ssp-buffer-size=4 -ffile-prefix-map=/mnt/share/cygpkgs/perl/perl.x86_64/build=/usr/src/debug/perl-5.44.0-1 -ffile-prefix-map=/mnt/share/cygpkgs/perl/perl.x86_64/src/perl-5.44.0=/usr/src/debug/perl-5.44.0-1 -fwrapv -fno-strict-aliasing'\n    optimize='-O3'\n    cppflags='-D_GNU_SOURCE -ggdb -O2 -pipe -Wall -Werror=format-security -D_FORTIFY_SOURCE=3 -fstack-protector-strong --param=ssp-buffer-size=4 -ffile-prefix-map=/mnt/share/cygpkgs/perl/perl.x86_64/build=/usr/src/debug/perl-5.44.0-1 -ffile-prefix-map=/mnt/share/cygpkgs/perl/perl.x86_64/src/perl-5.44.0=/usr/src/debug/perl-5.44.0-1 -fwrapv -fno-strict-aliasing'\n    ccversion=''\n    gccversion='14.4.0'\n    gccosandvers=''\n    intsize=4\n    longsize=8\n    ptrsize=8\n    doublesize=8\n    byteorder=12345678\n    doublekind=3\n    d_longlong=define\n    longlongsize=8\n    d_longdbl=define\n    longdblsize=16\n    longdblkind=3\n    ivtype='long'\n    ivsize=8\n    nvtype='double'\n    nvsize=8\n    Off_t='off_t'\n    lseeksize=8\n    alignbytes=8\n    prototype=define\n  Linker and Libraries:\n    ld='g++'\n    ldflags =' -Wl,--enable-auto-import -Wl,--export-all-symbols -Wl,--enable-auto-image-base -fstack-protector-strong'\n    libpth=/usr/lib\n    libs=-lpthread -lgdbm -ldb -ldl -lcrypt -lgdbm_compat\n    perllibs=-lpthread -ldl -lcrypt\n    libc=/usr/lib/libcygwin.a\n    so=dll\n    useshrplib=true\n    libperl=cygperl5_44.dll\n    gnulibc_version=''\n  Dynamic Linking:\n    dlsrc=dl_dlopen.xs\n    dlext=dll\n    d_dlsymun=undef\n    ccdlflags=' '\n    cccdlflags=' '\n    lddlflags=' --shared  -Wl,--enable-auto-import -Wl,--export-all-symbols -Wl,--enable-auto-image-base -fstack-protector-strong'\n\n\nCharacteristics of this binary (from libperl): \n  Compile-time options:\n    HAS_LONG_DOUBLE\n    HAS_STRTOLD\n    HAS_TIMES\n    MULTIPLICITY\n    PERLIO_LAYERS\n    PERL_COPY_ON_WRITE\n    PERL_HASH_FUNC_SIPHASH13\n    PERL_HASH_USE_SBOX32\n    PERL_OP_PARENT\n    PERL_PRESERVE_IVUV\n    PERL_USE_SAFE_PUTENV\n    USE_64_BIT_ALL\n    USE_64_BIT_INT\n    USE_ITHREADS\n    USE_LARGE_FILES\n    USE_LOCALE\n    USE_LOCALE_COLLATE\n    USE_LOCALE_CTYPE\n    USE_LOCALE_NUMERIC\n    USE_LOCALE_TIME\n    USE_PERLIO\n    USE_PERL_ATOF\n    USE_REENTRANT_API\n    USE_THREAD_SAFE_LOCALE\n  Locally applied patches:\n    Cygwin: README\n    Cygwin: enable thread local storage\n    Cygwin: use system zlib\n  Built under cygwin\n  Compiled at Jul 19 2026 10:56:02\n  %ENV:\n    CYGWIN=\"winsymlinks:native\"\n  @INC:\n    /usr/local/lib/perl5/site_perl/5.44/x86_64-cygwin-threads\n    /usr/local/share/perl5/site_perl/5.44\n    /usr/lib/perl5/vendor_perl/5.44/x86_64-cygwin-threads\n    /usr/share/perl5/vendor_perl/5.44\n    /usr/lib/perl5/5.44/x86_64-cygwin-threads\n    /usr/share/perl5/5.44\n"
+    }
+  ],
+  "release_qualified": false,
+  "remaining_release_gates": [
+    "Independently annotated real recordings",
+    "Dependency CVE audit"
+  ]
+}

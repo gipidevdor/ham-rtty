@@ -1011,5 +1011,34 @@
       "Four licensed independently annotated off-air fixtures",
       "Dependency CVE audit findings"
     ]
+  },
+  "supplementary_portability": {
+    "date": "2026-10-30",
+    "source_revision": "5c7c28f455925be82d72dffd52c75c3dedbefc03",
+    "raw": "portability-results.json",
+    "run_url": "https://github.com/gipidevdor/ham-rtty/actions/runs/41114581033",
+    "jobs": [
+      {
+        "name": "FreeBSD 14.5 / Perl",
+        "conclusion": "success",
+        "perl": "5.42.3",
+        "test_files": 21,
+        "assertions": 1905
+      },
+      {
+        "name": "FreeBSD 15.1 / Perl",
+        "conclusion": "success",
+        "perl": "5.42.3",
+        "test_files": 21,
+        "assertions": 1905
+      },
+      {
+        "name": "Cygwin x86_64 / Perl",
+        "conclusion": "success",
+        "perl": "5.44.0",
+        "test_files": 21,
+        "assertions": 1905
+      }
+    ]
   }
 }

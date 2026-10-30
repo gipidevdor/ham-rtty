@@ -43,6 +43,24 @@ recorded environment details describe each observed run.
 
 FreeBSD versions were selected from the project's
 [supported releases](https://www.freebsd.org/security/#sup) on 2026-10-30.
-A configured job is not a passing result; hosted outcomes are recorded after
-its first run. Existing dependency-audit and real-recording release gates
-remain mandatory.
+Existing dependency-audit and real-recording release gates remain mandatory.
+
+## Observed hosted results, 2026-10-30
+
+[Run 41114581033](https://github.com/gipidevdor/ham-rtty/actions/runs/41114581033)
+passes all three jobs on source `5c7c28f455925be82d72dffd52c75c3dedbefc03`.
+Production modules are unchanged from `42a39a4`; this expansion changes CI and
+documentation. [Raw results](portability-results.json) retain job URLs,
+environment configurations, artifact hashes, source hashes and test totals.
+
+| Environment | Perl | Test files | Assertions | Examples | Installed CLI |
+| --- | --- | ---: | ---: | --- | --- |
+| FreeBSD 14.5 | 5.42.3 | 21 | 1,905 | PASS | PASS |
+| FreeBSD 15.1 | 5.42.3 | 21 | 1,905 | PASS | PASS |
+| Cygwin x86_64 | 5.44.0 | 21 | 1,905 | PASS | PASS |
+
+These counts describe the suite with the optional PDL backend absent. They do
+not replace the two-backend counts or the existing eleven compatibility jobs.
+The new workflow adds three environments, bringing configured compatibility
+coverage to fourteen jobs across the two workflows. This is observed
+compatibility, not a field-reception or dependency-security certification.

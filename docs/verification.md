@@ -4,6 +4,11 @@ Development candidate 0.001, measured 2026-10-27. **Not release-qualified.**
 
 ## Current verification summary
 
+Supplementary [FreeBSD and Cygwin portability tests](portability.md) pass in all
+three environments on 2026-10-30: 21 files / 1,905 assertions each, followed by
+the example catalog and installed CLI checks. Their [raw record](portability-results.json)
+keeps environment versions and source hashes separately from the local evidence below.
+
 Source `f7cc5d908426b1a7d07eeb7fc4d96b671f940755` corrects incremental event timing, expanded history limits,
 merged-run accounting and rounded idle segments. Reception Results are documented
 as integer-microsecond TimedEvents. Version remains **0.001**.
