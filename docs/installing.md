@@ -5,8 +5,20 @@
 ## Requirements
 
 Requires Perl 5.20 or later and ExtUtils::MakeMaker 7.22 or later.
-CPAN clients install the required MakeMaker automatically. For a manual build,
-upgrade an older copy with `cpanm ExtUtils::MakeMaker` first.
+CPAN clients install the required MakeMaker automatically. Encode 3.12,
+Storable 3.41 and Cwd 3.65 are the minimum permitted module versions. Older
+Perl installations may need CPAN updates of these core modules; the Perl
+language minimum remains 5.20. For a manual build, install the dependencies
+before configuration:
+
+```sh
+cpanm ExtUtils::MakeMaker
+cpanm --installdeps .
+```
+
+These minima exclude the fixed Encode/PathTools/Storable advisory ranges.
+They do not resolve the remaining interpreter/File::Temp advisories; use a
+patched environment and inspect the [security record](security-ci.md).
 
 ## Build and install
 

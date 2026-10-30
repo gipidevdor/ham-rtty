@@ -31,8 +31,10 @@ jobs:
       - uses: shogo82148/actions-setup-perl@84c44b5a14f12b311f1bf3d2a70c8807f30b7ab2 # v1
         with:
           perl-version: ${{ matrix.perl }}
-      - name: Install build prerequisite
-        run: cpanm --notest ExtUtils::MakeMaker 'Digest::SHA~5.96'
+      - name: Install declared build and test prerequisites
+        run: |
+          cpanm --notest ExtUtils::MakeMaker 'Digest::SHA~5.96'
+          cpanm --notest --installdeps .
       - name: Configure and test
         env:
           HARNESS_PERL_SWITCHES: -Mwarnings=FATAL,all
@@ -78,6 +80,7 @@ jobs:
         env:
           HARNESS_PERL_SWITCHES: -Mwarnings=FATAL,all
         run: |
+          cpanm --notest --installdeps .
           perl -Ilib -MHam::RTTY::_Internal::PDL -e 1
           perl Makefile.PL
           prove -lr t
