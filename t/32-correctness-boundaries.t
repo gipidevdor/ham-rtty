@@ -114,4 +114,81 @@ $same->feed({sample_rate => 384000, segments => [{state => 'mark', samples => 1}
 is($same->result->events->{segments}[0]{duration}, 5,
     'empty blocks do not discard fractional time');
 
+# A failed event conversion must not publish an intermediate frame result.
+for my $lenient (0, 1) {
+    my $encoder = Ham::RTTY::Encoder->new(max_segments => 3, lenient => $lenient);
+    $encoder->encode('E');
+    my $saved = $encoder->result->as_hash;
+    my $input = $lenient ? "\x{2603}" : 'A';
+    eval { $encoder->events($input) };
+    is(ref($@) ? $@->code : '', 'RTTY_E_RESOURCE', 'event run overflow is rejected');
+    is_deeply($encoder->result->as_hash, $saved, 'failed events preserve text and warnings');
+    $encoder->frames('T');
+    is($encoder->result->text, 'T', 'encoder remains reusable after rejection');
+}
+my $fresh_encoder = Ham::RTTY::Encoder->new(max_segments => 3);
+eval { $fresh_encoder->events('A') };
+is($fresh_encoder->result->complete, 0, 'first failed encoding leaves a provisional result');
+
+# EOF framing diagnostics must agree with warnings and remain idempotent.
+my $truncated = Ham::RTTY::Decoder->new(baud => 50);
+$truncated->feed(
+    {
+        unit     => 'bits',
+        baud     => 50,
+        segments => [{state => 'space', duration => 1}]
+    }
+);
+is($truncated->result->diagnostics->{framing_error_count}, 0, 'pending frame is not yet an error');
+my $ended = $truncated->finish;
+is($ended->diagnostics->{framing_error_count}, 1, 'EOF counts the incomplete frame');
+is(scalar @{$ended->warnings},                 1, 'EOF emits one warning');
+is_deeply($truncated->finish->as_hash, $ended->as_hash, 'repeated finish does not recount EOF');
+$truncated->reset;
+is($truncated->result->diagnostics->{framing_error_count}, 0, 'reset clears EOF errors');
+
+{
+
+    package StringifiedOption;
+    use overload q{""} => sub { return $_[0]{value} }, fallback => 1;
+}
+my $guarded = Ham::RTTY::Decoder->new;
+$guarded->feed({unit => 'us', segments => [{state => 'mark', duration => 1000}]});
+my $untouched = $guarded->result->as_hash;
+for my $state ([], bless({value => 'space'}, 'StringifiedOption')) {
+    eval { $guarded->feed({unit => 'us', segments => [{state => $state, duration => 1000}]}) };
+    is(ref($@) ? $@->code : '', 'RTTY_E_ARGUMENT', 'reference event states are rejected');
+    is_deeply($guarded->result->as_hash, $untouched, 'invalid state cannot poison decoder history');
+}
+eval { Ham::RTTY::Audio->new(stereo => bless({value => 'mix'}, 'StringifiedOption')) };
+is(ref($@) ? $@->code : '', 'RTTY_E_ARGUMENT', 'stereo policy requires a scalar value');
+
+# Exercise every assigned character across source timing resolutions.
+for my $variant (qw(ita2 us)) {
+    my $tables = Ham::RTTY::Baudot->new(variant => $variant)->tables;
+    my $text   = join '', grep { defined } @{$tables->{letters}}, @{$tables->{figures}};
+    for my $baud (20, 45.45, 50, 75, 100, 300) {
+        for my $rate (1000, 8000, 44100, 384000) {
+            for my $stop (1, 1.5, 2) {
+                my $events = $rtty->sampled_events(
+                    $text,
+                    baud          => $baud,
+                    sample_rate   => $rate,
+                    stop_bits     => $stop,
+                    variant       => $variant,
+                    leading_idle  => 0,
+                    trailing_idle => 0
+                );
+                my $decoder = $rtty->decoder(baud => $baud, variant => $variant);
+                $decoder->feed({sample_rate => $rate, segments => [$_]})
+                    for @{$events->{segments}};
+                my $result = $decoder->finish;
+                is($result->text, $text,
+                    "$variant / $baud baud / $rate Hz / $stop stop: repertoire");
+                ok(!$result->has_warnings, 'clean complete frames have no warnings');
+            }
+        }
+    }
+}
+
 done_testing;

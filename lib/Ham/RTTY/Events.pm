@@ -38,6 +38,7 @@ sub validate_events {
         fail('RTTY_E_ARGUMENT', 'Invalid segment')
             unless ref($s) eq 'HASH'
             && defined($s->{state})
+            && ref($s->{state}) eq ''
             && $s->{state} =~ /\A(?:mark|space)\z/x;
         fail('RTTY_E_TIMING', 'Segment states must alternate') if $s->{state} eq $previous_state;
         if ($timed && $events->{unit} ne 'us') { number($field, $s->{$field}, 1e-12, $MAX) }

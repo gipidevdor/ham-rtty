@@ -1,6 +1,9 @@
 Revision history for Ham-RTTY
 
 0.001  2026-10-27
+    - Preserve encoder results when event generation fails.
+    - Count incomplete EOF frames in framing diagnostics exactly once.
+    - Reject reference-valued event states and stereo policies before use.
     - Exclude vulnerable Encode, Storable and PathTools dependency versions.
     - Install declared dependencies in ordinary and PDL compatibility jobs.
     - Check release archives before the unresolved field-recording gate.

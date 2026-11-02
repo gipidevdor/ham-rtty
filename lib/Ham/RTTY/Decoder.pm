@@ -187,6 +187,7 @@ sub finish {
     my ($self) = @_;
     return $self->{final} if $self->{state} eq 'FINISHED';
     if ($self->{candidate}) {
+        ++$self->{framing};
         push @{$self->{warnings}},
             {code => 'RTTY_W_FRAMING', message => 'Incomplete frame at end of input'};
     }
@@ -297,7 +298,8 @@ bit period in seconds and framing error count.
 
     my $result = $decoder->finish;
 
-Returns a complete Result, warning on an incomplete frame. Repeated calls
+Returns a complete Result, warning on an incomplete frame and counting it in
+C<framing_error_count>. Repeated calls
 return the same final snapshot. It does not add stop bits to incomplete input.
 
 =head2 reset
