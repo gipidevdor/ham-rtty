@@ -106,4 +106,33 @@ $det->feed($rtty->samples('CQ'));
 isnt($det->result, $preview, 'accepted feed invalidates preview');
 is($det->finish->text, 'CQ',         'preview does not consume samples');
 is($det->finish,       $det->result, 'idempotent finish');
+
+{
+
+    package CountedPayload;
+    sub TIEHASH  { return bless {data => $_[1], reads => $_[2]}, $_[0] }
+    sub FETCH    { ++${$_[0]{reads}};               return $_[0]{data}{$_[1]} }
+    sub FIRSTKEY { my $reset = keys %{$_[0]{data}}; return each %{$_[0]{data}} }
+    sub NEXTKEY  { return each %{$_[0]{data}} }
+}
+my $reads      = 0;
+my $shared_dag = {};
+for (1 .. 16) {
+    tie my %node, 'CountedPayload', {left => $shared_dag, right => $shared_dag}, \$reads;
+    $shared_dag = \%node;
+}
+ok(plain_data($shared_dag), 'shared acyclic payload accepted');
+cmp_ok($reads, '<=', 128, 'validation visits shared nodes a bounded number of times');
+my $tail = {};
+$tail = {next => $tail} for 1 .. 10;
+my $long = $tail;
+$long = {next => $long} for 1 .. 55;
+for my $branches ([$tail, $long], [$long, $tail]) {
+    ok(!plain_data($branches), 'cached subtree height still rejects an overdeep path');
+}
+my $boundary = {};
+$boundary = {next => $boundary} for 1 .. 64;
+ok(plain_data($boundary),            'container depth 64 remains accepted');
+ok(!plain_data({next => $boundary}), 'container depth 65 is rejected');
+
 done_testing;

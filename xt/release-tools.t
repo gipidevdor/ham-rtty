@@ -9,7 +9,9 @@ use IPC::Open3 qw(open3);
 use Symbol     qw(gensym);
 use Archive::Tar;
 use JSON::PP;
-use Ham::RTTY ();
+use Cwd         qw(getcwd);
+use Digest::SHA qw(sha256_hex);
+use Ham::RTTY   ();
 
 sub write_file {
     my ($path, $content) = @_;
@@ -129,4 +131,81 @@ like(
     qr/Failed release contract:.*indexed_version:Ham::RTTY/s,
     'mismatch identifies the package that PAUSE would index incorrectly'
 );
+
+# Gate fixtures are synthetic test doubles, never entries in the real corpus.
+my $checkout    = getcwd();
+my $gate_script = File::Spec->catfile($checkout, 'maint', 'reception-corpus.pl');
+my $gate_lib    = File::Spec->catdir($checkout,  'lib');
+my $gate_root   = File::Spec->catdir($temporary, 'corpus-gate');
+make_path(File::Spec->catdir($gate_root, 'corpus'));
+chdir $gate_root or die $!;
+my @reviewed;
+
+for my $index (0 .. 3) {
+    my $name  = "case-$index.wav";
+    my $bytes = Ham::RTTY->new(sample_rate => 8000, baud => 50)->wav_bytes("CQ $index");
+    open my $wav, '>:raw', $name or die $!;
+    print {$wav} $bytes or die $!;
+    close $wav          or die $!;
+    push @reviewed,
+        {
+        id                 => "case-$index",
+        file               => $name,
+        status             => 'reviewed',
+        source_url         => 'https://example.invalid/test-double',
+        license            => 'CC0-1.0',
+        sha256             => sha256_hex($bytes),
+        reference          => "CQ $index",
+        max_regression_cer => 0,
+        quality_target_cer => 0.25,
+        baud               => 50,
+        shift              => 170
+        };
+}
+my $baseline = JSON::PP->new->encode(\@reviewed);
+write_file('corpus/real.json', $baseline);
+($status, $output) = run("-I$gate_lib", $gate_script);
+is($status, 0, 'gate accepts four distinct complete test doubles') or diag($output);
+for my $invalid (
+    ['empty reference', sub { $_[0][0]{reference}          = '' },          qr/Missing provenance/],
+    ['empty licence',   sub { $_[0][0]{license}            = '' },          qr/Missing provenance/],
+    ['empty source',    sub { $_[0][0]{source_url}         = '' },          qr/Missing provenance/],
+    ['invalid URL',     sub { $_[0][0]{source_url}         = 'not-a-url' }, qr/Invalid source URL/],
+    ['duplicate ID',    sub { $_[0][1]{id}                 = $_[0][0]{id} },     qr/Duplicate/],
+    ['duplicate file',  sub { $_[0][1]{file}               = $_[0][0]{file} },   qr/Duplicate/],
+    ['duplicate hash',  sub { $_[0][1]{sha256}             = $_[0][0]{sha256} }, qr/Duplicate/],
+    ['invalid budget',  sub { $_[0][0]{max_regression_cer} = 0.3 }, qr/max_regression_cer/],
+    ['weakened target', sub { $_[0][0]{quality_target_cer} = 0.5 }, qr/quality_target_cer/],
+    ['missing cases',   sub { pop @{$_[0]} }, qr/exactly four/]
+    )
+{
+    my $cases = JSON::PP->new->decode($baseline);
+    $invalid->[1]->($cases);
+    write_file('corpus/real.json', JSON::PP->new->encode($cases));
+    ($status, $output) = run("-I$gate_lib", $gate_script);
+    isnt($status, 0, "$invalid->[0] cannot pass reception gate");
+    like($output, $invalid->[2], 'gate explains rejection');
+}
+for my $silence ([], [(0) x 8000]) {
+    my $bytes = '';
+    open my $wav, '>:raw', \$bytes or die $!;
+    Ham::RTTY::Audio->new->write($wav, $silence, sample_rate => 8000);
+    close $wav or die $!;
+    open my $out, '>:raw', 'empty.wav' or die $!;
+    print {$out} $bytes or die $!;
+    close $out          or die $!;
+    my $cases = JSON::PP->new->decode($baseline);
+    $cases->[0]{file}   = 'empty.wav';
+    $cases->[0]{sha256} = sha256_hex($bytes);
+    write_file('corpus/real.json', JSON::PP->new->encode($cases));
+    ($status, $output) = run("-I$gate_lib", $gate_script);
+    isnt($status, 0, 'empty or silent audio cannot pass gate');
+    like(
+        $output,
+        qr/Empty real RTTY recording|No signal in real RTTY recording/,
+        'silence rejection is explicit'
+    );
+}
+chdir $checkout or die $!;
+
 done_testing;

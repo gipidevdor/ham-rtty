@@ -3,7 +3,7 @@ use 5.020;
 use strict;
 use warnings;
 use Scalar::Util                   qw(openhandle);
-use Ham::RTTY::Events              qw(validate_events to_timed);
+use Ham::RTTY::Events              qw(validate_events);
 use Ham::RTTY::_Internal::IO       qw(write_bytes with_file);
 use Ham::RTTY::_Internal::Validate qw(fail integer number options named_arguments);
 our $VERSION = '0.001';
@@ -35,13 +35,17 @@ sub _vlq {
 sub encode {
     my ($self, $events) = @_;
     my $field = validate_events($events, 1000000);
-    $events = to_timed($events, 1000000) if $field eq 'duration' && $events->{unit} ne 'us';
     my $tempo = int(60_000_000 / $self->{bpm} + 0.5);
 
     # Keep the original event units until the final tick boundary.
-    my $numerator   = $self->{ppqn} * ($field eq 'samples' ? 1_000_000 : 1);
-    my $denominator = $tempo * ($field eq 'samples' ? $events->{sample_rate} : 1);
-    my $channel     = $self->{channel} - 1;
+    my $numerator =
+        $self->{ppqn} * ($field eq 'samples' || $events->{unit} ne 'us' ? 1_000_000 : 1);
+    my $denominator = $tempo * (
+          $field eq 'samples'       ? $events->{sample_rate}
+        : $events->{unit} eq 'bits' ? $events->{baud}
+        :                             1
+    );
+    my $channel = $self->{channel} - 1;
     my $track =
           "\0\xff\x51\x03"
         . substr(pack('N', $tempo), 1, 3)
@@ -59,7 +63,7 @@ sub encode {
         $track .= _vlq($end - $start) . pack('CCC', 0x80 | $channel, $note, 0);
         $last_tick = $end;
         fail('RTTY_E_RESOURCE', 'MIDI exceeds max_bytes')
-            if length($track) + 30 > $self->{max_bytes};
+            if length($track) + 26 > $self->{max_bytes};
     }
     $track .= _vlq(int($time * $numerator / $denominator + 0.5) - $last_tick) . "\xff\x2f\0";
     return pack('a4Nnnna4N', 'MThd', 6, 0, 1, $self->{ppqn}, 'MTrk', length $track) . $track;
@@ -154,7 +158,7 @@ speed. Changing BPM changes tick mapping, not the requested source timing.
 Playback sound and envelopes depend on the player/synthesizer.
 
 Cumulative event boundaries round to nearest integer tick, with halves
-upward, using the encoded integer-microsecond tempo. Sampled events retain
+upward, using the encoded integer-microsecond tempo. All events retain
 their original units until this boundary calculation. Round trips through
 other resolutions may lose precision. A note rounding to zero ticks raises
 C<RTTY_E_TIMING>; increase PPQN or lengthen events. Deltas exceeding the

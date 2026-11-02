@@ -322,3 +322,30 @@ sample rates (1,000 through 384,000 Hz), all three stop durations and both table
 variants, without text mismatches or reception warnings. These checks do not
 replace the independently reviewed off-air corpus or resolve the previously
 recorded dependency audit findings.
+
+## Resource and boundary corrections, 2 November 2026
+
+Bit decoding now stops building runs at the configured ceiling, and encoding
+scans characters without constructing a complete character list. Shared payload
+validation caches subtree heights, avoiding exponential traversal while still
+rejecting cycles and paths deeper than 64 containers.
+
+In a paired local diagnostic using 200,000 input characters and a ceiling of
+one run/frame, bit-decoder peak RSS fell from 125,698,048 to 8,273,920 bytes;
+encoder peak RSS fell from 24,756,224 to 8,044,544 bytes. These are individual
+process observations, not a repeated performance benchmark. Construction of a
+21-node shared Result payload fell from 3.70 seconds to 0.000144 seconds in the
+same diagnostic; a 61-node shared payload also completes without exponential
+work. Regression tests count node accesses instead of imposing timing thresholds.
+
+MIDI now rounds directly from seconds, bits or sample counts to ticks and accepts
+an output exactly equal to its byte ceiling. Detector reset restores the original
+configured tone; the frequency grid is indexed and its actual candidate count
+controls the 512-pair limit.
+
+The field-recording gate requires four distinct identified cases, nonempty
+provenance and references, valid hashes and budgets, nonempty audio and usable
+signal. Synthetic test doubles exercise acceptance and rejection in a temporary
+directory. They are not added to the real corpus and do not establish off-air
+accuracy or validate recording licences. The existing missing reviewed recordings
+and upstream dependency advisories remain unresolved.

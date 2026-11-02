@@ -30,19 +30,21 @@ sub new {
     fail('RTTY_E_ARGUMENT', 'Search tones must be below Nyquist')
         if $max + $gen{shift} >= $gen{sample_rate} / 2;
     my $step = number('frequency_step', $args{frequency_step} // 10, 1, 500);
-    fail('RTTY_E_RESOURCE', 'Search exceeds 512 candidate pairs') if ($max - $min) / $step > 511;
+    fail('RTTY_E_RESOURCE', 'Search exceeds 512 candidate pairs')
+        if int(($max - $min) / $step) + 1 > 512;
     my $self = bless {
         %gen,
-        baud           => $baud,
-        variant        => $args{variant} // 'ita2',
-        usos           => $args{usos}    // 1,
-        atc            => integer('atc',    $args{atc}    // 1, 0, 1),
-        search         => integer('search', $args{search} // 0, 0, 1),
-        min_frequency  => $min,
-        max_frequency  => $max,
-        frequency_step => $step,
-        max_frames     => integer('max_frames',   $args{max_frames}   // 200000, 1, 1000000),
-        max_segments   => integer('max_segments', $args{max_segments} // 100000, 1, 1000000)
+        configured_mark => $gen{mark},
+        baud            => $baud,
+        variant         => $args{variant} // 'ita2',
+        usos            => $args{usos}    // 1,
+        atc             => integer('atc',    $args{atc}    // 1, 0, 1),
+        search          => integer('search', $args{search} // 0, 0, 1),
+        min_frequency   => $min,
+        max_frequency   => $max,
+        frequency_step  => $step,
+        max_frames      => integer('max_frames',   $args{max_frames}   // 200000, 1, 1000000),
+        max_segments    => integer('max_segments', $args{max_segments} // 100000, 1, 1000000)
     }, $class;
     Ham::RTTY::Decoder->new(variant => $self->{variant}, usos => $self->{usos}, baud => $baud);
     $self->{window_size} = int($self->{sample_rate} / $baud * 0.65 + 0.5);
@@ -53,6 +55,7 @@ sub new {
 sub reset {    ## no critic (Subroutines::ProhibitBuiltinHomonyms)
     my ($self) = @_;
     @{$self}{qw(state total frames mark_power space_power)} = ('READY', 0, 0, 0, 0);
+    $self->{mark}        = $self->{configured_mark};
     $self->{buffer}      = [];
     $self->{segments}    = [];
     $self->{peaks}       = [1e-12, 1e-12];
@@ -100,12 +103,10 @@ sub _powers {
 sub _acquire {
     my ($self) = @_;
     my (@frequencies, @scores);
-    for (
-        my $f = $self->{min_frequency};
-        $f <= $self->{max_frequency};
-        $f += $self->{frequency_step}
-        )
-    {
+    my $count =
+        int(($self->{max_frequency} - $self->{min_frequency}) / $self->{frequency_step}) + 1;
+    for my $index (0 .. $count - 1) {
+        my $f = $self->{min_frequency} + $index * $self->{frequency_step};
         push @frequencies, $f, $f + $self->{shift};
     }
     @scores = (0) x @frequencies;

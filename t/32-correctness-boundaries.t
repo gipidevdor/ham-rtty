@@ -191,4 +191,69 @@ for my $variant (qw(ita2 us)) {
     }
 }
 
+my $bit_limited = Ham::RTTY::Decoder->new(max_segments => 1);
+eval { $bit_limited->decode_bits('01' x 100000) };
+is(ref($@) ? $@->code : '', 'RTTY_E_RESOURCE',        'large bit input rejected at run ceiling');
+is($bit_limited->state,     'READY',                  'bit rejection precedes receiver mutation');
+is($bit_limited->decode_bits('1' x 200000)->text, '', 'one long run fits the same limit');
+my $frame_limited = Ham::RTTY::Encoder->new(max_segments => 1);
+eval { $frame_limited->frames('A' x 200000) };
+is(ref($@) ? $@->code : '',          'RTTY_E_RESOURCE', 'long text rejected at frame ceiling');
+is($frame_limited->result->complete, 0, 'long text rejection preserves initial state');
+
+my $searching      = Ham::RTTY->new(sample_rate => 8000)->detector(search => 1);
+my $initial_search = $searching->result->as_hash;
+$searching->feed(Ham::RTTY->new(sample_rate => 8000)->samples('CQ', mark => 1900));
+cmp_ok(abs($searching->finish->frequency - 1900), '<=', 10, 'search acquires displaced tone');
+is_deeply($searching->reset->result->as_hash, $initial_search, 'reset restores constructor tone');
+my $grid = Ham::RTTY::Detector->new(
+    search         => 1,
+    min_frequency  => 300,
+    max_frequency  => 811.5,
+    frequency_step => 1
+);
+is($grid->state, 'READY', 'fractional band containing 512 pairs accepted');
+$grid->feed([(0) x 400]);
+is($grid->finish->frequency, 300, 'accepted grid can perform acquisition');
+eval { Ham::RTTY::Detector->new(min_frequency => 300, max_frequency => 812, frequency_step => 1) };
+is(ref($@) ? $@->code : '', 'RTTY_E_RESOURCE', '513 pairs remain rejected');
+
+my $exact_events = {
+    unit     => 'us',
+    segments => [map { +{state => $_ % 2 ? 'mark' : 'space', duration => 20000} } 0 .. 3]
+};
+my $exact_bytes = Ham::RTTY::MIDI->new->encode($exact_events);
+is(length($exact_bytes), 68, 'four short notes have a measured 68-byte file');
+is(Ham::RTTY::MIDI->new(max_bytes => 68)->encode($exact_events),
+    $exact_bytes, 'exact MIDI byte limit is inclusive');
+eval { Ham::RTTY::MIDI->new(max_bytes => 67)->encode($exact_events) };
+is(ref($@) ? $@->code : '', 'RTTY_E_RESOURCE', 'one byte below required MIDI size rejected');
+
+for my $source ([s => 0.0000025], [bits => 0.000125]) {
+    my $bytes = Ham::RTTY::MIDI->new(bpm => 1000, ppqn => 32767)->encode(
+        {
+            unit     => $source->[0],
+            baud     => 50,
+            segments => [{state => 'mark', duration => $source->[1]}]
+        }
+    );
+
+    # Header (22), tempo/program (10), delta/note-on (4), then note-off delta.
+    is(ord(substr($bytes, 36, 1)), 1, 'fractional source rounds directly to one tick');
+}
+
+for my $timing ([us => 1000], [s => 0.001], [bits => 0.05]) {
+    is_deeply(
+        to_timed(
+            {
+                unit     => $timing->[0],
+                baud     => 50,
+                segments => [{state => 'mark', duration => $timing->[1]}]
+            }
+        ),
+        {unit => 'us', segments => [{state => 'mark', duration => 1000}]},
+        "$timing->[0] source normalizes to one millisecond"
+    );
+}
+
 done_testing;
