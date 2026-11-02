@@ -62,7 +62,8 @@ sub _frames {
             };
     };
     my $position = 0;
-    for my $c (split //, $text) {
+    for (my $index = 0; $index < length($text); ++$index) {
+        my $c = substr($text, $index, 1);
         ++$position;
         $c =~ tr/a-z/A-Z/;
         if (!exists $lookup{$c}) {

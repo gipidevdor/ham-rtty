@@ -1,6 +1,10 @@
 Revision history for Ham-RTTY
 
 0.001  2026-10-27
+    - Bound bit/text preprocessing and memoize shared payload validation.
+    - Preserve source precision and exact byte limits in MIDI output.
+    - Restore configured detector tones on reset and count search grids exactly.
+    - Reject empty, duplicate or incomplete field-recording acceptance cases.
     - Preserve encoder results when event generation fails.
     - Count incomplete EOF frames in framing diagnostics exactly once.
     - Reject reference-valued event states and stereo policies before use.

@@ -56,23 +56,14 @@ sub decode_bits {
     my ($self, $bits) = @_;
     fail('RTTY_E_ARGUMENT', 'Bits must contain only 0 and 1')
         if !defined($bits) || ref($bits) || $bits =~ /[^01]/x;
+    fail('RTTY_E_STATE', 'Decoder is finalized') if $self->{state} eq 'FINISHED';
     my @segments;
-    for my $bit (split //, $bits) {
-        my $state = $bit eq '1' ? 'mark' : 'space';
-        if (@segments && $segments[-1]{state} eq $state) { $segments[-1]{samples}++ }
-        else { push @segments, {state => $state, samples => 1} }
+    while ($bits =~ /([01])\1*/gx) {
+        fail('RTTY_E_RESOURCE', 'Event sequence exceeds max_segments')
+            if @segments >= $self->{max_segments};
+        push @segments, {state => $1 eq '1' ? 'mark' : 'space', duration => $+[0] - $-[0]};
     }
-
-    # A synthetic rate makes every bit exactly one configured period.
-    my $events = {unit => 'us', segments => []};
-    my ($time, $boundary) = (0, 0);
-    for my $s (@segments) {
-        $time += $s->{samples} * 1000000 / $self->{baud};
-        my $end = int($time + 0.5);
-        push @{$events->{segments}}, {state => $s->{state}, duration => $end - $boundary};
-        $boundary = $end;
-    }
-    $self->feed($events);
+    $self->feed({unit => 'bits', baud => $self->{baud}, segments => \@segments});
     return $self->finish;
 }
 
@@ -269,6 +260,8 @@ raises C<RTTY_E_ARGUMENT>.
 Feeds a defined 0/1 scalar into the incremental receiver at one configured bit
 period per digit and finalizes it. Returns a Result. Use a fresh/reset
 receiver for a new message; fractional stop duration belongs in events.
+Runs are counted during scanning, before retaining more than C<max_segments>;
+the input is not expanded into a list of individual characters.
 
 =head2 feed
 
