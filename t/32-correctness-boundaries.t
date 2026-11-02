@@ -242,4 +242,18 @@ for my $source ([s => 0.0000025], [bits => 0.000125]) {
     is(ord(substr($bytes, 36, 1)), 1, 'fractional source rounds directly to one tick');
 }
 
+for my $timing ([us => 1000], [s => 0.001], [bits => 0.05]) {
+    is_deeply(
+        to_timed(
+            {
+                unit     => $timing->[0],
+                baud     => 50,
+                segments => [{state => 'mark', duration => $timing->[1]}]
+            }
+        ),
+        {unit => 'us', segments => [{state => 'mark', duration => 1000}]},
+        "$timing->[0] source normalizes to one millisecond"
+    );
+}
+
 done_testing;

@@ -58,10 +58,11 @@ sub decode_bits {
         if !defined($bits) || ref($bits) || $bits =~ /[^01]/x;
     fail('RTTY_E_STATE', 'Decoder is finalized') if $self->{state} eq 'FINISHED';
     my @segments;
-    while ($bits =~ /([01])\1*/gx) {
+    while ($bits =~ /0+|1+/gx) {
         fail('RTTY_E_RESOURCE', 'Event sequence exceeds max_segments')
             if @segments >= $self->{max_segments};
-        push @segments, {state => $1 eq '1' ? 'mark' : 'space', duration => $+[0] - $-[0]};
+        push @segments,
+            {state => substr($bits, $-[0], 1) eq '1' ? 'mark' : 'space', duration => $+[0] - $-[0]};
     }
     $self->feed({unit => 'bits', baud => $self->{baud}, segments => \@segments});
     return $self->finish;
