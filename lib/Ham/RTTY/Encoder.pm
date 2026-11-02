@@ -30,6 +30,13 @@ sub validate {
 sub new { my ($class, @args) = @_; return bless $class->validate(@args), $class }
 
 sub frames {
+    my ($self,   $text)   = @_;
+    my ($frames, $result) = $self->_frames($text);
+    $self->{last_result} = $result;
+    return $frames;
+}
+
+sub _frames {
     my ($self, $text) = @_;
     fail('RTTY_E_ARGUMENT', 'Text must be a defined scalar') if !defined($text) || ref($text);
     my $tables = Ham::RTTY::Baudot->new(variant => $self->{variant})->tables;
@@ -82,9 +89,7 @@ sub frames {
         $emit->($lookup{$c}{$mode}, $c, '');
         $mode = 'letters' if $c eq ' ' && $self->{usos};
     }
-    $self->{last_result} =
-        Ham::RTTY::Result->new(text => $text, warnings => \@warnings, complete => 1);
-    return \@frames;
+    return (\@frames, Ham::RTTY::Result->new(text => $text, warnings => \@warnings, complete => 1));
 }
 
 sub encode {
@@ -101,8 +106,8 @@ sub bits {
 }
 
 sub events {
-    my ($self, $text) = @_;
-    my $frames = $self->frames($text);
+    my ($self,     $text)   = @_;
+    my ($frames,   $result) = $self->_frames($text);
     my (@segments, $time, $boundary);
     $time = $boundary = 0;
     my $append = sub {
@@ -127,6 +132,7 @@ sub events {
         }
         $append->('mark', $self->{trailing_idle});
     }
+    $self->{last_result} = $result;
     return {unit => 'us', segments => \@segments};
 }
 sub result { my ($self) = @_; return $self->{last_result} // Ham::RTTY::Result->new }
@@ -250,7 +256,8 @@ configured run/frame limit raises C<RTTY_E_RESOURCE>.
     my $result = $encoder->result;
 
 Returns an independent L<Ham::RTTY::Result> from the last successful encoding,
-including substitution warnings; before encoding it returns an empty
+including substitution warnings. Failed operations preserve the previous result;
+before encoding it returns an empty
 provisional Result.
 
 =head1 AUTHOR

@@ -15,7 +15,7 @@ sub new {
     options(\%args, qw(max_bytes stereo block_samples backend));
     my $policy = $args{stereo} // 'mix';
     fail('RTTY_E_ARGUMENT', 'stereo must be left, right or mix')
-        unless $policy =~ /\A(?:left|right|mix)\z/x;
+        if ref($policy) || $policy !~ /\A(?:left|right|mix)\z/x;
     return bless {
         stereo        => $policy,
         backend       => Ham::RTTY::_Internal::Backend::resolve($args{backend}),

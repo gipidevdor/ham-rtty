@@ -306,3 +306,19 @@ Perl binary handshake mismatch. Failed compatibility runs retain their test outp
 passes all 11 ordinary and PDL compatibility jobs, including Windows, Perl 5.20
 and PDL 2.081. This verifies the dependency minima and Windows toolchain change;
 the separate security and real-recording acceptance limitations above still apply.
+
+## Correctness recheck, 2 November 2026
+
+The review found and corrected premature Encoder result publication on event-run
+overflow, missing EOF framing-error counts, and reference-valued event states
+that could poison decoder history after validation. Stereo policy validation now
+also rejects references consistently with other scalar options. Regression tests
+cover preserved results and warnings, receiver reuse, idempotent finalization,
+reset and rejection before mutation.
+
+The functional suite includes 144 deterministic event round trips covering
+every assigned character. These cover six baud rates (20 through 300), four
+sample rates (1,000 through 384,000 Hz), all three stop durations and both table
+variants, without text mismatches or reception warnings. These checks do not
+replace the independently reviewed off-air corpus or resolve the previously
+recorded dependency audit findings.
