@@ -72,6 +72,35 @@ write_text($module, "package Fixture v1.2.3;\n1;\n");
 is(installed_report($audit, $temporary)->{meta}{total_advisories},
     1, 'downgrade makes the audit red again');
 
+# CPAN::Audit only considers versions enumerated in its database. An installed
+# release newer than that inventory must still be checked against the ranges.
+write_text($module, "package Fixture v1.9.0;\n1;\n");
+is(installed_report($audit, $temporary)->{meta}{total_advisories},
+    1, 'unlisted vulnerable installed release cannot silently pass');
+write_text($module, "package Fixture v2.1.0;\n1;\n");
+is(installed_report($audit, $temporary)->{meta}{total_advisories},
+    0, 'unlisted installed release in the fixed range passes');
+is_deeply(
+    $database->{dists}{Fixture}{versions},
+    [{version => 'v1.2.3'}, {version => 'v2.0.0'}],
+    'observed installed releases do not modify the source database'
+);
+{
+    local $database->{dists}{Fixture}{advisories} =
+        [{id => 'TEST-OPEN', affected_versions => ['>=v1.2.3'], fixed_versions => []}];
+    write_text($module, "package Fixture v3.0.0;\n1;\n");
+    is(installed_report($audit, $temporary)->{meta}{total_advisories},
+        1, 'newest installed release retains an open-ended advisory');
+}
+{
+    local $database->{dists}{perl}{advisories} =
+        [{id => 'TEST-PERL', affected_versions => ['>0'], fixed_versions => []}];
+    my $interpreter = CPAN::Audit->new(db => $database, no_corelist => 1, include_perl => 1);
+    is(installed_report($interpreter, $temporary)->{meta}{total_advisories},
+        1, 'installed interpreter is checked even when its version inventory is empty');
+}
+write_text($module, "package Fixture v1.2.3;\n1;\n");
+
 sub metadata {
     my ($prereqs) = @_;
     return CPAN::Meta->new(

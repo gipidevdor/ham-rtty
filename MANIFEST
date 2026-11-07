@@ -87,6 +87,7 @@ maint/audit-dependencies.pl
 maint/benchmark-platforms.pl
 maint/benchmark.pl
 maint/build-corpus.pl
+maint/build-security-perl.sh
 maint/build-site.pl
 maint/check-cli-install.pl
 maint/check-dist.pl

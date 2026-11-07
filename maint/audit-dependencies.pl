@@ -88,6 +88,23 @@ sub installed_report {
     # Stock discovery mistakes "package Pod::Man v6.1.1;" for a module named
     # "Pod::Man v6.1.1". Parse source without loading or executing the module.
     local *CPAN::Audit::Installed::module_from_file = \&module_name;
+
+    # The query engine only checks releases listed in the database. Include
+    # versions actually found on disk, even when they postdate that inventory.
+    # Keep the original database intact and leave advisory matching to CPAN::Audit.
+    my %distributions = %{$audit->{db}{dists}};
+    local $audit->{db}{dists} = \%distributions;
+    my $find = \&CPAN::Audit::Installed::find;
+    local *CPAN::Audit::Installed::find = sub {
+        my @installed = $find->(@_);
+        for my $dependency (@installed) {
+            my $name = $dependency->{dist};
+            my $dist = $distributions{$name} or next;
+            $distributions{$name} =
+                {%{$dist}, versions => [@{$dist->{versions}}, {version => $dependency->{version}}]};
+        }
+        return @installed;
+    };
     return $audit->command('installed', @directories);
 }
 

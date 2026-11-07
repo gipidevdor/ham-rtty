@@ -88,3 +88,74 @@ independently annotated entries, so the author job fails at
 so its missing data no longer skips package verification. Available examples are retained with their stated
 reference limitations. These remaining failures cannot be reported as passing
 CI on the evidence currently recorded.
+
+## Interpreter remediation and inventory correction, 2026-11-07
+
+The latest inspected hosted [run 41499662145](https://github.com/gipidevdor/ham-rtty/actions/runs/41499662145)
+used CPAN::Audit 20261013.002 and CPANSA::DB 20261101.010. Its installed report
+contains **4 distribution/advisory matches**: File::Temp 0.2312
+(CVE-2011-4116), Perl 5.44.0 (CVE-2026-15534), and Sereal::Encoder and
+Sereal::Decoder 6.003 (both CVE-2018-12913). These represent three distinct
+CVEs. Both audit steps failed with exit 1 and no scanner errors; the declared
+report still contains **30 matches**. The other three security jobs passed.
+The older two-match records above remain historical evidence.
+
+The Security workflow now builds Perl 5.44.0 with both upstream patches using
+[`maint/build-security-perl.sh`](../maint/build-security-perl.sh):
+
+- [568e6fd238867bb9e99fa3f47cba3169009239e0](https://github.com/Perl/perl5/commit/568e6fd238867bb9e99fa3f47cba3169009239e0)
+  changes the superlinear-cache countdown to support unsigned arithmetic.
+- [54cf3d44cbbedd17d774e9a37921963e8fd5d0cb](https://github.com/Perl/perl5/commit/54cf3d44cbbedd17d774e9a37921963e8fd5d0cb)
+  uses STRLEN counters and checks the allocation calculation for overflow.
+
+The builder verifies the archive and both patches with SHA-256 before
+extraction or application, applies patches without fuzz, and requires Perl's
+core and extension regex tests to pass before installation. It refuses to
+reuse an existing build directory. The workflow selects the resulting Perl
+for dependency installation, metadata generation and auditing; it invokes
+the bootstrap cpanm script explicitly with that interpreter. Input checksums,
+regex test output and `perl -V` join the saved audit artifacts. This is a
+configured environment correction, not evidence of a passing hosted run.
+
+The adapter also repairs an installed-inventory gap: CPAN::Audit only checks
+versions enumerated in its database. An installed version absent from that
+list could previously report zero advisories, even when an open affected
+range included it. The adapter adds observed installed versions to an
+in-memory copy of the release inventory, leaving the source database and all
+advisory ranges unchanged. CPAN::Audit still performs the matching. Tests
+cover unlisted vulnerable and fixed versions, an open-ended advisory, and
+an interpreter absent from the database's version inventory.
+
+Sereal 7.001 illustrates that gap with the inspected database: an exact query
+returns no match because the release is unlisted. Its packaged `miniz.c` and
+`miniz.h` are byte-for-byte identical to 6.003. Upgrading solely to obtain that
+empty report would not demonstrate remediation. The installed adapter retains
+the advisory. Sereal enters the CI environment through Devel::Cover's optional
+dependencies; it is not used by the library or CLI. Hosted coverage currently
+uses a fresh local database, but other callers can supply coverage databases.
+The [Miniz report](https://github.com/richgel999/miniz/issues/90) and its
+applicability to Sereal's bundled implementation need upstream resolution.
+
+File::Temp's upstream issue remains open and the database lists no fixed
+release. The library does not select the affected MEDIUM/HIGH safe-level
+checks, but that is not a package fix. Output and temporary parent directories
+must be trusted; final-component symlink rejection does not establish that
+parent-directory trust. No exception or replacement dependency was introduced.
+
+The patched interpreter retains version 5.44.0 and therefore still matches
+the database's `>0` Perl advisory. Declared support for Perl >=5.20 also
+continues to overlap the historical interpreter advisories. The compatibility
+contract, declared constraints and failing security gate are retained. A
+green gate requires evidence-backed upstream advisory corrections or fixed
+releases and a separate decision about supported deployment versions.
+
+Local verification on macOS completed the builder and all 558,441 assertions
+in 89 core/extension regex test files. Ham::RTTY's pure-Perl suite passed
+2,345 assertions in 22 files; after rebuilding PDL 2.106 for the new interpreter,
+the same suite passed 2,649 assertions. The audit and minimum-syntax checks
+passed 73 assertions. A Sereal 7.001 inventory fixture against CPANSA::DB 20261101.010
+reproduced zero stock matches and two corrected matches, with no errors.
+ShellCheck, actionlint and the modified adapter's Perl::Critic/style checks
+passed. The upstream oversized-subject memory-corruption trigger was not
+executed; the verified upstream patches and core regex suite are the focused
+substitute. Hosted Linux execution remains unverified.

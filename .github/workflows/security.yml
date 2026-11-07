@@ -23,10 +23,16 @@ jobs:
       - uses: shogo82148/actions-setup-perl@84c44b5a14f12b311f1bf3d2a70c8807f30b7ab2 # v1
         with:
           perl-version: '5.44'
+      - name: Build Perl with verified upstream CVE-2026-15534 patches
+        run: |
+          sh maint/build-security-perl.sh "$RUNNER_TEMP/security-perl"
+          echo "$RUNNER_TEMP/security-perl/install/bin" >> "$GITHUB_PATH"
       - name: Install full dependency set and current advisory database
         run: |
-          cpanm --notest --installdeps --with-develop --with-recommends .
-          cpanm --notest CPAN::Audit CPANSA::DB Module::CPANfile PPI PDL 'Pod::Man~v6.1.1'
+          cpanm_script=$(command -v cpanm)
+          perl "$cpanm_script" --version
+          perl "$cpanm_script" --notest --installdeps --with-develop --with-recommends .
+          perl "$cpanm_script" --notest CPAN::Audit CPANSA::DB Module::CPANfile PPI PDL 'Pod::Man~v6.1.1'
           perl Makefile.PL
           make
       - name: Record scanner, backend and database versions
@@ -51,6 +57,9 @@ jobs:
           path: |
             ${{ runner.temp }}/cpan-audit-*.json
             ${{ runner.temp }}/declared-audit/cpanfile
+            ${{ runner.temp }}/security-perl/source-sha256.txt
+            ${{ runner.temp }}/security-perl/perl-configuration.txt
+            ${{ runner.temp }}/security-perl/regex-tests.txt
           if-no-files-found: error
           retention-days: 14
   secrets:
