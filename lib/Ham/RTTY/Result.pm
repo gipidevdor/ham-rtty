@@ -205,7 +205,8 @@ with a suitable encoder such as JSON::PP.
 
 =head1 WARNINGS
 
-RTTY_W_NO_SIGNAL means insufficient tone energy. RTTY_W_FRAMING reports a
+RTTY_W_NO_SIGNAL means insufficient tone energy or an unresolved tone-pair
+search. RTTY_W_FRAMING reports a
 SPACE stop or incomplete frame and resynchronisation. RTTY_W_SYMBOL reports
 unsupported input substitution or an unassigned received combination.
 RTTY_W_WAV_TRAILING means bytes beyond the RIFF boundary were ignored.

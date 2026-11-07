@@ -1,6 +1,8 @@
 Revision history for Ham-RTTY
 
 0.001  2026-10-27
+    - Defer tone acquisition through silence or idle carriers with bounded retries.
+    - Require evidence of both tones before fixing the received frequency pair.
     - Bound bit/text preprocessing and memoize shared payload validation.
     - Preserve source precision and exact byte limits in MIDI output.
     - Restore configured detector tones on reset and count search grids exactly.

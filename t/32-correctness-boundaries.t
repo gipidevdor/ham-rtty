@@ -214,7 +214,8 @@ my $grid = Ham::RTTY::Detector->new(
 );
 is($grid->state, 'READY', 'fractional band containing 512 pairs accepted');
 $grid->feed([(0) x 400]);
-is($grid->finish->frequency, 300, 'accepted grid can perform acquisition');
+is($grid->finish->frequency,           2125, 'silent grid does not choose an arbitrary frequency');
+is($grid->finish->warnings->[0]{code}, 'RTTY_W_NO_SIGNAL', 'silent grid reports no tone pair');
 eval { Ham::RTTY::Detector->new(min_frequency => 300, max_frequency => 812, frequency_step => 1) };
 is(ref($@) ? $@->code : '', 'RTTY_E_RESOURCE', '513 pairs remain rejected');
 

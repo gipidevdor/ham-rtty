@@ -55,12 +55,13 @@ sub new {
 sub reset {    ## no critic (Subroutines::ProhibitBuiltinHomonyms)
     my ($self) = @_;
     @{$self}{qw(state total frames mark_power space_power)} = ('READY', 0, 0, 0, 0);
-    $self->{mark}        = $self->{configured_mark};
-    $self->{buffer}      = [];
-    $self->{segments}    = [];
-    $self->{peaks}       = [1e-12, 1e-12];
-    $self->{acquisition} = [];
-    $self->{acquired}    = !$self->{search};
+    $self->{mark}                = $self->{configured_mark};
+    $self->{buffer}              = [];
+    $self->{segments}            = [];
+    $self->{peaks}               = [1e-12, 1e-12];
+    $self->{acquisition}         = [];
+    $self->{acquisition_skipped} = 0;
+    $self->{acquired}            = !$self->{search};
     delete @{$self}{qw(final snapshot)};
     return $self;
 }
@@ -102,31 +103,49 @@ sub _powers {
 
 sub _acquire {
     my ($self) = @_;
-    my (@frequencies, @scores);
+    my (@frequencies, @scores, @observed);
     my $count =
         int(($self->{max_frequency} - $self->{min_frequency}) / $self->{frequency_step}) + 1;
     for my $index (0 .. $count - 1) {
         my $f = $self->{min_frequency} + $index * $self->{frequency_step};
         push @frequencies, $f, $f + $self->{shift};
     }
-    @scores = (0) x @frequencies;
+    @scores   = (0) x @frequencies;
+    @observed = (0) x @frequencies;
     my $n = $self->{window_size};
     for (my $offset = 0; $offset + $n <= @{$self->{acquisition}}; $offset += $n) {
         my $powers =
             $self->_powers([@{$self->{acquisition}}[$offset .. $offset + $n - 1]], \@frequencies);
         $scores[$_] += $powers->[$_] for 0 .. $#scores;
+        my $peak = 0;
+        for my $power (@{$powers}) { $peak = $power if $power > $peak }
+        next if $peak < 1e-12;
+        for (my $i = 0; $i < @scores; $i += 2) {
+
+            # Each tone must dominate in its own window, near the band peak.
+            # A lone carrier's leakage into a second projection is not evidence.
+            $observed[$i] = 1
+                if $powers->[$i] >= $peak * 0.25 && $powers->[$i] > 4 * $powers->[$i + 1];
+            $observed[$i + 1] = 1
+                if $powers->[$i + 1] >= $peak * 0.25 && $powers->[$i + 1] > 4 * $powers->[$i];
+        }
     }
     my ($best, $score) = (0, -1);
     for (my $i = 0; $i < @scores; $i += 2) {
+        next unless $observed[$i] && $observed[$i + 1];
         my $candidate = sqrt($scores[$i] * $scores[$i + 1]);
         if ($candidate > $score) { ($best, $score) = ($i, $candidate) }
     }
+    return 0 if $score < 0;
     $self->{mark}     = $frequencies[$best];
     $self->{acquired} = 1;
+    if ($self->{acquisition_skipped}) {
+        push @{$self->{segments}}, {state => 'mark', samples => $self->{acquisition_skipped}};
+    }
     my $values = $self->{acquisition};
     $self->{acquisition} = [];
     $self->_process($values);
-    return;
+    return 1;
 }
 
 sub _process {
@@ -192,12 +211,21 @@ sub feed {
     my $new_total = $self->{total} + @{$values};
     $self->_preflight($new_total);
     my $consumed = 0;
-    if (!$self->{acquired}) {
+    while (!$self->{acquired} && $consumed < @{$values}) {
         my $target = int($self->{sample_rate} * 0.5);
         my $needed = $target - @{$self->{acquisition}};
-        $consumed = @{$values} < $needed ? scalar @{$values} : $needed;
-        push @{$self->{acquisition}}, @{$values}[0 .. $consumed - 1] if $consumed;
-        $self->_acquire if @{$self->{acquisition}} >= $target;
+        my $count  = @{$values} - $consumed;
+        $count = $needed if $count > $needed;
+        push @{$self->{acquisition}}, @{$values}[$consumed .. $consumed + $count - 1];
+        $consumed += $count;
+        if (@{$self->{acquisition}} == $target && !$self->_acquire) {
+
+            # Retry at fixed quarter-second boundaries, retaining overlap so a
+            # start bit straddling an acquisition boundary is not discarded.
+            my $skip = int($target / 2);
+            splice @{$self->{acquisition}}, 0, $skip;
+            $self->{acquisition_skipped} += $skip;
+        }
     }
     $self->_process($values, $consumed) if $self->{acquired};
     $self->{total} = $new_total;
@@ -220,7 +248,14 @@ sub _snapshot {
     my $energy = $self->{mark_power} + $self->{space_power};
     if ($energy < 1e-8) {
         $h->{text}     = '';
-        $h->{warnings} = [{code => 'RTTY_W_NO_SIGNAL', message => 'No usable tone energy'}];
+        $h->{warnings} = [
+            {
+                code    => 'RTTY_W_NO_SIGNAL',
+                message => $self->{acquired}
+                ? 'No usable tone energy'
+                : 'Could not acquire both RTTY tones'
+            }
+        ];
     }
     my @periods =
         sort { $a <=> $b }
@@ -305,7 +340,11 @@ tracked tone peaks.
 =item * C<search>
 
 0 by default; integer 0 or 1. When enabled, acquire a tone pair at the
-configured shift from the first half second of input.
+configured shift using a window of at most half a second. Each tone must
+dominate its partner by more than four to one in a separate analysis window
+and reach at least one quarter of the strongest searched projection there.
+Silence or a single carrier defers acquisition; the search retries every
+quarter second until it finds both tones or reaches EOF or a resource limit.
 
 =item * C<min_frequency>, C<max_frequency>
 
@@ -344,9 +383,11 @@ call. Validation and conservative feature limits precede mutation. Feed after
 finish raises C<RTTY_E_STATE>. Windows span approximately 0.65 bit, advancing
 about 1/12 bit. Fixed tone powers use Goertzel in Perl or a broadcast two-tone
 projection in PDL. ATC normalizes independently decaying tone peaks with a
-shared floor. Optional search acquires once from the first half second;
-acquisition retains only the first half second, independently of incoming
-block boundaries. No full raw-audio history is retained.
+shared floor. Optional search retains at most half a second, retrying with
+overlapping windows until both tones are observed. Retry boundaries are
+independent of incoming block sizes. Prefix samples skipped while waiting
+for acquisition are represented as idle MARK in the event timeline. Once
+acquired, the selected pair remains fixed. No full raw-audio history is retained.
 
 Incoming arrays are processed in pieces of at most 4096 samples; the filter
 buffer additionally holds its decision window. The PDL path batches wide
@@ -370,9 +411,10 @@ timing.
     my $result = $detector->finish;
 
 Processes a short pending acquisition once and returns a cached complete
-Result. A partial analysis window remains unprocessed at EOF. Silence reports
-C<RTTY_W_NO_SIGNAL>. Reception warnings must be inspected; completion is not
-an accuracy claim.
+Result. A partial analysis window remains unprocessed at EOF. Silence or an
+unresolved tone search reports C<RTTY_W_NO_SIGNAL>; an unresolved search keeps
+the configured frequency without emitting guessed text. Reception warnings
+must be inspected; completion is not an accuracy claim.
 
 =head2 reset
 

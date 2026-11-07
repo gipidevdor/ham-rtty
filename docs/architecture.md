@@ -79,8 +79,9 @@ The detector analyses rectangular windows of approximately 0.65 bit, advancing
 about 1/12 bit per hop. Perl uses a Goertzel recurrence at each of the two
 frequencies. PDL evaluates both sinusoidal projections in one broadcast.
 Neither path retains the complete raw recording. Incoming arrays are consumed
-in pieces of at most 4,096 samples; acquisition retains only the initial half
-second. Wide PDL searches split frequency projections into matrices of at most
+in pieces of at most 4,096 samples; acquisition retains at most half a second.
+Unresolved searches advance by a quarter second, keeping overlapping input.
+Wide PDL searches split frequency projections into matrices of at most
 65,536 cells. WAV reception checks declared sample counts against frame/run
 budgets before reading PCM. Decoder history and public snapshots remain
 bounded by the configured limits; they still contribute to resident memory.
@@ -92,9 +93,13 @@ Each peak decays by a factor of 0.999 per hop and is bounded below by one tenth
 of the current window's stronger tone. The normalized energies determine
 MARK or SPACE. Disabling ATC compares the uncorrected energies.
 
-Optional search scores candidate tone pairs over the first half second using
-the configured band, shift and grid step. The selected pair remains fixed.
-Search does not identify baud or shift automatically.
+Optional search scores candidate tone pairs in a half-second window using
+the configured band, shift and grid step. Both tones must dominate at separate
+times near the strongest searched projection. Silence or a lone carrier causes
+a retry after a quarter second; unresolved prefixes become idle MARK in the
+event timeline. Retry boundaries do not depend on caller block sizes. EOF
+without a usable pair reports `RTTY_W_NO_SIGNAL`. Once acquired, the selected
+pair remains fixed. Search does not identify baud or shift automatically.
 
 Decisions are timestamped at window centres and merged into sampled runs.
 The event decoder detects MARK-to-SPACE, validates the start centre, samples

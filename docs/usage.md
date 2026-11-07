@@ -356,6 +356,8 @@ The [example catalog](../examples/README.md) covers individual methods.
 
 Reception handles one station. Configure baud, shift and polarity explicitly;
 `search => 1` can acquire the tone pair within a band at the configured shift.
+It waits for evidence of both tones, retrying through initial silence or an
+idle carrier with at most half a second of buffered audio.
 There is no automatic baud/shift identification, equalisation or diversity.
 See the [Detector POD](../lib/Ham/RTTY/Detector.pm) for options and limits.
 
@@ -437,8 +439,9 @@ to measure your own workload.
 Use the default `backend => 'perl'` with `read_wav`, `write_wav` and
 `stream_samples` to keep whole PCM arrays out of file/block workflows.
 The receiver handles large supplied blocks in bounded pieces and keeps only
-the first half second for tone acquisition. Optional PDL searches also bound
-their transient projection matrices. File reception rejects declared history
+at most half a second for tone acquisition, retrying with overlapping windows
+when the initial input contains silence or a single tone. Optional PDL searches
+also bound their transient projection matrices. File reception rejects declared history
 budgets before reading PCM data. Existing byte/frame/run/sample ceilings remain
 in force; public collected-array and byte-string methods retain their documented
 behavior. See the [paired RAM measurements](benchmarks.md#bounded-reception-and-recommended-defaults)
